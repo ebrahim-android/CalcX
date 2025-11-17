@@ -4,44 +4,35 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.playStore.calcx.ui.theme.CalcXTheme
+import androidx.compose.runtime.Composable // Necesario para la función Preview
+import androidx.compose.ui.tooling.preview.Preview // Necesario para la función Preview
+
+// 1. IMPORTAR la función CalculatorScreen
+import com.playStore.calcx.view.CalculatorScreen
+import com.playStore.calcx.ui.theme.CalcXTheme // Asegúrate de importar tu tema
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            // 2. LLAMAR la función CalculatorScreen dentro de tu tema
             CalcXTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                CalculatorScreen()
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+// ---------------------------------------------
 
+// 3. Crear la función Preview
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun CalculatorPreview() {
     CalcXTheme {
-        Greeting("Android")
+        // Llama a la misma función aquí para verla en el panel de diseño de Android Studio
+        CalculatorScreen()
+
     }
 }
