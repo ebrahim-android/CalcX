@@ -55,8 +55,8 @@ fun CalculatorScreen() {
         // Total sum: 8% + 17% + 8% + 37% + 30% = 100%
         val topGuide = createGuidelineFromTop(0f)
         val endTopBar = createGuidelineFromTop(0.08f)   // TopBar (8%)
-        val endDisplay = createGuidelineFromTop(0.25f)  // Display (17%)
-        val endNavControls = createGuidelineFromTop(0.33f) // NavControls (8%)
+        val endDisplay = createGuidelineFromTop(0.28f)  // Display (17%)
+        val endNavControls = createGuidelineFromTop(0.35f) // NavControls (8%)
         val endScientific = createGuidelineFromTop(0.70f) // Scientific Grid (37%)
         val endNumberPad = createGuidelineFromBottom(0f) // Number Pad (30%)
 
