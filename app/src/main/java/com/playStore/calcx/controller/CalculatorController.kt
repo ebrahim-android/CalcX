@@ -54,22 +54,107 @@ class CalculatorController {
 
     // when the user presses a function button (sin, cos, ln, etc.)
     fun onFunctionPressed(function: String) {
+        if (shouldReset) {
+            expression = ""
+            _displayState.value = "0"
+            shouldReset = false
+        }
+
+        expression += function + "("
+        _displayState.value = expression
     }
+
 
     // when the user presses "="
     fun onEqualsPressed() {
+        //if the expression is empty
+        if (expression.isBlank()) return
+
+        try {
+
+            val result = engine.evaluate(expression) //evaluate the expression
+
+            _displayState.value = result // show the result
+
+            expression = result //update the expression
+
+            shouldReset = true //to reset the display
+
+        } catch (e: Exception) { //if the expression is invalid
+            _displayState.value = "Error"
+            expression = ""
+            shouldReset = true
+        }
+
     }
 
     // when the user presses "C" (Clear)
     fun onClearPressed() {
+        expression = ""
+        _displayState.value = "0"
+        shouldReset = false
     }
 
     // when the user presses "eliminate symbol" (backspace)
     fun onDeleteLast() {
+        if (shouldReset) {
+            expression = ""
+            _displayState.value = "0"
+            shouldReset = false
+            return
+        }
+
+        if (expression.isNotEmpty()) { //if the expression is not empty, it will remove the last character
+            expression = expression.dropLast(1)
+        }
+
+        if (expression.isEmpty()) { //if the expression is empty, it will show "0"
+            expression = "0"
+        } else {
+            _displayState.value = expression //if the expression is not empty, it will show the expression
+        }
     }
 
     // when the user presses "(" o ")"
     fun onParenthesisPressed(parenthesis: String) {
+        if (shouldReset) {
+            expression = ""
+            shouldReset = false
+        }
+
+        expression += parenthesis
+        _displayState.value = expression
+    }
+
+    fun onDecimalPointPressed() {
+        if (shouldReset) {
+            expression = "0."
+            _displayState.value = expression
+            shouldReset = false
+            return
+        }
+
+        if (expression.isEmpty()) {
+            expression = "0."
+            _displayState.value = expression
+            return
+        }
+
+        val lastNumber = expression.takeLastWhile { it.isDigit() || it == '.' }
+
+        if (lastNumber.contains(".")) {
+            return
+        }
+
+        val lastChar = expression.last()
+        if (!lastChar.isDigit() && lastChar != '.') {
+            expression += "0."
+            _displayState.value = expression
+            return
+        }
+
+        expression += "."
+        _displayState.value = expression
     }
 
 }
