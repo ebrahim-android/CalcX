@@ -1,6 +1,7 @@
 package com.playStore.calcx.controller
 
 import androidx.compose.runtime.mutableStateOf
+import com.playStore.calcx.model.CalculatorEngine
 
 class CalculatorController {
     //To show the principal display (0, 123, sin(1) so on...)
@@ -10,6 +11,7 @@ class CalculatorController {
     // Controller internal status
     private var expression = ""
     private var shouldReset = false
+    private val engine = CalculatorEngine()
 
     // when the user presses a digit (1, 5 or 8)
     fun onDigitPressed(digit: String) {
@@ -66,26 +68,18 @@ class CalculatorController {
 
 
     // when the user presses "="
-    fun onEqualsPressed() {
-        //if the expression is empty
-        if (expression.isBlank()) return
-
+    fun equalsPressed() {
         try {
+            val result = engine.evaluate(expression)
+            _displayState.value = result.toString()
+            expression = result.toString()
+            shouldReset = true
 
-            val result = engine.evaluate(expression) //evaluate the expression
-
-            _displayState.value = result // show the result
-
-            expression = result //update the expression
-
-            shouldReset = true //to reset the display
-
-        } catch (e: Exception) { //if the expression is invalid
+        } catch (e: Exception) {
             _displayState.value = "Error"
             expression = ""
             shouldReset = true
         }
-
     }
 
     // when the user presses "C" (Clear)

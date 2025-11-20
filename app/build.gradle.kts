@@ -44,6 +44,9 @@ dependencies {
     // to resposive desing
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
+    //xp4j
+    implementation("net.objecthunter:exp4j:0.4.8")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
