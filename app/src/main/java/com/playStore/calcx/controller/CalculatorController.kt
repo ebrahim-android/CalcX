@@ -92,7 +92,7 @@ class CalculatorController {
             return
         }
 
-        // si el resultado es válido
+        // clean output: remove .0 if it's an integer
         val clean = if (result % 1 == 0.0) {
             result.toInt().toString()
         } else {
@@ -162,61 +162,3 @@ class CalculatorController {
     }
 
 }
-
-//
-//    // ----------------------------------------------------------------------------
-//    // DELETE (backspace)
-//    // ----------------------------------------------------------------------------
-//    fun onDeleteLast() {
-//        if (shouldReset) {
-//            expression = ""
-//            _displayState.value = "0"
-//            shouldReset = false
-//            return
-//        }
-//
-//        if (expression.isEmpty()) return
-//
-//        expression = expression.dropLast(1)
-//
-//        _displayState.value = if (expression.isEmpty()) "0" else expression
-//    }
-//
-//
-//
-//    // ----------------------------------------------------------------------------
-//    // CLEAR (AC)
-//    // ----------------------------------------------------------------------------
-//    fun onClearPressed() {
-//        expression = ""
-//        _displayState.value = "0"
-//        shouldReset = false
-//    }
-//
-//
-//
-//    // ----------------------------------------------------------------------------
-//    // EQUALS (=)
-//    // ----------------------------------------------------------------------------
-//    fun equalsPressed() {
-//        val result = engine.evaluate(expression)
-//
-//        if (result == null) {                    // error or invalid expression
-//            _displayState.value = "Error"
-//            expression = ""
-//            shouldReset = true
-//            return
-//        }
-//
-//        // clean output: remove .0 if it's an integer
-//        val clean = if (result % 1 == 0.0) {
-//            result.toInt().toString()
-//        } else {
-//            result.toString()
-//        }
-//
-//        _displayState.value = clean
-//        expression = clean
-//        shouldReset = true                       // next input starts fresh
-//    }
-//}
