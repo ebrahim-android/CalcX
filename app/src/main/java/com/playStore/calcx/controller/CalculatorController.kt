@@ -151,73 +151,22 @@ class CalculatorController {
             return
         }
 
-        if (expression.isEmpty()) {
-            expression = "0."
-            _displayState.value = expression
-            return
-        }
-
+        // extract last number to prevent multiple decimals
         val lastNumber = expression.takeLastWhile { it.isDigit() || it == '.' }
 
-        if (lastNumber.contains(".")) {
-            return
-        }
+        if(lastNumber.contains("."))return    // already has decimal
 
-        val lastChar = expression.last()
-        if (!lastChar.isDigit() && lastChar != '.') {
+        if(expression.isEmpty() || !expression.last().isDigit()){
             expression += "0."
-            _displayState.value = expression
-            return
+        }else{
+            expression += "."                   // normal decimal
         }
 
-        expression += "."
         _displayState.value = expression
     }
 
 }
 
-//
-//    // ----------------------------------------------------------------------------
-//    // PARENTHESIS
-//    // ----------------------------------------------------------------------------
-//    fun onParenthesisPressed(parenthesis: String) {
-//        if (shouldReset) {
-//            expression = ""
-//            shouldReset = false
-//        }
-//
-//        expression += parenthesis
-//        _displayState.value = expression
-//    }
-//
-//
-//
-//    // ----------------------------------------------------------------------------
-//    // DECIMAL POINT
-//    // ----------------------------------------------------------------------------
-//    fun onDecimalPointPressed() {
-//        if (shouldReset) {
-//            expression = "0."
-//            _displayState.value = expression
-//            shouldReset = false
-//            return
-//        }
-//
-//        // extract last number to prevent multiple decimals
-//        val lastNumber = expression.takeLastWhile { it.isDigit() || it == '.' }
-//
-//        if (lastNumber.contains(".")) return    // already has decimal
-//
-//        if (expression.isEmpty() || !expression.last().isDigit()) {
-//            expression += "0."                  // start a new number with "0."
-//        } else {
-//            expression += "."                   // normal decimal
-//        }
-//
-//        _displayState.value = expression
-//    }
-//
-//
 //
 //    // ----------------------------------------------------------------------------
 //    // DELETE (backspace)
