@@ -121,15 +121,11 @@ class CalculatorController {
             return
         }
 
-        if (expression.isNotEmpty()) { //if the expression is not empty, it will remove the last character
-            expression = expression.dropLast(1)
-        }
+        if (expression.isNotEmpty()) return
 
-        if (expression.isEmpty()) { //if the expression is empty, it will show "0"
-            expression = "0"
-        } else {
-            _displayState.value = expression //if the expression is not empty, it will show the expression
-        }
+        expression = expression.dropLast(1) // to eliminate the last character
+
+        _displayState.value = if (expression.isEmpty()) "0" else expression
     }
 
     // when the user presses "(" o ")"
