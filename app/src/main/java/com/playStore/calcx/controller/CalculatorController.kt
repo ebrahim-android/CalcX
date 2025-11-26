@@ -33,24 +33,33 @@ class CalculatorController {
         expression += digit
     }
 
+    fun mapOperator(op: String): String { // convert UI symbols into real math operators for the engine
+        return when(op){
+            "×" -> "*"
+            "÷" -> "/"
+            "−" -> "-"
+            else -> op
+        }
+    }
+
     // when the user presses an operator (+, -, *, /, ^)
     fun onOperatorPressed(operator: String) {
-        if (shouldReset) {
-            shouldReset = false
-        }
+        val op = mapOperator(operator)
 
-        if (expression.isEmpty()) return //is the expression is empty
+        if (shouldReset) shouldReset = false
 
-        //to check if the last character is an operator
-        val lastChar = expression.last()
-        if (lastChar == '+' || lastChar == '-' || lastChar == '*' || lastChar == '/' || lastChar == '^') {
-            expression = expression.dropLast(1) + operator
-            return
+        if (expression.isEmpty()) return
+
+        val last = expression.last()
+
+        // If last char is operator, replace it (avoid ++, +×, etc.)
+        if("+-*/^".contains(last)){
+            expression = expression.dropLast(1) + op
+        }else{
+            expression += op
         }
-        expression += operator //normal case (just add)
 
         _displayState.value = expression
-
     }
 
 
@@ -161,3 +170,159 @@ class CalculatorController {
     }
 
 }
+
+//    // ----------------------------------------------------------------------------
+//    // OPERATORS (+, −, ×, ÷, ^)
+//    // ----------------------------------------------------------------------------
+//
+//    // convert UI symbols into real math operators for the engine
+//    private fun mapOperator(op: String): String {
+//        return when (op) {
+//            "×" -> "*"
+//            "÷" -> "/"
+//            "−" -> "-"
+//            else -> op
+//        }
+//    }
+//
+//    fun onOperatorPressed(operator: String) {
+//        val op = mapOperator(operator)
+//
+//        if (shouldReset) shouldReset = false
+//
+//        if (expression.isEmpty()) return        // cannot start with operator
+//
+//        val last = expression.last()
+//
+//        // If last char is operator, replace it (avoid ++, +×, etc.)
+//        if ("+-*/^".contains(last)) {
+//            expression = expression.dropLast(1) + op
+//        } else {
+//            expression += op
+//        }
+//
+//        _displayState.value = expression
+//    }
+//
+//
+//
+//    // ----------------------------------------------------------------------------
+//    // FUNCTIONS (sin, cos, ln, etc.)
+//    // ----------------------------------------------------------------------------
+//    fun onFunctionPressed(function: String) {
+//        if (shouldReset) {                      // reset after "="
+//            expression = ""
+//            _displayState.value = "0"
+//            shouldReset = false
+//        }
+//
+//        // If expression ends with a number or ')', insert implicit multiplication
+//        if (expression.isNotEmpty() && (expression.last().isDigit() || expression.last() == ')')) {
+//            expression += "*$function("
+//        } else {
+//            expression += function + "("
+//        }
+//
+//        _displayState.value = expression
+//    }
+//
+//
+//
+//    // ----------------------------------------------------------------------------
+//    // PARENTHESIS
+//    // ----------------------------------------------------------------------------
+//    fun onParenthesisPressed(parenthesis: String) {
+//        if (shouldReset) {
+//            expression = ""
+//            shouldReset = false
+//        }
+//
+//        expression += parenthesis
+//        _displayState.value = expression
+//    }
+//
+//
+//
+//    // ----------------------------------------------------------------------------
+//    // DECIMAL POINT
+//    // ----------------------------------------------------------------------------
+//    fun onDecimalPointPressed() {
+//        if (shouldReset) {
+//            expression = "0."
+//            _displayState.value = expression
+//            shouldReset = false
+//            return
+//        }
+//
+//        // extract last number to prevent multiple decimals
+//        val lastNumber = expression.takeLastWhile { it.isDigit() || it == '.' }
+//
+//        if (lastNumber.contains(".")) return    // already has decimal
+//
+//        if (expression.isEmpty() || !expression.last().isDigit()) {
+//            expression += "0."                  // start a new number with "0."
+//        } else {
+//            expression += "."                   // normal decimal
+//        }
+//
+//        _displayState.value = expression
+//    }
+//
+//
+//
+//    // ----------------------------------------------------------------------------
+//    // DELETE (backspace)
+//    // ----------------------------------------------------------------------------
+//    fun onDeleteLast() {
+//        if (shouldReset) {
+//            expression = ""
+//            _displayState.value = "0"
+//            shouldReset = false
+//            return
+//        }
+//
+//        if (expression.isEmpty()) return
+//
+//        expression = expression.dropLast(1)
+//
+//        _displayState.value = if (expression.isEmpty()) "0" else expression
+//    }
+//
+//
+//
+//    // ----------------------------------------------------------------------------
+//    // CLEAR (AC)
+//    // ----------------------------------------------------------------------------
+//    fun onClearPressed() {
+//        expression = ""
+//        _displayState.value = "0"
+//        shouldReset = false
+//    }
+//
+//
+//
+//    // ----------------------------------------------------------------------------
+//    // EQUALS (=)
+//    // ----------------------------------------------------------------------------
+//    fun equalsPressed() {
+//        val result = engine.evaluate(expression)
+//
+//        if (result == null) {                    // error or invalid expression
+//            _displayState.value = "Error"
+//            expression = ""
+//            shouldReset = true
+//            return
+//        }
+//
+//        // clean output: remove .0 if it's an integer
+//        val clean = if (result % 1 == 0.0) {
+//            result.toInt().toString()
+//        } else {
+//            result.toString()
+//        }
+//
+//        _displayState.value = clean
+//        expression = clean
+//        shouldReset = true                       // next input starts fresh
+//    }
+//}
