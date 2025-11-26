@@ -71,7 +71,12 @@ class CalculatorController {
             shouldReset = false
         }
 
-        expression += function + "("
+        if(expression.isNotEmpty() && (expression.last().isDigit() || expression.last() == ')')){
+            expression += "*$function("
+        }else{
+            expression += function + "("
+        }
+
         _displayState.value = expression
     }
 
@@ -171,62 +176,6 @@ class CalculatorController {
 
 }
 
-//    // ----------------------------------------------------------------------------
-//    // OPERATORS (+, −, ×, ÷, ^)
-//    // ----------------------------------------------------------------------------
-//
-//    // convert UI symbols into real math operators for the engine
-//    private fun mapOperator(op: String): String {
-//        return when (op) {
-//            "×" -> "*"
-//            "÷" -> "/"
-//            "−" -> "-"
-//            else -> op
-//        }
-//    }
-//
-//    fun onOperatorPressed(operator: String) {
-//        val op = mapOperator(operator)
-//
-//        if (shouldReset) shouldReset = false
-//
-//        if (expression.isEmpty()) return        // cannot start with operator
-//
-//        val last = expression.last()
-//
-//        // If last char is operator, replace it (avoid ++, +×, etc.)
-//        if ("+-*/^".contains(last)) {
-//            expression = expression.dropLast(1) + op
-//        } else {
-//            expression += op
-//        }
-//
-//        _displayState.value = expression
-//    }
-//
-//
-//
-//    // ----------------------------------------------------------------------------
-//    // FUNCTIONS (sin, cos, ln, etc.)
-//    // ----------------------------------------------------------------------------
-//    fun onFunctionPressed(function: String) {
-//        if (shouldReset) {                      // reset after "="
-//            expression = ""
-//            _displayState.value = "0"
-//            shouldReset = false
-//        }
-//
-//        // If expression ends with a number or ')', insert implicit multiplication
-//        if (expression.isNotEmpty() && (expression.last().isDigit() || expression.last() == ')')) {
-//            expression += "*$function("
-//        } else {
-//            expression += function + "("
-//        }
-//
-//        _displayState.value = expression
-//    }
-//
-//
 //
 //    // ----------------------------------------------------------------------------
 //    // PARENTHESIS
