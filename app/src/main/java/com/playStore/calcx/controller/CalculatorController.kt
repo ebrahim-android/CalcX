@@ -62,7 +62,6 @@ class CalculatorController {
         _displayState.value = expression
     }
 
-
     // when the user presses a function button (sin, cos, ln, etc.)
     fun onFunctionPressed(function: String) {
         if (shouldReset) {
@@ -79,7 +78,6 @@ class CalculatorController {
 
         _displayState.value = expression
     }
-
 
     // when the user presses "="
     fun equalsPressed() {
@@ -104,7 +102,6 @@ class CalculatorController {
         shouldReset = true
     }
 
-
     // when the user presses "C" (Clear)
     fun onClearPressed() {
         expression = ""
@@ -121,7 +118,7 @@ class CalculatorController {
             return
         }
 
-        if (expression.isNotEmpty()) return
+        if (expression.isEmpty()) return
 
         expression = expression.dropLast(1) // to eliminate the last character
 
