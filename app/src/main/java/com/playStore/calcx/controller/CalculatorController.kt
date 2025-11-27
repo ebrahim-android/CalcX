@@ -158,4 +158,51 @@ class CalculatorController {
         _displayState.value = expression
     }
 
+    fun onPercentPressed() {
+        if (expression.isEmpty()) return
+
+        if (shouldReset) {
+            // After "=" → percentage should apply to the result directly
+            val num = expression.toDoubleOrNull() ?: return
+            val result = num / 100
+            expression = result.toString()
+            _displayState.value = expression
+            shouldReset = false
+            return
+        }
+
+        // Extract last number (e.g. from "200+10" get "10")
+        val lastNumber = expression.takeLastWhile { it.isDigit() || it == '.' }
+
+        if (lastNumber.isEmpty()) return
+
+        // Convert last number to double
+        val value = lastNumber.toDoubleOrNull() ?: return
+
+        // Remove the last number from the expression
+        val baseExpression = expression.dropLast(lastNumber.length)
+
+        // Case A: IF there is an operator before lastNumber → contextual percent
+        // Example: "200 + 10%"
+        val operatorIndex = baseExpression.indexOfLast { "+-*/^".contains(it) }
+
+        val newPercentValue = if (operatorIndex != -1) {
+            // We found an operator → contextual percentage
+            // Example: in "200+10", numberBefore = 200, lastNumber = 10 → 10% of 200 = 20
+            val numberBefore = baseExpression.takeLastWhile { it.isDigit() || it == '.' }
+            val base = numberBefore.toDoubleOrNull() ?: 0.0
+            (base * value) / 100.0
+        } else {
+            // Case B: direct percentage
+            // Example: "10%" → 0.1
+            value / 100.0
+        }
+
+        // Build final expression
+        val finalExpression = baseExpression + newPercentValue.toString()
+
+        expression = finalExpression
+        _displayState.value = expression
+    }
+
 }
