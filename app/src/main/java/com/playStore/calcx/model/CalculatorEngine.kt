@@ -7,24 +7,50 @@ class CalculatorEngine {
 
     fun evaluate(expression: String): Double? {
         return try {
-            // evaluate the expression and return the result (double)
-            val normalized = normalizeFunctions(expression)
-            val sanitized = sanitize(normalized)
+            // 1) We normalize custom functions (log2 → log(x)/log(2), etc.)
+            var expr = normalizeFunctions(expression)
 
+            // 2) FACTORIAL: we process it BEFORE sanitize() and BEFORE exp4j
+            if (expr.contains("!")) {
+                val factorialRegex = Regex("(\\d+(?:\\.\\d+)?)!")
+                expr = factorialRegex.replace(expr) { match ->
+                    val value = match.groupValues[1].toDouble()
+                    val fact = safeFactorial(value)
+                    if (fact == null) "null" else
+                    fact.toString()
+                }
+            }
+
+            // 3) We sanitize the expression (insert implicit *, correct parentheses, etc.)
+            val sanitized = sanitize(expr)
+
+            // 4) We construct the Expression exp4j without the '!' (because we already solved it)
             val exp = ExpressionBuilder(sanitized)
-                // add custom functions and operators
                 .functions(CustomFunctions.all)
-                .operator(CustomOperators.all)
                 .build()
 
+            // 5) We evaluate
             val result = exp.evaluate()
 
+            // 6) Safe case: avoid returning NaN or infinity
             if (result.isNaN() || result.isInfinite()) null else result
+
         } catch (e: Exception) {
             null
         }
     }
 
+
+    private fun safeFactorial(n: Double): Double? {
+        if (n < 0) return null
+        if(n % 1 != 0.0) return null  //not integer
+
+        var r = 1.0
+        for(i in 1..n.toInt()){
+            r*= i
+        }
+        return r
+    }
 
     private fun sanitize(expr: String): String { // turn virtual symbol into real ones to exp4j
         return expr
