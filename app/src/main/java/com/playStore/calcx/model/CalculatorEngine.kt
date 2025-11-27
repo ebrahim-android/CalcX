@@ -38,25 +38,47 @@ class CalculatorEngine {
 }
 
 private fun normalizeFunctions(expr: String): String {
-    return expr
-        // powers
-        .replace("x²", "^(2)")
+    var e = expr
+
+    // --- TRIG INVERSE FUNCTIONS ---
+    e = e.replace("arcsin", "asin")
+        .replace("arccos", "acos")
+        .replace("arctan", "atan")
+
+    // --- POWERS (x², x³, x^n…) ---
+    e = e.replace("x²", "^(2)")
         .replace("x^", "^")
 
-        // Roots
-        .replace("√x", "sqrt")
+    // it is important to ensure that ^3 → ^(3)
+    e = e.replace(Regex("\\^(\\d+)")) { match ->
+        "^(${match.groupValues[1]})"
+    }
+
+    // --- ROOTS ---
+    e = e.replace("√x", "sqrt")
         .replace("√", "sqrt")
 
-        // Logarithms
-        .replace("log", "log10")
+    // --- LOGARITHMS ---
+    e = e.replace("log", "log10")
         .replace("ln", "log")
 
-        // Factorial
-        .replace("n!", "fact")
+    // --- FACTORIAL ---
+    e = e.replace("n!", "fact")
 
-        // Constants
-        .replace("π", "pi")
+    // --- CONSTANTS ---
+    e = e.replace("π", "pi")
 
-        // absolute value
-        .replace("abs", "abs")
+    // standalone e (avoid replacing inside "exp")
+    e = e.replace(Regex("\\be\\b"), "2.718281828")
+
+    // --- ABSOLUTE VALUE ---
+    e = e.replace("abs", "abs")
+
+    // --- PERCENT (50% → (50/100)) ---
+    e = e.replace(Regex("(\\d+(?:\\.\\d+)?)%")) {
+        val num = it.groupValues[1]
+        "($num/100)"
+    }
+
+    return e
 }
