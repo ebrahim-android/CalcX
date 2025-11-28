@@ -84,7 +84,7 @@ class CalculatorController {
         val result = engine.evaluate(expression)
 
         if (result == null) {
-            _displayState.value = "Error"
+            _displayState.value = result.toString() ?: "Error"
             expression = ""
             shouldReset = true
             return

@@ -30,11 +30,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.playStore.calcx.controller.CalculatorController
 
 @Preview(showBackground = true, backgroundColor = 0xFF202020)
 @Composable
 // Main composable that structures the entire calculator UI responsively using ConstraintLayout.
 fun CalculatorScreen() {
+
+    val controller = remember { CalculatorController() } // Controller instance
+
 
     // === Layout Colors ===
     val DarkTop = Color(0xFF202020)

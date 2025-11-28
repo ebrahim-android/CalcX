@@ -57,7 +57,6 @@ class CalculatorEngine {
             .replace("×", "*")
             .replace("÷", "/")
             .replace("−", "-")
-            .replace("√", "sqrt")
 //        .replace("%", "/100")   // so far
             .trim()
     }
