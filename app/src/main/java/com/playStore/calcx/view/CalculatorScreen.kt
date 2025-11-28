@@ -39,6 +39,37 @@ fun CalculatorScreen() {
 
     val controller = remember { CalculatorController() } // Controller instance
 
+    fun handleButtonClick(label: String) {
+        when (label) {
+
+            // ---- DIGITS ----
+            "0", "00", "1", "2", "3", "4", "5", "6", "7", "8", "9" ->
+                controller.onDigitPressed(label)
+
+            // ---- OPERATORS ----
+            "+", "−", "×", "÷", "%" ->
+                controller.onOperatorPressed(label)
+
+            // ---- PARENTHESES ----
+            "(", ")" ->
+                controller.onParenthesisPressed(label)
+
+            // ---- DECIMAL ----
+            "." -> controller.onDecimalPointPressed()
+
+            // ---- CLEAR ----
+            "AC" -> controller.onClearPressed()
+
+            // ---- DELETE ----
+            "DEL" -> controller.onDeleteLast()
+
+            // ---- EQUALS ----
+            "=" -> controller.equalsPressed()
+
+            // ---- SCIENTIFIC FUNCTIONS ----
+            else -> controller.onFunctionPressed(label)
+        }
+    }
 
     // === Layout Colors ===
     val DarkTop = Color(0xFF202020)
@@ -95,8 +126,8 @@ fun CalculatorScreen() {
                 .padding(8.dp)
         ) {
             Display(
-                formula = "√(35) × 36.32 × 36% ÷ 100%",
-                result = "43.86408444"
+                formula = controller.expression,
+                result = controller.result
             )
         }
 
@@ -130,7 +161,9 @@ fun CalculatorScreen() {
                 }
                 .background(DarkBottom)
         ) {
-            ScientificButtonsGrid(onButtonClick = {})
+            ScientificButtonsGrid(onButtonClick = { label ->
+                handleButtonClick(label)
+            })
         }
 
         // 6. Number Pad Area (70% -> 100%)
@@ -146,7 +179,9 @@ fun CalculatorScreen() {
                 }
                 .background(DarkBottom)
         ) {
-            NumberPadGrid(onButtonClick = {})
+            NumberPadGrid(onButtonClick = { label ->
+                handleButtonClick(label)
+            })
         }
     }
 }
@@ -190,7 +225,7 @@ fun TopBar(
 // Displays the formula and the result in the display area.
 fun Display(
     formula: String = "",
-    result: String = "0"
+    result: String = ""
 ) {
 
     Column(
@@ -202,7 +237,7 @@ fun Display(
 
         // Formula (small text)
         Text(
-            text = formula,
+            text = if (result.isBlank()) "0" else result,
             style = MaterialTheme.typography.bodyMedium,
             maxLines = 1,
             modifier = Modifier.fillMaxWidth(),
@@ -213,7 +248,8 @@ fun Display(
 
         // Auto-resizing result text
         AutoResizeText(
-            text = result,
+            text = formula,
+            textAlign = TextAlign.End,
             modifier = Modifier.fillMaxWidth(),
             maxFontSize = 52.sp,
             minFontSize = 20.sp,

@@ -1,6 +1,8 @@
 package com.playStore.calcx.controller
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import com.playStore.calcx.model.CalculatorEngine
 
 class CalculatorController {
@@ -8,8 +10,10 @@ class CalculatorController {
     private val _displayState = mutableStateOf("0")
     val displayState get() = _displayState
 
+    var expression by mutableStateOf("")
+    var result by mutableStateOf("")
+
     // Controller internal status
-    private var expression = ""
     private var shouldReset = false
     private val engine = CalculatorEngine()
 
