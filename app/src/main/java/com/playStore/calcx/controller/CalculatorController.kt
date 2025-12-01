@@ -69,10 +69,19 @@ class CalculatorController {
     // when the user presses a function button (sin, cos, ln, etc.)
     fun onFunctionPressed(function: String) {
         if (shouldReset) {
-            expression = ""
-            _displayState.value = "0"
-            shouldReset = false
+            //if last result exists, apply function to result
+            if(expression.isNotEmpty()){
+                expression = "$function({$expression})"
+                _displayState.value = expression
+                shouldReset = false
+                return
+            }
         }
+
+        //normal behavior
+        expression = ""
+        _displayState.value = "0"
+        shouldReset = false
 
         if(expression.isNotEmpty() && (expression.last().isDigit() || expression.last() == ')')){
             expression += "*$function("
@@ -88,7 +97,7 @@ class CalculatorController {
         val result = engine.evaluate(expression)
 
         if (result == null) {
-            _displayState.value = result.toString() ?: "Error"
+            _displayState.value = "Error" //I modified it
             expression = ""
             shouldReset = true
             return
