@@ -71,7 +71,7 @@ class CalculatorController {
         if (shouldReset) {
             //if last result exists, apply function to result
             if(expression.isNotEmpty()){
-                expression = "$function({$expression})"
+                expression = "$function(${expression})"
                 _displayState.value = expression
                 shouldReset = false
                 return
@@ -217,5 +217,46 @@ class CalculatorController {
         expression = finalExpression
         _displayState.value = expression
     }
+
+    // --------- NEW FUNCTION ------------
+
+    //handling the square button
+    fun onSquarePress(){
+        if(expression.isEmpty()) return
+
+        if(shouldReset) shouldReset = false
+
+        // Wrap last number or complete expression in parentheses
+        expression = "($expression)^2"
+        _displayState.value = expression
+    }
+
+    //handling the square root button
+    fun onSquareRootPressed(){
+        if(expression.isEmpty()){
+            expression = "sqrt("
+            _displayState.value = expression
+            return
+        }
+
+        if(shouldReset) shouldReset = false
+
+        expression = "sqrt($expression)"
+        _displayState.value = expression
+    }
+
+    fun onEulerPressed() {
+        if (expression.isEmpty()) {
+            expression = "e^("
+            _displayState.value = expression
+            return
+        }
+
+        if (shouldReset) shouldReset = false
+
+        expression = "e^($expression)"
+        _displayState.value = expression
+    }
+
 
 }
