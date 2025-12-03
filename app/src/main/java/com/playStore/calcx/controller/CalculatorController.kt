@@ -258,5 +258,14 @@ class CalculatorController {
         _displayState.value = expression
     }
 
+    fun onPowerPressed(){ //handling the power button (so far)
+        if(expression.isEmpty()) return
+
+        if(shouldReset) shouldReset = false
+
+        // Wrap full expression: pow(expression,
+        expression = "pow($expression, "
+        _displayState.value = expression
+    }
 
 }
