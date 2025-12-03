@@ -268,4 +268,14 @@ class CalculatorController {
         _displayState.value = expression
     }
 
+    fun onGeneralRootPressed(){
+        if(expression.isEmpty()) return
+
+        if(shouldReset) shouldReset = false
+
+        // Convert root to pow(expression, 1/
+        expression = "pow($expression, 1/"
+        _displayState.value = expression
+    }
+
 }
