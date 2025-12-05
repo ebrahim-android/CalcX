@@ -306,4 +306,18 @@ class CalculatorController {
         _displayState.value = expression
     }
 
+    fun onTenPowerPressed(){ //handling the 10^x button
+        if(expression.isEmpty()) return
+
+        if(shouldReset) shouldReset = false
+
+        if(expression.isEmpty()){
+            expression = "10^("
+            _displayState.value = expression
+            return
+        }
+
+        expression = "10^($expression)"
+        _displayState.value = expression
+    }
 }
