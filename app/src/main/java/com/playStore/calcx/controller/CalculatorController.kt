@@ -278,4 +278,32 @@ class CalculatorController {
         _displayState.value = expression
     }
 
+    fun onFactorialPressed() { // factorial
+        if (expression.isEmpty()) return
+
+        if (shouldReset) shouldReset = false
+
+        // just allow factorial if the last character is a digit or ')'
+        var last = expression.last()
+        if (last.isDigit() || last == ')') {
+            expression += "!"
+        } else {
+            _displayState.value = expression
+        }
+    }
+
+    fun onExpPressed(){
+        if(shouldReset) shouldReset = false
+
+        if(expression.isEmpty()){ // wrap empty expression: exp( (to friendly design)
+            expression = "exp("
+            _displayState.value = expression
+            return
+        }
+
+        // Wrap full expression: exp(expression,
+        expression = "exp($expression)"
+        _displayState.value = expression
+    }
+
 }
