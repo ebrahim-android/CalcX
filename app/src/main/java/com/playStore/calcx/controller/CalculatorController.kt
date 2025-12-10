@@ -94,25 +94,30 @@ class CalculatorController {
 
     // when the user presses "="
     fun equalsPressed() {
-        val result = engine.evaluate(expression)
+        if (expression.isBlank()) return
 
-        if (result == null) {
-            _displayState.value = "Error" //I modified it
-            expression = ""
+        val eval = engine.evaluate(expression)
+
+        //Error case
+        if (eval == null) {
+            result = expression //small text above
+            expression = "Error" // big text below
+            _displayState.value = "Error"
             shouldReset = true
             return
         }
 
-        // clean output: remove .0 if it's an integer
-        val clean = if (result % 1 == 0.0) {
-            result.toInt().toString()
+        // clean result: remove .0 if it's an integer
+        val clean = if (eval % 1 == 0.0) {
+            eval.toInt().toString()
         } else {
-            result.toString()
+            eval.toString()
         }
 
-        _displayState.value = clean
-        expression = clean
-        shouldReset = true
+        result = expression // keep formula in "result" (this goes small, above)
+        expression = clean // Replace expression with evaluated result
+        _displayState.value = clean // Update display
+        shouldReset = true // Prepare next input to reset
     }
 
     // when the user presses "C" (Clear)

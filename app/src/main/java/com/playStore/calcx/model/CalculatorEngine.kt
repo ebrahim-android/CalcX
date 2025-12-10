@@ -12,12 +12,23 @@ class CalculatorEngine {
 
             // 2) FACTORIAL: we process it BEFORE sanitize() and BEFORE exp4j
             if (expr.contains("!")) {
-                val factorialRegex = Regex("(\\d+(?:\\.\\d+)?)!")
+
+                val factorialRegex = Regex("(\\([^()]*\\)|\\d+(?:\\.\\d+)?)!") //to handling those kinda stuff to factorials operation
+
                 expr = factorialRegex.replace(expr) { match ->
-                    val value = match.groupValues[1].toDouble()
-                    val fact = safeFactorial(value)
-                    if (fact == null) "null" else
-                    fact.toString()
+
+                    val inside = match.groupValues[1]
+
+                    // 1. Evaluate the content first
+                    val numeric = try {
+                        ExpressionBuilder(inside).build().evaluate()
+                    } catch (e: Exception) {
+                        return@replace "null"
+                    }
+
+                    // 2. Compute factorial safely
+                    val fact = safeFactorial(numeric)
+                    fact?.toString() ?: "null"
                 }
             }
 

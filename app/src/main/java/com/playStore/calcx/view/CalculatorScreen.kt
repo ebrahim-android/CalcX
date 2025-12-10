@@ -66,6 +66,33 @@ fun CalculatorScreen() {
             // ---- EQUALS ----
             "=" -> controller.equalsPressed()
 
+            // ---- NEW FUNCTIONS ----
+
+            // ----- FACTORIAL -----
+            "n!" -> controller.onFactorialPressed()
+
+            // ----- EXPONENTIAL -----
+            "exp" -> controller.onExpPressed()
+
+            // ----- TENPOWER -----
+            "10^x" -> controller.onTenPowerPressed()
+
+//            "log" -> controller.onFunctionPressed("log")
+
+            // ----- EULER -----
+            "e^x" -> controller.onEulerPressed()
+
+            "pow" -> controller.onPowerPressed()
+
+            // ----- GENERAL ROOT -----
+            "√" -> controller.onGeneralRootPressed()
+
+            // ----- SQUARE ROOT -----
+            "sqrt" -> controller.onSquareRootPressed()
+
+            // ----- SQUARE -----
+            "x²" -> controller.onSquarePress()
+
             // ---- SCIENTIFIC FUNCTIONS ----
             else -> controller.onFunctionPressed(label)
         }
@@ -126,7 +153,7 @@ fun CalculatorScreen() {
                 .padding(8.dp)
         ) {
             Display(
-                formula = controller.expression,
+                expression = controller.expression,
                 result = controller.result
             )
         }
@@ -224,7 +251,7 @@ fun TopBar(
 @Composable
 // Displays the formula and the result in the display area.
 fun Display(
-    formula: String = "",
+    expression: String = "",
     result: String = ""
 ) {
 
@@ -237,7 +264,7 @@ fun Display(
 
         // Formula (small text)
         Text(
-            text = if (result.isBlank()) "0" else result,
+            text = result,
             style = MaterialTheme.typography.bodyMedium,
             maxLines = 1,
             modifier = Modifier.fillMaxWidth(),
@@ -248,7 +275,7 @@ fun Display(
 
         // Auto-resizing result text
         AutoResizeText(
-            text = formula,
+            text = if(expression.isBlank()) "0" else expression,
             textAlign = TextAlign.End,
             modifier = Modifier.fillMaxWidth(),
             maxFontSize = 52.sp,
