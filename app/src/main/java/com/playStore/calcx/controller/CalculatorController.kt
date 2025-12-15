@@ -236,6 +236,15 @@ class CalculatorController {
         _displayState.value = expression
     }
 
+    fun onGeneralPowerPress(){ //handling the general power button
+        if(expression.isEmpty()) return
+
+        if(shouldReset) shouldReset = false
+
+        expression = "($expression)^("
+        _displayState.value = expression
+    }
+
     //handling the square root button
     fun onSquareRootPressed(){
         if(expression.isEmpty()){
