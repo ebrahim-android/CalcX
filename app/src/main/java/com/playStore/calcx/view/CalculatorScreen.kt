@@ -42,12 +42,16 @@ fun CalculatorScreen() {
 
     val controller = remember { CalculatorController() } // Controller instance
 
+    val localExpression = remember {
+        mutableStateOf(TextFieldValue(""))
+    }
+
     fun handleButtonClick(label: String) {
         when (label) {
 
             // ---- DIGITS ----
             "0", "00", "1", "2", "3", "4", "5", "6", "7", "8", "9" ->
-                controller.onDigitPressed(label)
+                controller.insert(label) //changed SO FAR
 
             // ---- OPERATORS ----
             "+", "−", "×", "÷", "%" ->
@@ -64,7 +68,9 @@ fun CalculatorScreen() {
             "AC" -> controller.onClearPressed()
 
             // ---- DELETE ----
-            "DEL" -> controller.onDeleteLast()
+//            "DEL" -> controller.onDeleteLast()
+            "DEL" -> controller.delete()
+
 
             // ---- EQUALS ----
             "=" -> controller.equalsPressed()
@@ -159,9 +165,9 @@ fun CalculatorScreen() {
                 .padding(8.dp)
         ) {
             Display(
-                expression = controller.expression,
+                expression = localExpression.value,
                 result = controller.result,
-                onExpressionChange = { controller.expression = it } // added this
+                onExpressionChange = { controller.expression = it.toString() } // added this
             )
         }
 
@@ -281,7 +287,7 @@ fun Display(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Auto-resizing result text
+        // this allow us have a cursor to move around the text
         BasicTextField(
             value = expression,
             onValueChange = onExpressionChange,
@@ -293,9 +299,9 @@ fun Display(
                 fontSize = 36.sp,
                 textAlign = TextAlign.End,
                 fontWeight = FontWeight.Bold
-        ),
+            ),
             decorationBox = { innerTextField ->
-                if(expression.text.isEmpty()){
+                if (expression.text.isEmpty()) {
                     Text(
                         text = "0",
                         color = Color.Gray,
@@ -306,6 +312,7 @@ fun Display(
                 }
                 innerTextField()
             }
+        )
     }
 }
 

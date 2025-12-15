@@ -12,9 +12,9 @@ class CalculatorController {
     private val _displayState = mutableStateOf("0")
     val displayState get() = _displayState
 
-    var expression by mutableStateOf(
-        TextFieldValue("", TextRange(0))
-    ) // I've changed this
+    var expression by mutableStateOf("") //        TextFieldValue("", TextRange(0))
+    var cursorPosition by mutableStateOf(0) // SO FAR
+
     var result by mutableStateOf("")
 
     // Controller internal status
@@ -22,27 +22,54 @@ class CalculatorController {
     private val engine = CalculatorEngine()
 
     // when the user presses a digit (1, 5 or 8)
-    fun onDigitPressed(digit: String) {
-        if (shouldReset) {//to reset the display is the user pressed "="
-            _displayState.value = digit
-            expression = digit
-            shouldReset = false
-            return
-        }
+//    fun onDigitPressed(digit: String) {
+//        if (shouldReset) {//to reset the display is the user pressed "="
+//            _displayState.value = digit
+//            expression = digit
+//            shouldReset = false
+//            return
+//        }
+//
+//        if (_displayState.value == "0") { //to replaced the "0" with the first digit pressed
+//            _displayState.value = digit
+//            expression = digit
+//            return
+//        }
+//
+//        //to add the digit to the display next to the previous digit (normal)
+//        _displayState.value += digit
+//        expression += digit
+//    }
 
-        if (_displayState.value == "0") { //to replaced the "0" with the first digit pressed
-            _displayState.value = digit
-            expression = digit
-            return
-        }
 
-        //to add the digit to the display next to the previous digit (normal)
-        _displayState.value += digit
-        expression += digit
+    // -----TESTE NEW FUNCTION------
+    fun insert(text: String) { // to insert text in the display
+        expression =
+            expression.substring(0, cursorPosition)+ text +
+                    expression.substring(cursorPosition)
+        cursorPosition += text.length
     }
 
+    fun delete() { // to delete the last character in the display
+        if(cursorPosition == 0) return
+
+        expression =
+            expression.substring(0, cursorPosition - 1) +
+                    expression.substring(cursorPosition)
+        cursorPosition--
+    }
+
+    fun moveCursor() { // to move the cursor
+        if(cursorPosition > 0) cursorPosition--
+    }
+
+    fun moveCursorRight() { // to move the cursor to the right
+        if(cursorPosition < expression.length) cursorPosition++
+    }
+
+    // -----NORMAL FUNCTION-----
     fun mapOperator(op: String): String { // convert UI symbols into real math operators for the engine
-        return when(op){
+        return when (op) {
             "×" -> "*"
             "÷" -> "/"
             "−" -> "-"
@@ -61,9 +88,9 @@ class CalculatorController {
         val last = expression.last()
 
         // If last char is operator, replace it (avoid ++, +×, etc.)
-        if("+-*/^".contains(last)){
+        if ("+-*/^".contains(last)) {
             expression = expression.dropLast(1) + op
-        }else{
+        } else {
             expression += op
         }
 
@@ -74,7 +101,7 @@ class CalculatorController {
     fun onFunctionPressed(function: String) {
         if (shouldReset) {
             //if last result exists, apply function to result
-            if(expression.isNotEmpty()){
+            if (expression.isNotEmpty()) {
                 expression = "$function(${expression})"
                 _displayState.value = expression
                 shouldReset = false
@@ -87,9 +114,9 @@ class CalculatorController {
         _displayState.value = "0"
         shouldReset = false
 
-        if(expression.isNotEmpty() && (expression.last().isDigit() || expression.last() == ')')){
+        if (expression.isNotEmpty() && (expression.last().isDigit() || expression.last() == ')')) {
             expression += "*$function("
-        }else{
+        } else {
             expression += function + "("
         }
 
@@ -133,19 +160,19 @@ class CalculatorController {
     }
 
     // when the user presses "eliminate symbol" (backspace)
-    fun onDeleteLast() {
-        if (shouldReset) {
-            expression = ""
-            result = "" //to clean the result
-            _displayState.value = "0"
-            shouldReset = false
-            return
-        }
-
-        if (expression.isEmpty()) return
-        expression = expression.dropLast(1) // to eliminate the last character
-        _displayState.value = if (expression.isEmpty()) "0" else expression
-    }
+//    fun onDeleteLast() {
+//        if (shouldReset) {
+//            expression = ""
+//            result = "" //to clean the result
+//            _displayState.value = "0"
+//            shouldReset = false
+//            return
+//        }
+//
+//        if (expression.isEmpty()) return
+//        expression = expression.dropLast(1) // to eliminate the last character
+//        _displayState.value = if (expression.isEmpty()) "0" else expression
+//    }
 
     // when the user presses "(" o ")"
     fun onParenthesisPressed(parenthesis: String) {
@@ -169,11 +196,11 @@ class CalculatorController {
         // extract last number to prevent multiple decimals
         val lastNumber = expression.takeLastWhile { it.isDigit() || it == '.' }
 
-        if(lastNumber.contains("."))return    // already has decimal
+        if (lastNumber.contains(".")) return    // already has decimal
 
-        if(expression.isEmpty() || !expression.last().isDigit()){
+        if (expression.isEmpty() || !expression.last().isDigit()) {
             expression += "0."
-        }else{
+        } else {
             expression += "."                   // normal decimal
         }
 
@@ -230,34 +257,34 @@ class CalculatorController {
     // --------- NEW FUNCTION ------------
 
     //handling the square button
-    fun onSquarePress(){
-        if(expression.isEmpty()) return
+    fun onSquarePress() {
+        if (expression.isEmpty()) return
 
-        if(shouldReset) shouldReset = false
+        if (shouldReset) shouldReset = false
 
         // Wrap last number or complete expression in parentheses
         expression = "($expression)^2"
         _displayState.value = expression
     }
 
-    fun onGeneralPowerPress(){ //handling the general power button
-        if(expression.isEmpty()) return
+    fun onGeneralPowerPress() { //handling the general power button
+        if (expression.isEmpty()) return
 
-        if(shouldReset) shouldReset = false
+        if (shouldReset) shouldReset = false
 
         expression = "($expression)^("
         _displayState.value = expression
     }
 
     //handling the square root button
-    fun onSquareRootPressed(){
-        if(expression.isEmpty()){
+    fun onSquareRootPressed() {
+        if (expression.isEmpty()) {
             expression = "sqrt("
             _displayState.value = expression
             return
         }
 
-        if(shouldReset) shouldReset = false
+        if (shouldReset) shouldReset = false
 
         expression = "sqrt($expression)"
         _displayState.value = expression
@@ -276,20 +303,20 @@ class CalculatorController {
         _displayState.value = expression
     }
 
-    fun onPowerPressed(){ //handling the power button (so far)
-        if(expression.isEmpty()) return
+    fun onPowerPressed() { //handling the power button (so far)
+        if (expression.isEmpty()) return
 
-        if(shouldReset) shouldReset = false
+        if (shouldReset) shouldReset = false
 
         // Wrap full expression: pow(expression,
         expression = "pow($expression, "
         _displayState.value = expression
     }
 
-    fun onGeneralRootPressed(){
-        if(expression.isEmpty()) return
+    fun onGeneralRootPressed() {
+        if (expression.isEmpty()) return
 
-        if(shouldReset) shouldReset = false
+        if (shouldReset) shouldReset = false
 
         // Convert root to pow(expression, 1/
         expression = "pow($expression, 1/"
@@ -310,10 +337,10 @@ class CalculatorController {
         }
     }
 
-    fun onExpPressed(){
-        if(shouldReset) shouldReset = false
+    fun onExpPressed() {
+        if (shouldReset) shouldReset = false
 
-        if(expression.isEmpty()){ // wrap empty expression: exp( (to friendly design)
+        if (expression.isEmpty()) { // wrap empty expression: exp( (to friendly design)
             expression = "exp("
             _displayState.value = expression
             return
@@ -324,12 +351,12 @@ class CalculatorController {
         _displayState.value = expression
     }
 
-    fun onTenPowerPressed(){ //handling the 10^x button
-        if(expression.isEmpty()) return
+    fun onTenPowerPressed() { //handling the 10^x button
+        if (expression.isEmpty()) return
 
-        if(shouldReset) shouldReset = false
+        if (shouldReset) shouldReset = false
 
-        if(expression.isEmpty()){
+        if (expression.isEmpty()) {
             expression = "10^("
             _displayState.value = expression
             return
