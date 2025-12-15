@@ -3,6 +3,8 @@ package com.playStore.calcx.controller
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import com.playStore.calcx.model.CalculatorEngine
 
 class CalculatorController {
@@ -10,7 +12,9 @@ class CalculatorController {
     private val _displayState = mutableStateOf("0")
     val displayState get() = _displayState
 
-    var expression by mutableStateOf("")
+    var expression by mutableStateOf(
+        TextFieldValue("", TextRange(0))
+    ) // I've changed this
     var result by mutableStateOf("")
 
     // Controller internal status

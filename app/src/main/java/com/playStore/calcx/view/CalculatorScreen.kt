@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
@@ -20,9 +21,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
@@ -157,7 +160,8 @@ fun CalculatorScreen() {
         ) {
             Display(
                 expression = controller.expression,
-                result = controller.result
+                result = controller.result,
+                onExpressionChange = { controller.expression = it } // added this
             )
         }
 
@@ -254,8 +258,9 @@ fun TopBar(
 @Composable
 // Displays the formula and the result in the display area.
 fun Display(
-    expression: String = "",
-    result: String = ""
+    expression: TextFieldValue,
+    result: String,
+    onExpressionChange: (TextFieldValue) -> Unit
 ) {
 
     Column(
@@ -277,14 +282,30 @@ fun Display(
         Spacer(modifier = Modifier.height(8.dp))
 
         // Auto-resizing result text
-        AutoResizeText(
-            text = if(expression.isBlank()) "0" else expression,
-            textAlign = TextAlign.End,
+        BasicTextField(
+            value = expression,
+            onValueChange = onExpressionChange,
             modifier = Modifier.fillMaxWidth(),
-            maxFontSize = 52.sp,
-            minFontSize = 20.sp,
-            color = Color.White
-        )
+            singleLine = true,
+            cursorBrush = SolidColor(Color.White),
+            textStyle = TextStyle(
+                color = Color.White,
+                fontSize = 36.sp,
+                textAlign = TextAlign.End,
+                fontWeight = FontWeight.Bold
+        ),
+            decorationBox = { innerTextField ->
+                if(expression.text.isEmpty()){
+                    Text(
+                        text = "0",
+                        color = Color.Gray,
+                        fontSize = 36.sp,
+                        textAlign = TextAlign.End,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+                innerTextField()
+            }
     }
 }
 
