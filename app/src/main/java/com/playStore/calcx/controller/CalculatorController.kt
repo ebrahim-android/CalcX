@@ -123,6 +123,7 @@ class CalculatorController {
     // when the user presses "C" (Clear)
     fun onClearPressed() {
         expression = ""
+        result = "" //to clean the result
         _displayState.value = "0"
         shouldReset = false
     }
@@ -131,15 +132,14 @@ class CalculatorController {
     fun onDeleteLast() {
         if (shouldReset) {
             expression = ""
+            result = "" //to clean the result
             _displayState.value = "0"
             shouldReset = false
             return
         }
 
         if (expression.isEmpty()) return
-
         expression = expression.dropLast(1) // to eliminate the last character
-
         _displayState.value = if (expression.isEmpty()) "0" else expression
     }
 

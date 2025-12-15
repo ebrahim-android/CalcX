@@ -93,6 +93,7 @@ fun CalculatorScreen() {
             // ----- SQUARE -----
             "x²" -> controller.onSquarePress()
 
+            // ----- GENERAL POWER -----
             "x^" -> controller.onGeneralPowerPress()
 
             // ---- SCIENTIFIC FUNCTIONS ----
