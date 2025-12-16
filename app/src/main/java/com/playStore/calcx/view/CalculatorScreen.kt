@@ -54,18 +54,18 @@ fun CalculatorScreen() {
                 controller.insert(label) //changed SO FAR
 
             // ---- OPERATORS ----
-            "+", "−", "×", "÷", "%" ->
-                controller.onOperatorPressed(label)
-
-            // ---- PARENTHESES ----
-            "(", ")" ->
-                controller.onParenthesisPressed(label)
-
-            // ---- DECIMAL ----
-            "." -> controller.onDecimalPointPressed()
-
-            // ---- CLEAR ----
-            "AC" -> controller.onClearPressed()
+//            "+", "−", "×", "÷", "%" ->
+//                controller.onOperatorPressed(label)
+//
+//            // ---- PARENTHESES ----
+//            "(", ")" ->
+//                controller.onParenthesisPressed(label)
+//
+//            // ---- DECIMAL ----
+//            "." -> controller.onDecimalPointPressed()
+//
+//            // ---- CLEAR ----
+//            "AC" -> controller.onClearPressed()
 
             // ---- DELETE ----
 //            "DEL" -> controller.onDeleteLast()
@@ -73,40 +73,40 @@ fun CalculatorScreen() {
 
 
             // ---- EQUALS ----
-            "=" -> controller.equalsPressed()
-
-            // ---- NEW FUNCTIONS ----
-
-            // ----- FACTORIAL -----
-            "n!" -> controller.onFactorialPressed()
-
-            // ----- EXPONENTIAL -----
-            "exp" -> controller.onExpPressed()
-
-            // ----- TENPOWER -----
-            "10^x" -> controller.onTenPowerPressed()
+//            "=" -> controller.equalsPressed()
+//
+//            // ---- NEW FUNCTIONS ----
+//
+//            // ----- FACTORIAL -----
+//            "n!" -> controller.onFactorialPressed()
+//
+//            // ----- EXPONENTIAL -----
+//            "exp" -> controller.onExpPressed()
+//
+//            // ----- TENPOWER -----
+//            "10^x" -> controller.onTenPowerPressed()
 
 //            "log" -> controller.onFunctionPressed("log")
 
             // ----- EULER -----
-            "e^x" -> controller.onEulerPressed()
-
-            "pow" -> controller.onPowerPressed()
-
-            // ----- GENERAL ROOT -----
-            "√" -> controller.onGeneralRootPressed()
-
-            // ----- SQUARE ROOT -----
-            "sqrt" -> controller.onSquareRootPressed()
-
-            // ----- SQUARE -----
-            "x²" -> controller.onSquarePress()
-
-            // ----- GENERAL POWER -----
-            "x^" -> controller.onGeneralPowerPress()
-
-            // ---- SCIENTIFIC FUNCTIONS ----
-            else -> controller.onFunctionPressed(label)
+//            "e^x" -> controller.onEulerPressed()
+//
+//            "pow" -> controller.onPowerPressed()
+//
+//            // ----- GENERAL ROOT -----
+//            "√" -> controller.onGeneralRootPressed()
+//
+//            // ----- SQUARE ROOT -----
+//            "sqrt" -> controller.onSquareRootPressed()
+//
+//            // ----- SQUARE -----
+//            "x²" -> controller.onSquarePress()
+//
+//            // ----- GENERAL POWER -----
+//            "x^" -> controller.onGeneralPowerPress()
+//
+//            // ---- SCIENTIFIC FUNCTIONS ----
+//            else -> controller.onFunctionPressed(label)
         }
     }
 
@@ -165,9 +165,9 @@ fun CalculatorScreen() {
                 .padding(8.dp)
         ) {
             Display(
-                expression = localExpression.value,
+                expression = controller.expression,
                 result = controller.result,
-                onExpressionChange = { controller.expression = it.toString() } // added this
+                onExpressionChange = { controller.expression = it } // added this
             )
         }
 
@@ -316,47 +316,47 @@ fun Display(
     }
 }
 
-@SuppressLint("UnusedBoxWithConstraintsScope")
-@Composable
-// Dynamically adjusts the font size of the text to fit within its container width.
-fun AutoResizeText(
-    text: String,
-    modifier: Modifier = Modifier,
-    maxFontSize: TextUnit = 48.sp,
-    minFontSize: TextUnit = 16.sp,
-    color: Color = Color.White,
-    textAlign: TextAlign = TextAlign.End,
-    fontWeight: FontWeight = FontWeight.Bold
-) {
-    var textStyle by remember { mutableStateOf(TextStyle(fontSize = maxFontSize)) }
-    var readyToDraw by remember { mutableStateOf(false) }
-
-    BoxWithConstraints(modifier = modifier) {
-
-        Text(
-            text = text,
-            color = color,
-            textAlign = textAlign,
-            fontWeight = fontWeight,
-            maxLines = 1,
-            softWrap = false,
-            style = textStyle,
-
-            onTextLayout = { result ->
-                if (!readyToDraw && result.didOverflowWidth) {
-                    val newFontSize = textStyle.fontSize * 0.9f
-                    if (newFontSize >= minFontSize) {
-                        textStyle = textStyle.copy(fontSize = newFontSize)
-                    } else {
-                        readyToDraw = true
-                    }
-                } else {
-                    readyToDraw = true
-                }
-            }
-        )
-    }
-}
+//@SuppressLint("UnusedBoxWithConstraintsScope")
+//@Composable
+//// Dynamically adjusts the font size of the text to fit within its container width.
+//fun AutoResizeText(
+//    text: String,
+//    modifier: Modifier = Modifier,
+//    maxFontSize: TextUnit = 48.sp,
+//    minFontSize: TextUnit = 16.sp,
+//    color: Color = Color.White,
+//    textAlign: TextAlign = TextAlign.End,
+//    fontWeight: FontWeight = FontWeight.Bold
+//) {
+//    var textStyle by remember { mutableStateOf(TextStyle(fontSize = maxFontSize)) }
+//    var readyToDraw by remember { mutableStateOf(false) }
+//
+//    BoxWithConstraints(modifier = modifier) {
+//
+//        Text(
+//            text = text,
+//            color = color,
+//            textAlign = textAlign,
+//            fontWeight = fontWeight,
+//            maxLines = 1,
+//            softWrap = false,
+//            style = textStyle,
+//
+//            onTextLayout = { result ->
+//                if (!readyToDraw && result.didOverflowWidth) {
+//                    val newFontSize = textStyle.fontSize * 0.9f
+//                    if (newFontSize >= minFontSize) {
+//                        textStyle = textStyle.copy(fontSize = newFontSize)
+//                    } else {
+//                        readyToDraw = true
+//                    }
+//                } else {
+//                    readyToDraw = true
+//                }
+//            }
+//        )
+//    }
+//}
 
 @Composable
 // Renders the row of navigation (arrow) buttons for input editing.
