@@ -1,5 +1,6 @@
 package com.playStore.calcx.controller
 
+import androidx.collection.intSetOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -173,6 +174,24 @@ class CalculatorController {
             i--
         }
         return text.substring(i + 1, pos)
+    }
+
+    fun onDecimalPressed(){
+        val before = charBeforeCursor()
+
+        // case 1: cursor at the beginning or after an operator -> "0."
+        if (before == null || isOperator(before) || before == '(') {
+            insert("0.")
+            return
+        }
+
+        val currentNumber = currentNumberBeforeCursor()
+
+        // case 2: number already has a decimal -> return (do nothing)
+        if (currentNumber.contains(".")) return
+
+        // case 3: normal behavior
+        insert(".")
     }
 
 
