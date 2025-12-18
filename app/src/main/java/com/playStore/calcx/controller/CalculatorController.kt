@@ -83,7 +83,7 @@ class CalculatorController {
     }
 
 
-    fun delete() {
+    fun delete() { //to delete the last character
         val cursor = expression.selection.end
         val text = expression.text
 
@@ -97,6 +97,15 @@ class CalculatorController {
             text = newText,
             selection = TextRange(cursor - 1)
         )
+    }
+
+    fun clear(){ //to clear the display
+        expression = TextFieldValue(
+            text = "",
+            selection = TextRange(0)
+        )
+        result = ""
+        shouldReset = false
     }
 
 

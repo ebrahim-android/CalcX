@@ -64,8 +64,8 @@ fun CalculatorScreen() {
 //            // ---- DECIMAL ----
 //            "." -> controller.onDecimalPointPressed()
 //
-//            // ---- CLEAR ----
-//            "AC" -> controller.onClearPressed()
+            // ---- CLEAR ----
+            "AC" -> controller.clear()
 
             // ---- DELETE ----
 //            "DEL" -> controller.onDeleteLast()
