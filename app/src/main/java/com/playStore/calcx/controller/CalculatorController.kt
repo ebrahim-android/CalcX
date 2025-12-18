@@ -99,7 +99,7 @@ class CalculatorController {
         )
     }
 
-    fun clear(){ //to clear the display
+    fun clear() { //to clear the display
         expression = TextFieldValue(
             text = "",
             selection = TextRange(0)
@@ -128,16 +128,27 @@ class CalculatorController {
     }
 
 
-    // -----NORMAL FUNCTION-----
-    fun mapOperator(op: String): String { // convert UI symbols into real math operators for the engine
-        return when (op) {
-            "×" -> "*"
-            "÷" -> "/"
-            "−" -> "-"
-            else -> op
-        }
+    private fun charBeforeCursor(): Char? {
+        val pos = cursor()
+        return if (pos > 0) expression.text[pos - 1] else null
+    }
+
+    private fun isOperator(c: Char): Boolean {
+        return c in "+-×÷"
     }
 }
+
+
+//    // -----NORMAL FUNCTION-----
+//    fun mapOperator(op: String): String { // convert UI symbols into real math operators for the engine
+//        return when (op) {
+//            "×" -> "*"
+//            "÷" -> "/"
+//            "−" -> "-"
+//            else -> op
+//        }
+//    }
+//}
 
     // when the user presses an operator (+, -, *, /, ^)
 //    fun onOperatorPressed(operator: String) {
