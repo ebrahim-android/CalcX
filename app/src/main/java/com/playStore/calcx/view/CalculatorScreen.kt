@@ -61,8 +61,8 @@ fun CalculatorScreen() {
 //            "(", ")" ->
 //                controller.onParenthesisPressed(label)
 //
-//            // ---- DECIMAL ----
-//            "." -> controller.onDecimalPointPressed()
+            // ---- DECIMAL ----
+            "." -> controller.onDecimalPressed()
 //
             // ---- CLEAR ----
             "AC" -> controller.clear()

@@ -136,7 +136,7 @@ class CalculatorController {
 
     // it decide what meant the operator or character
     private fun isOperator(c: Char): Boolean {
-        return c in "+-×÷"
+        return c in "+-×÷*"
     }
 
     // handling the operator (+, -, *, /, ^), avoid ++, +×, etc.
