@@ -149,7 +149,7 @@ class CalculatorController {
         val before = charBeforeCursor()
 
         // cursor before an operator -> replace it
-        if (before != null && isOperator(before)){
+        if (before != null && isOperator(before)) {
             val newText =
                 text.substring(0, cursorPos - 1) +
                         mappedOp +
@@ -162,7 +162,18 @@ class CalculatorController {
         insert(mappedOp)
     }
 
-}
+    // return the number before the cursor,
+    // it's like see the whole expression
+    fun currentNumberBeforeCursor(): String {
+        val pos = cursor()
+        val text = expression.text
+
+        var i = pos - 1
+        while (i >= 0 && (text[i].isDigit() || text[i] == '.')) {
+            i--
+        }
+        return text.substring(i + 1, pos)
+    }
 
 
     // -----NORMAL FUNCTION-----
@@ -174,9 +185,9 @@ class CalculatorController {
             else -> op
         }
     }
+}
 
-
-    // when the user presses an operator (+, -, *, /, ^)
+// when the user presses an operator (+, -, *, /, ^)
 //    fun onOperatorPressed(operator: String) {
 //        val op = mapOperator(operator)
 //
@@ -258,7 +269,7 @@ class CalculatorController {
 //        shouldReset = false
 //    }
 
-    // when the user presses "eliminate symbol" (backspace)
+// when the user presses "eliminate symbol" (backspace)
 //    fun onDeleteLast() {
 //        if (shouldReset) {
 //            expression = ""
@@ -273,7 +284,7 @@ class CalculatorController {
 //        _displayState.value = if (expression.isEmpty()) "0" else expression
 //    }
 
-    // when the user presses "(" o ")"
+// when the user presses "(" o ")"
 //    fun onParenthesisPressed(parenthesis: String) {
 //        if (shouldReset) {
 //            expression = ""

@@ -54,8 +54,8 @@ fun CalculatorScreen() {
                 controller.insert(label) //changed SO FAR
 
             // ---- OPERATORS ----
-//            "+", "−", "×", "÷", "%" ->
-//                controller.onOperatorPressed(label)
+            "+", "−", "×", "÷", "%" ->
+                controller.onOperatorPressed(label)
 //
 //            // ---- PARENTHESES ----
 //            "(", ")" ->
