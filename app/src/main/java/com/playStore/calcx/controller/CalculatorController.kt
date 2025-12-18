@@ -127,28 +127,54 @@ class CalculatorController {
         }
     }
 
-
+    // this function just return the character before the cursor
     private fun charBeforeCursor(): Char? {
         val pos = cursor()
         return if (pos > 0) expression.text[pos - 1] else null
     }
 
+    // it decide what meant the operator or character
     private fun isOperator(c: Char): Boolean {
         return c in "+-×÷"
     }
+
+    // handling the operator (+, -, *, /, ^), avoid ++, +×, etc.
+    fun onOperatorPressed(op: String) {
+        val mappedOp = mapOperator(op)
+        val cursorPos = cursor()
+        val text = expression.text
+
+        if (text.isEmpty() && mappedOp != "-") return
+
+        val before = charBeforeCursor()
+
+        // cursor before an operator -> replace it
+        if (before != null && isOperator(before)){
+            val newText =
+                text.substring(0, cursorPos - 1) +
+                        mappedOp +
+                        text.substring(cursorPos)
+
+            updateExpression(newText, cursorPos)
+            return
+        }
+        // normal behavior
+        insert(mappedOp)
+    }
+
 }
 
 
-//    // -----NORMAL FUNCTION-----
-//    fun mapOperator(op: String): String { // convert UI symbols into real math operators for the engine
-//        return when (op) {
-//            "×" -> "*"
-//            "÷" -> "/"
-//            "−" -> "-"
-//            else -> op
-//        }
-//    }
-//}
+    // -----NORMAL FUNCTION-----
+    fun mapOperator(op: String): String { // convert UI symbols into real math operators for the engine
+        return when (op) {
+            "×" -> "*"
+            "÷" -> "/"
+            "−" -> "-"
+            else -> op
+        }
+    }
+
 
     // when the user presses an operator (+, -, *, /, ^)
 //    fun onOperatorPressed(operator: String) {
