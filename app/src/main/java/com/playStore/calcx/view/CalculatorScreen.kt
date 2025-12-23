@@ -56,11 +56,11 @@ fun CalculatorScreen() {
             // ---- OPERATORS ----
             "+", "−", "×", "÷", "%" ->
                 controller.onOperatorPressed(label)
-//
-//            // ---- PARENTHESES ----
-//            "(", ")" ->
-//                controller.onParenthesisPressed(label)
-//
+
+            // ---- PARENTHESES ----
+            "(", ")" ->
+                controller.onParenthesisPressed()
+
             // ---- DECIMAL ----
             "." -> controller.onDecimalPressed()
 //

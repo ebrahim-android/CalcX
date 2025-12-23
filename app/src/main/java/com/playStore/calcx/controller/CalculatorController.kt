@@ -90,14 +90,24 @@ class CalculatorController {
 
         if (cursor == 0) return
 
+        val before = charBeforeCursor()
+        //case 1: eraser "()"
+        val after = if(cursor < text.length) text[cursor] else null
+
+        if(before == '(' && after == ')'){
+            val newText =
+                text.substring(0, cursor - 1) +
+                        text.substring(cursor + 1)
+
+            updateExpression(newText, cursor - 1)
+            return
+        }
+        //case 2: eraser one carater -> normal behavior
         val newText =
             text.substring(0, cursor - 1) +
                     text.substring(cursor)
 
-        expression = TextFieldValue(
-            text = newText,
-            selection = TextRange(cursor - 1)
-        )
+        updateExpression(newText, cursor - 1)
     }
 
     fun clear() { //to clear the display
@@ -201,7 +211,7 @@ class CalculatorController {
 
     }
 
-    fun onparenthesisPressed() {
+    fun onParenthesisPressed() {
         val before = charBeforeCursor()
         val open = openParenthesisCount()
 
