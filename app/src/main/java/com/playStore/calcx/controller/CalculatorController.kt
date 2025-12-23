@@ -194,6 +194,30 @@ class CalculatorController {
         insert(".")
     }
 
+    private fun openParenthesisCount():Int{
+        //to count how many open parenthesis are in the expression
+        return expression.text.count { it == '(' } -
+                expression.text.count { it == ')' }
+
+    }
+
+    fun onparenthesisPressed() {
+        val before = charBeforeCursor()
+        val open = openParenthesisCount()
+
+        //case 1: cursor at the beginning or after an operator -> "("
+        if(before == null || isOperator(before) || before == '('){
+            insert("(")
+            return
+        }
+        //case 2: cursor at the end of an expression -> ")"
+        if(open > 0 && (before?.isDigit() == true || before == ')')){
+            insert(")")
+            return
+        }
+
+    }
+
 
     // -----NORMAL FUNCTION-----
     fun mapOperator(op: String): String { // convert UI symbols into real math operators for the engine
