@@ -228,6 +228,34 @@ class CalculatorController {
 
     }
 
+    fun onEqualsPressed() {
+        val expr = expression.text
+        if(expr.isBlank()) return //if the expression is empty, do nothing
+
+        //if the last character is an operator, do nothing
+        val before = charBeforeCursor()
+        if(before != null && isOperator(before)) return
+        if(openParenthesisCount() != 0) return //if there are open parenthesis, do nothing
+
+        val resultValue = engine.evaluate(expr) ?: run {
+            expression = TextFieldValue("Error", TextRange(5))
+            shouldReset = true
+            return
+        }
+
+        val clean = if (resultValue % 1 == 0.0){ // clean the result: remove .0 if it's an integer
+            resultValue.toInt().toString()
+        } else {
+            resultValue.toString()
+        }
+
+        //update the display with the result
+        expression = TextFieldValue(clean, TextRange(clean.length))
+        result = expr
+        shouldReset = true
+
+    }
+
 
     // -----NORMAL FUNCTION-----
     fun mapOperator(op: String): String { // convert UI symbols into real math operators for the engine
