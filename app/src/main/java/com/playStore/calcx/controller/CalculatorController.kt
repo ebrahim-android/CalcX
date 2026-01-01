@@ -260,8 +260,8 @@ class CalculatorController {
     // -----NORMAL FUNCTION-----
     fun mapOperator(op: String): String { // convert UI symbols into real math operators for the engine
         return when (op) {
-            "×" -> "*"
-            "÷" -> "/"
+            "×" -> "×"
+            "÷" -> "÷"
             "−" -> "-"
             else -> op
         }

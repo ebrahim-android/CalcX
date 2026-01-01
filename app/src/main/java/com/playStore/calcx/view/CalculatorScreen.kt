@@ -73,7 +73,7 @@ fun CalculatorScreen() {
 
 
             // ---- EQUALS ----
-//            "=" -> controller.equalsPressed()
+            "=" -> controller.onEqualsPressed()
 //
 //            // ---- NEW FUNCTIONS ----
 //
