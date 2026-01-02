@@ -44,6 +44,10 @@ class CalculatorEngineTest {
         assertEquals(4.0, result, 0.0001)
     }
 
-
+    @Test
+    fun `square root return correct result plural`(){ //square root
+        val result = engine.evaluate("√9")!!
+        assertEquals(3.0, result, 0.0001)
+    }
 }
 
