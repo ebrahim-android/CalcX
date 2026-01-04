@@ -54,7 +54,12 @@ class CalculatorEngineTest {
     fun `pi return correct result`() { //pi
         val result = engine.evaluate("pi")!!
         assertEquals(Math.PI, result, 0.0001)
+    }
 
+    @Test
+    fun `power should return correct result`() { //power
+        val result = engine.evaluate("2^3")!!
+        assertEquals(8.0, result, 0.0001)
     }
 }
 
