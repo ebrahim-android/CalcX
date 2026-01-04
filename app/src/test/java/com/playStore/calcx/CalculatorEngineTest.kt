@@ -49,5 +49,12 @@ class CalculatorEngineTest {
         val result = engine.evaluate("√9")!!
         assertEquals(3.0, result, 0.0001)
     }
+
+    @Test
+    fun `pi return correct result`() { //pi
+        val result = engine.evaluate("pi")!!
+        assertEquals(Math.PI, result, 0.0001)
+
+    }
 }
 
