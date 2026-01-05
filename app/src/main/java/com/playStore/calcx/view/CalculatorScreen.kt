@@ -91,8 +91,6 @@ fun CalculatorScreen() {
             // ----- EULER -----
 //            "e^x" -> controller.onEulerPressed()
 //
-//            "pow" -> controller.onPowerPressed()
-//
 //            // ----- GENERAL ROOT -----
             "√x" -> controller.onSquareRootPressed()
 //
@@ -103,7 +101,7 @@ fun CalculatorScreen() {
 //            "x²" -> controller.onSquarePress()
 //
 //            // ----- GENERAL POWER -----
-//            "x^" -> controller.onGeneralPowerPress()
+            "x^" -> controller.onPowerPressed()
 //
 //            // ---- SCIENTIFIC FUNCTIONS ----
 //            else -> controller.onFunctionPressed(label)

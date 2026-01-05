@@ -264,6 +264,10 @@ class CalculatorController {
         insert("√")
     }
 
+    fun onPowerPressed(){ // to handle the power button
+        insert("^")
+    }
+
     // -----NORMAL FUNCTION-----
     fun mapOperator(op: String): String { // convert UI symbols into real math operators for the engine
         return when (op) {
