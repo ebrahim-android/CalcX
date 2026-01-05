@@ -256,6 +256,10 @@ class CalculatorController {
 
     }
 
+    fun onFactorialPressed() { // to handle the factorial button
+        insert("!")
+    }
+
 
     // -----NORMAL FUNCTION-----
     fun mapOperator(op: String): String { // convert UI symbols into real math operators for the engine

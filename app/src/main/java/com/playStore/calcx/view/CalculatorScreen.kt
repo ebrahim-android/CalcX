@@ -77,8 +77,8 @@ fun CalculatorScreen() {
 //
 //            // ---- NEW FUNCTIONS ----
 //
-//            // ----- FACTORIAL -----
-//            "n!" -> controller.onFactorialPressed()
+            // ----- FACTORIAL -----
+            "n!" -> controller.onFactorialPressed()
 //
 //            // ----- EXPONENTIAL -----
 //            "exp" -> controller.onExpPressed()
