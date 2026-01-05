@@ -84,7 +84,7 @@ fun CalculatorScreen() {
 //            "exp" -> controller.onExpPressed()
 //
 //            // ----- TENPOWER -----
-//            "10^x" -> controller.onTenPowerPressed()
+            "10^x" -> controller.onTenPowerPressed()
 
 //            "log" -> controller.onFunctionPressed("log")
 

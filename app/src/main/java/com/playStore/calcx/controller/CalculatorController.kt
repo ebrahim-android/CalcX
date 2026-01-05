@@ -288,6 +288,18 @@ class CalculatorController {
         insert("^")
     }
 
+    fun onTenPowerPressed(){ // to handle the 10^x button
+        val text = currentText()
+
+        if(text.isNotEmpty()){
+            val last = text.last()
+            if(last.isDigit() || last == '!' || last == ')') return
+            if(last == '^') return
+        }
+
+        insert("10^")
+    }
+
     // -----NORMAL FUNCTION-----
     fun mapOperator(op: String): String { // convert UI symbols into real math operators for the engine
         return when (op) {

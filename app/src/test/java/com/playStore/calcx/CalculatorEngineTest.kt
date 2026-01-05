@@ -61,5 +61,11 @@ class CalculatorEngineTest {
         val result = engine.evaluate("2^3")!!
         assertEquals(8.0, result, 0.0001)
     }
+
+    @Test
+    fun `power of 10 should return correct result`() { //power of 10
+        val resul = engine.evaluate("10^2")!!
+        assertEquals(100.0, resul, 0.0001)
+    }
 }
 
