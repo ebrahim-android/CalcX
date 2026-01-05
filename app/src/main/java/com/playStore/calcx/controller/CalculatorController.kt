@@ -257,14 +257,34 @@ class CalculatorController {
     }
 
     fun onFactorialPressed() { // to handle the factorial button
+        val text = currentText()
+
+        if(text.isEmpty()) return
+        if(text.last() == '!') return
+
         insert("!")
+
     }
 
-    fun onSquareRootPressed(){ // to handle the square root button
+    fun onSquareRootPressed() { // to handle the square root button
+        val text = currentText()
+
+        if (text.isNotEmpty()) {
+            val last = text.last()
+            if (last.isDigit() || last == '!' || last == ')') return
+            if (last == '√') return
+        }
+
         insert("√")
     }
 
+
     fun onPowerPressed(){ // to handle the power button
+        val text = currentText()
+
+        if(text.isEmpty()) return
+        if(text.last() == '^') return
+
         insert("^")
     }
 
