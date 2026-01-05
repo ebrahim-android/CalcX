@@ -260,6 +260,9 @@ class CalculatorController {
         insert("!")
     }
 
+    fun onSquareRootPressed(){ // to handle the square root button
+        insert("√")
+    }
 
     // -----NORMAL FUNCTION-----
     fun mapOperator(op: String): String { // convert UI symbols into real math operators for the engine

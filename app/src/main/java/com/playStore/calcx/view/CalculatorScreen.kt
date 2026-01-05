@@ -94,7 +94,7 @@ fun CalculatorScreen() {
 //            "pow" -> controller.onPowerPressed()
 //
 //            // ----- GENERAL ROOT -----
-//            "√" -> controller.onGeneralRootPressed()
+            "√x" -> controller.onSquareRootPressed()
 //
 //            // ----- SQUARE ROOT -----
 //            "sqrt" -> controller.onSquareRootPressed()
