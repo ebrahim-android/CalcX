@@ -86,5 +86,17 @@ class CalculatorEngineTest {
         assertEquals(0.0, result, 0.0001)
     }
 
+    @Test
+    fun `cos(pi) should return -1`() { // cos(pi)
+        val result = engine.evaluate("cos(pi)")!!
+        assertEquals(-1.0, result, 0.000)
+    }
+
+    @Test
+    fun `sin(pi division (pi medium) 2) should return 1`() { // sin(pi/2)
+        val result = engine.evaluate("sin(pi/2)")!!
+        assertEquals(1.0, result, 0.000)
+    }
+
 }
 
