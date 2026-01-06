@@ -69,7 +69,8 @@ CalcX focuses on precision, professional design, and clean architecture—create
 
 ## 🖼️ Screenshots
 
-<img width="240" height="500" alt="image" src="https://github.com/user-attachments/assets/e7f16678-a51c-45b6-a347-1c971f82ea62" />
+<img width="240" height="500" alt="image" src="https://github.com/user-attachments/assets/a89db3e4-fb64-40c9-90c4-18817866dd7b" />
+
 
 ---
 
