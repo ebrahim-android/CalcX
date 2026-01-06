@@ -52,6 +52,20 @@ CalcX focuses on precision, professional design, and clean architecture—create
 
 - Clean API-like architecture to simulate a mini internal math library.
 
+## 🧪 Unit Testing
+
+- CalculatorEngine unit tests are implemented to verify core math operations and scientific functions:
+
+   - cos(0) returns 1.0
+
+   - sin(0) returns 0.0
+
+    - tan(0) returns 0.0
+
+    - Ensures correctness of calculations and prevents regression.
+
+- Future tests will cover CalculatorController behaviors.
+
 ---
 
 ## ⚙️ Tech Stack
@@ -125,9 +139,6 @@ Here are planned enhancements for future versions of **CalcX**:
 
 - 📱 **Tablet UI Version**
   Responsive layout for large screens.
-
-- 🧪 **Unit Tests**
-  Controller and Engine test coverage.
 
 - ✨ **UI Polish**
   Animations, transitions, and haptic feedback.
