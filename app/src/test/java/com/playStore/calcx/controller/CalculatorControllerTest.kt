@@ -1,0 +1,68 @@
+package com.playStore.calcx.controller
+
+import org.junit.Assert.assertEquals
+import org.junit.Before
+import org.junit.Test
+
+
+class CalculatorControllerTest {
+    
+    private lateinit var controller: CalculatorController
+
+    @Before
+    fun setUp() {
+        controller = CalculatorController()
+    }
+
+    @Test
+    fun `digit should be appended to the expression`(){ // to test if the digit is appended to the expression
+
+        // Act
+        controller.insert("5")
+
+        // Assert
+        assertEquals("5", controller.expression.text)
+    }
+
+    @Test
+    fun `digit should be appended consecutively`(){ // to test if the digit is appended consecutively
+
+        controller.insert("5")
+        controller.insert("2")
+
+        assertEquals("52", controller.expression.text)
+    }
+
+    @Test
+    fun `digit should delate the last character`(){
+
+        controller.insert("5")
+        controller.insert("2")
+
+        controller.delete()
+
+        assertEquals("5", controller.expression.text)
+
+    }
+
+    @Test
+    fun `decimal should appended when there is a digit`() {
+
+        controller.insert("5")
+        controller.insert(".")
+
+        assertEquals("5.", controller.expression.text)
+
+    }
+
+    @Test
+    fun `double decimal should not be appended`() { // we got a problem, I gotta fix it
+
+        controller.insert("5")
+        controller.insert(".")
+        controller.insert(".")
+
+        assertEquals("5.", controller.expression.text)
+
+    }
+}
