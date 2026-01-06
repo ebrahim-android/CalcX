@@ -64,8 +64,27 @@ class CalculatorEngineTest {
 
     @Test
     fun `power of 10 should return correct result`() { //power of 10
-        val resul = engine.evaluate("10^2")!!
-        assertEquals(100.0, resul, 0.0001)
+        val result = engine.evaluate("10^2")!!
+        assertEquals(100.0, result, 0.0001)
     }
+
+    @Test
+    fun `cos should return correct result`() { //cos
+        val result = engine.evaluate("cos(0)")!!
+        assertEquals(1.0, result, 0.0001)
+    }
+
+    @Test
+    fun `sin should return correct result`() { //sin
+        val result = engine.evaluate("sin(0)")!!
+        assertEquals(0.0, result, 0.0001)
+    }
+
+    @Test
+    fun `tan should return correct result`() { //tan
+        val result = engine.evaluate("tan(0)")!!
+        assertEquals(0.0, result, 0.0001)
+    }
+
 }
 

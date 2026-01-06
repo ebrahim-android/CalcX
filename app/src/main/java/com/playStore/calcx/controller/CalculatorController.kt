@@ -337,6 +337,7 @@ class CalculatorController {
                 "$function($text)"
             }
         }
+
         expression = TextFieldValue(
             newText, TextRange(newText.length)
         )
