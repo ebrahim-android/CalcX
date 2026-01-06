@@ -92,9 +92,9 @@ class CalculatorController {
 
         val before = charBeforeCursor()
         //case 1: eraser "()"
-        val after = if(cursor < text.length) text[cursor] else null
+        val after = if (cursor < text.length) text[cursor] else null
 
-        if(before == '(' && after == ')'){
+        if (before == '(' && after == ')') {
             val newText =
                 text.substring(0, cursor - 1) +
                         text.substring(cursor + 1)
@@ -145,8 +145,17 @@ class CalculatorController {
     }
 
     // it decide what meant the operator or character
-    private fun isOperator(c: Char): Boolean {
-        return c in "+-×÷*"
+//    private fun isOperator(c: Char): Boolean {
+//        return c in "+-×÷*"
+//    }
+
+    private fun Char.isOperator(): Boolean {
+        return this == '+' ||
+                this == '-' ||
+                this == '×' ||
+                this == '÷' ||
+                this == '^' ||
+                this == '.'
     }
 
     // handling the operator (+, -, *, /, ^), avoid ++, +×, etc.
@@ -160,7 +169,7 @@ class CalculatorController {
         val before = charBeforeCursor()
 
         // cursor before an operator -> replace it
-        if (before != null && isOperator(before)) {
+        if (before != null && before.isOperator()) {
             val newText =
                 text.substring(0, cursorPos - 1) +
                         mappedOp +
@@ -186,11 +195,11 @@ class CalculatorController {
         return text.substring(i + 1, pos)
     }
 
-    fun onDecimalPressed(){
+    fun onDecimalPressed() {
         val before = charBeforeCursor()
 
         // case 1: cursor at the beginning or after an operator -> "0."
-        if (before == null || isOperator(before) || before == '(') {
+        if (before == null || before.isOperator() || before == '(') {
             insert("0.")
             return
         }
@@ -204,7 +213,7 @@ class CalculatorController {
         insert(".")
     }
 
-    private fun openParenthesisCount():Int{
+    private fun openParenthesisCount(): Int {
         //to count how many open parenthesis are in the expression
         return expression.text.count { it == '(' } -
                 expression.text.count { it == ')' }
@@ -216,12 +225,12 @@ class CalculatorController {
         val open = openParenthesisCount()
 
         //case 1: cursor at the beginning or after an operator -> "("
-        if(before == null || isOperator(before) || before == '('){
+        if (before == null || before.isOperator() || before == '(') {
             insert("(")
             return
         }
         //case 2: cursor at the end of an expression -> ")"
-        if(open > 0 && (before?.isDigit() == true || before == ')')){
+        if (open > 0 && (before?.isDigit() == true || before == ')')) {
             insert(")")
             return
         }
@@ -230,12 +239,12 @@ class CalculatorController {
 
     fun onEqualsPressed() {
         val expr = expression.text
-        if(expr.isBlank()) return //if the expression is empty, do nothing
+        if (expr.isBlank()) return //if the expression is empty, do nothing
 
         //if the last character is an operator, do nothing
         val before = charBeforeCursor()
-        if(before != null && isOperator(before)) return
-        if(openParenthesisCount() != 0) return //if there are open parenthesis, do nothing
+        if (before != null && before.isOperator()) return
+        if (openParenthesisCount() != 0) return //if there are open parenthesis, do nothing
 
         val resultValue = engine.evaluate(expr) ?: run {
             expression = TextFieldValue("Error", TextRange(5))
@@ -243,7 +252,7 @@ class CalculatorController {
             return
         }
 
-        val clean = if (resultValue % 1 == 0.0){ // clean the result: remove .0 if it's an integer
+        val clean = if (resultValue % 1 == 0.0) { // clean the result: remove .0 if it's an integer
             resultValue.toInt().toString()
         } else {
             resultValue.toString()
@@ -259,8 +268,8 @@ class CalculatorController {
     fun onFactorialPressed() { // to handle the factorial button
         val text = currentText()
 
-        if(text.isEmpty()) return
-        if(text.last() == '!') return
+        if (text.isEmpty()) return
+        if (text.last() == '!') return
 
         insert("!")
 
@@ -279,25 +288,58 @@ class CalculatorController {
     }
 
 
-    fun onPowerPressed(){ // to handle the power button
+    fun onPowerPressed() { // to handle the power button
         val text = currentText()
 
-        if(text.isEmpty()) return
-        if(text.last() == '^') return
+        if (text.isEmpty()) return
+        if (text.last() == '^') return
 
         insert("^")
     }
 
-    fun onTenPowerPressed(){ // to handle the 10^x button
+    fun onTenPowerPressed() { // to handle the 10^x button
         val text = currentText()
 
-        if(text.isNotEmpty()){
+        if (text.isNotEmpty()) {
             val last = text.last()
-            if(last.isDigit() || last == '!' || last == ')') return
-            if(last == '^') return
+            if (last.isDigit() || last == '!' || last == ')') return
+            if (last == '^') return
         }
 
         insert("10^")
+    }
+
+    //    // when the user presses a function button (sin, cos, ln, etc.)
+//    fun onFunctionPressed(function: String) {
+//        if (shouldReset) {
+//            //if last result exists, apply function to result
+//            if (expression.isNotEmpty()) {
+//                expression = "$function(${expression})"
+//                _displayState.value = expression
+//                shouldReset = false
+//                return
+//            }
+//        }
+
+    fun onFunctionPressed(function: String) {
+        val text = expression.text
+
+        val newText = when {
+            text.isEmpty() -> {
+                "$function("
+            }
+
+            text.last().isOperator() || text.last() == '(' -> {
+                text + "$function("
+            }
+
+            else -> {
+                "$function($text)"
+            }
+        }
+        expression = TextFieldValue(
+            newText, TextRange(newText.length)
+        )
     }
 
     // -----NORMAL FUNCTION-----

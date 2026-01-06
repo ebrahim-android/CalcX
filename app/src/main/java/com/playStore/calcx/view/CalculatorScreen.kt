@@ -68,7 +68,6 @@ fun CalculatorScreen() {
             "AC" -> controller.clear()
 
             // ---- DELETE ----
-//            "DEL" -> controller.onDeleteLast()
             "DEL" -> controller.delete()
 
 
@@ -104,7 +103,7 @@ fun CalculatorScreen() {
             "x^" -> controller.onPowerPressed()
 //
 //            // ---- SCIENTIFIC FUNCTIONS ----
-//            else -> controller.onFunctionPressed(label)
+            else -> controller.onFunctionPressed(label)
         }
     }
 
