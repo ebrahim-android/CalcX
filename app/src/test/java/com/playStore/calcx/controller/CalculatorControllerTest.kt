@@ -65,4 +65,15 @@ class CalculatorControllerTest {
         assertEquals("5.", controller.expression.text)
 
     }
+
+    @Test
+    fun `operator should be appended to the expression`(){
+
+        controller.insert("5")
+
+        controller.onOperatorPressed("+")
+
+        assertEquals("5+", controller.expression.text)
+
+    }
 }
