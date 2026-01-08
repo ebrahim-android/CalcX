@@ -76,4 +76,15 @@ class CalculatorControllerTest {
         assertEquals("5+", controller.expression.text)
 
     }
+
+    @Test
+    fun `parenthesis should not be appended to the expression`(){
+
+        controller.insert("5")
+
+        controller.onParenthesisPressed()
+
+        assertEquals("5", controller.expression.text)
+
+    }
 }
