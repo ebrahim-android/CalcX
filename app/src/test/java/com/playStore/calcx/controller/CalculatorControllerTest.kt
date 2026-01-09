@@ -87,4 +87,16 @@ class CalculatorControllerTest {
         assertEquals("5", controller.expression.text)
 
     }
+
+    @Test
+    fun `clear should clear the expression`(){
+
+        controller.insert("5")
+
+        controller.clear()
+
+        assertEquals("", controller.expression.text)
+
+    }
+
 }
