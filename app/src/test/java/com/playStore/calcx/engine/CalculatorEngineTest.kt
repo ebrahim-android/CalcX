@@ -98,4 +98,10 @@ class CalculatorEngineTest {
         Assert.assertEquals(1.0, result, 0.000)
     }
 
+    @Test
+    fun `euler should return correct result`() { //euler
+        val resul = engine.evaluate("e^2")!!
+        Assert.assertEquals(7.38905609893065, resul, 0.0001)
+    }
+
 }
