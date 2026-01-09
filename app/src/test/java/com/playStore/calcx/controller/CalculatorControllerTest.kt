@@ -99,4 +99,17 @@ class CalculatorControllerTest {
 
     }
 
+    @Test
+    fun `equals should evaluate the expression`(){
+
+        controller.insert("2")
+        controller.onOperatorPressed("+")
+        controller.insert("2")
+
+        controller.onEqualsPressed()
+
+        assertEquals("4", controller.expression.text)
+
+    }
+
 }
