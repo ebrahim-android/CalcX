@@ -88,7 +88,7 @@ fun CalculatorScreen() {
 //            "log" -> controller.onFunctionPressed("log")
 
             // ----- EULER -----
-//            "e^x" -> controller.onEulerPressed()
+            "e^x" -> controller.onEulerPressed()
 //
 //            // ----- GENERAL ROOT -----
             "√x" -> controller.onSquareRootPressed()

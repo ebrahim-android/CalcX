@@ -321,7 +321,7 @@ class CalculatorController {
 //            }
 //        }
 
-    fun onFunctionPressed(function: String) {
+    fun onFunctionPressed(function: String) { //function: cos, sin, tan, pi etc..
         val text = expression.text
 
         val newText = when {
@@ -342,6 +342,29 @@ class CalculatorController {
             newText, TextRange(newText.length)
         )
     }
+
+    fun onEulerPressed() { // handling the euler button
+        val text = expression.text
+
+        val newText = when {
+            text.isEmpty() -> {
+                "e^"
+            }
+
+            text.last().isOperator() || text.last() == '(' -> {
+                text + "e^"
+            }
+
+            else -> {
+                "e^$text"
+            }
+        }
+
+        expression = TextFieldValue(
+            newText, TextRange(newText.length)
+        )
+    }
+
 
     // -----NORMAL FUNCTION-----
     fun mapOperator(op: String): String { // convert UI symbols into real math operators for the engine
