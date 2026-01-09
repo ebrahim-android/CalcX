@@ -112,4 +112,14 @@ class CalculatorControllerTest {
 
     }
 
+    @Test
+    fun `factorial should return correct expression`(){
+
+        controller.insert("5")
+        controller.onFactorialPressed()
+
+        assertEquals("5!", controller.expression.text)
+
+    }
+
 }
