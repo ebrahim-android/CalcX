@@ -104,4 +104,10 @@ class CalculatorEngineTest {
         Assert.assertEquals(7.38905609893065, resul, 0.0001)
     }
 
+    @Test
+    fun `log should return correct result`() { //log
+        val result = engine.evaluate("log(100)")!!
+        Assert.assertEquals(2.0, result, 0.0001)
+    }
+
 }
