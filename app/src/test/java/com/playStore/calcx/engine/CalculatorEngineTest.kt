@@ -110,4 +110,11 @@ class CalculatorEngineTest {
         Assert.assertEquals(2.0, result, 0.0001)
     }
 
+    @Test
+    fun `percentage should return correct result`() { //porcentage
+        val result = engine.evaluate("10%200")!!
+        Assert.assertEquals(20.0, result, 0.0001)
+
+    }
+
 }

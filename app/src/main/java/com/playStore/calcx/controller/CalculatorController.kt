@@ -154,8 +154,12 @@ class CalculatorController {
                 this == '-' ||
                 this == '×' ||
                 this == '÷' ||
-                this == '^' ||
+//                this == '^' ||
                 this == '.'
+    }
+
+    private fun Char.isThis(): Boolean {
+        return this == '^'
     }
 
     // handling the operator (+, -, *, /, ^), avoid ++, +×, etc.
@@ -343,27 +347,68 @@ class CalculatorController {
         )
     }
 
-    fun onEulerPressed() { // handling the euler button
+    //expresion de euler
+
+    //cuando se presione e^x  se presenta e^ + el numero que se presione: e^2, e^3, etc.
+
+    //reglas:
+
+    //1: si la expresion esta vacia, se agrega e^ ✅
+
+    //2: si la expresion no esta vacia, y tiene e^ como ultimo caracter, se remplaza para evitar doble e^ en la expresion ✅
+
+    //3:si el ultimo caracter es una operacion +, -, / se permite 5 + e^
+
+    //4:si el ultimo caracter es un parentesis (, se permite (e^
+
+    //se permite e^1 + e^5 y e^(6+8)
+
+    //isThis = '^'
+
+    //Con isOperator no puedo poder e^ dos veces ni (, esto se por el ultimo caracter "^"
+    //con isThis puedo poder mas de un e^ pero no (
+
+    //-:
+
+
+    fun onEulerPressed() { //we're trying to fix the correct expression
         val text = expression.text
 
-        val newText = when {
-            text.isEmpty() -> {
-                "e^"
-            }
-
-            text.last().isOperator() || text.last() == '(' -> {
-                text + "e^"
-            }
-
-            else -> {
-                "e^$text"
-            }
+        if (text.isEmpty()) {
+            expression = TextFieldValue("e^", TextRange(2))
+            return
         }
 
-        expression = TextFieldValue(
-            newText, TextRange(newText.length)
-        )
+        val last = text.last()
+
+        if (last.isThis() || last == '(') {
+            expression = TextFieldValue(text + "e^", TextRange(text.length + 2))
+            return
+        }
+
     }
+
+//    fun onEulerPressed() { // handling the euler button
+//        val text = expression.text
+//
+//        val newText = when {
+//            text.isEmpty() -> {
+//                "e^"
+//            }
+//
+//            text.last().isOperator() || text.last() == '(' -> {
+//                text + "e^"
+//            }
+//
+//            else -> {
+//                "e^$text"
+//            }
+//        }
+//
+//        expression = TextFieldValue(
+//            newText, TextRange(newText.length)
+//        )
+//    }
 
 
     // -----NORMAL FUNCTION-----

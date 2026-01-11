@@ -122,4 +122,14 @@ class CalculatorControllerTest {
 
     }
 
+    @Test
+    fun `euler problem`() { // problem
+        controller.insert("e^")
+        controller.insert("e^")
+        controller.insert("e^")
+
+        assertEquals("e^", controller.expression.text)
+
+    }
+
 }
