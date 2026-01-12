@@ -21,11 +21,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
@@ -276,6 +278,9 @@ fun Display(
         focusRequester.requestFocus()
     }
 
+    // this allow us to know the size of the text
+    var textLayoutResult by remember {mutableStateOf<TextLayoutResult?>(null)}
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -300,17 +305,33 @@ fun Display(
             onValueChange = onExpressionChange,
             modifier = Modifier
                 .fillMaxWidth()
-                .focusRequester(focusRequester),
+                .focusRequester(focusRequester)
+                .drawBehind{
+                    val layout = textLayoutResult ?: return@drawBehind
+
+                    val cursorIndex = expression.selection.start
+                    val cursorRect = layout.getCursorRect(cursorIndex)
+
+                    drawLine(
+                        color = Color.White,
+                        start = cursorRect.topLeft,
+                        end = cursorRect.bottomRight,
+                        strokeWidth = 2f
+                    )
+                },
             singleLine = true,
             readOnly = true, // so the user can't type in the display
             interactionSource = remember { MutableInteractionSource() },
-            cursorBrush = SolidColor(Color.White),
+//            cursorBrush = SolidColor(Color.White),
             textStyle = TextStyle(
                 color = Color.White,
                 fontSize = 36.sp,
                 textAlign = TextAlign.End,
                 fontWeight = FontWeight.Bold
             ),
+            onTextLayout = { layoutResult ->
+                textLayoutResult = layoutResult
+            },
             decorationBox = { innerTextField ->
                 if (expression.text.isEmpty()) {
                     Text(
