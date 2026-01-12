@@ -279,7 +279,17 @@ fun Display(
     }
 
     // this allow us to know the size of the text
-    var textLayoutResult by remember {mutableStateOf<TextLayoutResult?>(null)}
+    var textLayoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
+
+    // animation of the cursor
+    var cursorVisile by remember { mutableStateOf(true) }
+
+    LaunchedEffect(Unit) {
+        while(true){
+            cursorVisile = !cursorVisile
+            kotlinx.coroutines.delay(500)
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -312,12 +322,14 @@ fun Display(
                     val cursorIndex = expression.selection.start
                     val cursorRect = layout.getCursorRect(cursorIndex)
 
-                    drawLine(
-                        color = Color.White,
-                        start = cursorRect.topLeft,
-                        end = cursorRect.bottomRight,
-                        strokeWidth = 2f
-                    )
+                    if (cursorVisile) {
+                        drawLine(
+                            color = Color.White,
+                            start = cursorRect.topLeft,
+                            end = cursorRect.bottomRight,
+                            strokeWidth = 2f
+                        )
+                    }
                 },
             singleLine = true,
             readOnly = true, // so the user can't type in the display
