@@ -123,13 +123,11 @@ class CalculatorControllerTest {
     }
 
     @Test
-    fun `euler problem`() { // problem
-        controller.insert("e^")
-        controller.insert("e^")
-        controller.insert("e^")
+    fun `euler should return correct expression`() {
+        controller.onEulerPressed()
+        controller.onEulerPressed()
 
         assertEquals("e^", controller.expression.text)
-
     }
 
 }
