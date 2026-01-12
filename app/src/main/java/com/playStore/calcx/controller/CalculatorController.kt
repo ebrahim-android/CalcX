@@ -158,10 +158,6 @@ class CalculatorController {
                 this == '.'
     }
 
-    private fun Char.isThis(): Boolean {
-        return this == '^'
-    }
-
     // handling the operator (+, -, *, /, ^), avoid ++, +×, etc.
     fun onOperatorPressed(op: String) {
         val mappedOp = mapOperator(op)
@@ -228,18 +224,23 @@ class CalculatorController {
         val before = charBeforeCursor()
         val open = openParenthesisCount()
 
-        //case 1: cursor at the beginning or after an operator -> "("
-        if (before == null || before.isOperator() || before == '(') {
+        //allow "(" after ^
+        if (
+            before == null ||
+            before.isOperator() ||
+            before == '(' ||
+            before == '^'
+        ) {
             insert("(")
             return
         }
-        //case 2: cursor at the end of an expression -> ")"
+
         if (open > 0 && (before?.isDigit() == true || before == ')')) {
             insert(")")
             return
         }
-
     }
+
 
     fun onEqualsPressed() {
         val expr = expression.text
@@ -313,18 +314,6 @@ class CalculatorController {
         insert("10^")
     }
 
-    //    // when the user presses a function button (sin, cos, ln, etc.)
-//    fun onFunctionPressed(function: String) {
-//        if (shouldReset) {
-//            //if last result exists, apply function to result
-//            if (expression.isNotEmpty()) {
-//                expression = "$function(${expression})"
-//                _displayState.value = expression
-//                shouldReset = false
-//                return
-//            }
-//        }
-
     fun onFunctionPressed(function: String) { //function: cos, sin, tan, pi etc..
         val text = expression.text
 
@@ -347,69 +336,41 @@ class CalculatorController {
         )
     }
 
-    //expresion de euler
-
-    //cuando se presione e^x  se presenta e^ + el numero que se presione: e^2, e^3, etc.
-
-    //reglas:
-
-    //1: si la expresion esta vacia, se agrega e^ ✅
-
-    //2: si la expresion no esta vacia, y tiene e^ como ultimo caracter, se remplaza para evitar doble e^ en la expresion ✅
-
-    //3:si el ultimo caracter es una operacion +, -, / se permite 5 + e^
-
-    //4:si el ultimo caracter es un parentesis (, se permite (e^
-
-    //se permite e^1 + e^5 y e^(6+8)
-
-    //isThis = '^'
-
-    //Con isOperator no puedo poder e^ dos veces ni (, esto se por el ultimo caracter "^"
-    //con isThis puedo poder mas de un e^ pero no (
-
-    //-:
-
-
-    fun onEulerPressed() { //we're trying to fix the correct expression
+    private fun currentSegment(): String {
         val text = expression.text
+        val pos = cursor()
 
-        if (text.isEmpty()) {
-            expression = TextFieldValue("e^", TextRange(2))
-            return
+        var i = pos - 1
+        while (i >= 0 && !"+-×÷".contains(text[i]) && text[i] != '(') {
+            i--
         }
-
-        val last = text.last()
-
-        if (last.isThis() || last == '(') {
-            expression = TextFieldValue(text + "e^", TextRange(text.length + 2))
-            return
-        }
-
+        return text.substring(i + 1, pos)
     }
 
-//    fun onEulerPressed() { // handling the euler button
-//        val text = expression.text
-//
-//        val newText = when {
-//            text.isEmpty() -> {
-//                "e^"
-//            }
-//
-//            text.last().isOperator() || text.last() == '(' -> {
-//                text + "e^"
-//            }
-//
-//            else -> {
-//                "e^$text"
-//            }
-//        }
-//
-//        expression = TextFieldValue(
-//            newText, TextRange(newText.length)
-//        )
-//    }
+    private fun hasOpenEuler(segment: String): Boolean {
+        return segment.endsWith("e^")
+    }
 
+    fun onEulerPressed() {
+        val text = expression.text
+        val before = charBeforeCursor()
+
+        // case 1: empty expression -> "e^"
+        if (text.isEmpty()) {
+            insert("e^")
+            return
+        }
+
+        // it just allow e^ after an operator or '('
+        if (before != null && !before.isOperator() && before != '(') return
+
+        val segment = currentSegment()
+
+        // block e^e^e^
+        if (hasOpenEuler(segment)) return
+
+        insert("e^")
+    }
 
     // -----NORMAL FUNCTION-----
     fun mapOperator(op: String): String { // convert UI symbols into real math operators for the engine
@@ -421,293 +382,3 @@ class CalculatorController {
         }
     }
 }
-
-// when the user presses an operator (+, -, *, /, ^)
-//    fun onOperatorPressed(operator: String) {
-//        val op = mapOperator(operator)
-//
-//        if (shouldReset) shouldReset = false
-//
-//        if (expression.isEmpty()) return
-//
-//        val last = expression.last()
-//
-//        // If last char is operator, replace it (avoid ++, +×, etc.)
-//        if ("+-*/^".contains(last)) {
-//            expression = expression.dropLast(1) + op
-//        } else {
-//            expression += op
-//        }
-//
-//        _displayState.value = expression
-//    }
-//
-//    // when the user presses a function button (sin, cos, ln, etc.)
-//    fun onFunctionPressed(function: String) {
-//        if (shouldReset) {
-//            //if last result exists, apply function to result
-//            if (expression.isNotEmpty()) {
-//                expression = "$function(${expression})"
-//                _displayState.value = expression
-//                shouldReset = false
-//                return
-//            }
-//        }
-//
-//        //normal behavior
-//        expression = ""
-//        _displayState.value = "0"
-//        shouldReset = false
-//
-//        if (expression.isNotEmpty() && (expression.last().isDigit() || expression.last() == ')')) {
-//            expression += "*$function("
-//        } else {
-//            expression += function + "("
-//        }
-//
-//        _displayState.value = expression
-//    }
-//
-//    // when the user presses "="
-//    fun equalsPressed() {
-//        if (expression.isBlank()) return
-//
-//        val eval = engine.evaluate(expression)
-//
-//        //Error case
-//        if (eval == null) {
-//            result = expression //small text above
-//            expression = "Error" // big text below
-//            _displayState.value = "Error"
-//            shouldReset = true
-//            return
-//        }
-//
-//        // clean result: remove .0 if it's an integer
-//        val clean = if (eval % 1 == 0.0) {
-//            eval.toInt().toString()
-//        } else {
-//            eval.toString()
-//        }
-//
-//        result = expression // keep formula in "result" (this goes small, above)
-//        expression = clean // Replace expression with evaluated result
-//        _displayState.value = clean // Update display
-//        shouldReset = true // Prepare next input to reset
-//    }
-//
-//    // when the user presses "C" (Clear)
-//    fun onClearPressed() {
-//        expression = ""
-//        result = "" //to clean the result
-//        _displayState.value = "0"
-//        shouldReset = false
-//    }
-
-// when the user presses "eliminate symbol" (backspace)
-//    fun onDeleteLast() {
-//        if (shouldReset) {
-//            expression = ""
-//            result = "" //to clean the result
-//            _displayState.value = "0"
-//            shouldReset = false
-//            return
-//        }
-//
-//        if (expression.isEmpty()) return
-//        expression = expression.dropLast(1) // to eliminate the last character
-//        _displayState.value = if (expression.isEmpty()) "0" else expression
-//    }
-
-// when the user presses "(" o ")"
-//    fun onParenthesisPressed(parenthesis: String) {
-//        if (shouldReset) {
-//            expression = ""
-//            shouldReset = false
-//        }
-//
-//        expression += parenthesis
-//        _displayState.value = expression
-//    }
-//
-//    fun onDecimalPointPressed() {
-//        if (shouldReset) {
-//            expression = "0."
-//            _displayState.value = expression
-//            shouldReset = false
-//            return
-//        }
-//
-//        // extract last number to prevent multiple decimals
-//        val lastNumber = expression.takeLastWhile { it.isDigit() || it == '.' }
-//
-//        if (lastNumber.contains(".")) return    // already has decimal
-//
-//        if (expression.isEmpty() || !expression.last().isDigit()) {
-//            expression += "0."
-//        } else {
-//            expression += "."                   // normal decimal
-//        }
-//
-//        _displayState.value = expression
-//    }
-//
-//    fun onPercentPressed() {
-//        if (expression.isEmpty()) return
-//
-//        if (shouldReset) {
-//            // After "=" → percentage should apply to the result directly
-//            val num = expression.toDoubleOrNull() ?: return
-//            val result = num / 100
-//            expression = result.toString()
-//            _displayState.value = expression
-//            shouldReset = false
-//            return
-//        }
-//
-//        // Extract last number (e.g. from "200+10" get "10")
-//        val lastNumber = expression.takeLastWhile { it.isDigit() || it == '.' }
-//
-//        if (lastNumber.isEmpty()) return
-//
-//        // Convert last number to double
-//        val value = lastNumber.toDoubleOrNull() ?: return
-//
-//        // Remove the last number from the expression
-//        val baseExpression = expression.dropLast(lastNumber.length)
-//
-//        // Case A: IF there is an operator before lastNumber → contextual percent
-//        // Example: "200 + 10%"
-//        val operatorIndex = baseExpression.indexOfLast { "+-*/^".contains(it) }
-//
-//        val newPercentValue = if (operatorIndex != -1) {
-//            // We found an operator → contextual percentage
-//            // Example: in "200+10", numberBefore = 200, lastNumber = 10 → 10% of 200 = 20
-//            val numberBefore = baseExpression.takeLastWhile { it.isDigit() || it == '.' }
-//            val base = numberBefore.toDoubleOrNull() ?: 0.0
-//            (base * value) / 100.0
-//        } else {
-//            // Case B: direct percentage
-//            // Example: "10%" → 0.1
-//            value / 100.0
-//        }
-//
-//        // Build final expression
-//        val finalExpression = baseExpression + newPercentValue.toString()
-//
-//        expression = finalExpression
-//        _displayState.value = expression
-//    }
-//
-//    // --------- NEW FUNCTION ------------
-//
-//    //handling the square button
-//    fun onSquarePress() {
-//        if (expression.isEmpty()) return
-//
-//        if (shouldReset) shouldReset = false
-//
-//        // Wrap last number or complete expression in parentheses
-//        expression = "($expression)^2"
-//        _displayState.value = expression
-//    }
-//
-//    fun onGeneralPowerPress() { //handling the general power button
-//        if (expression.isEmpty()) return
-//
-//        if (shouldReset) shouldReset = false
-//
-//        expression = "($expression)^("
-//        _displayState.value = expression
-//    }
-//
-//    //handling the square root button
-//    fun onSquareRootPressed() {
-//        if (expression.isEmpty()) {
-//            expression = "sqrt("
-//            _displayState.value = expression
-//            return
-//        }
-//
-//        if (shouldReset) shouldReset = false
-//
-//        expression = "sqrt($expression)"
-//        _displayState.value = expression
-//    }
-//
-//    fun onEulerPressed() {
-//        if (expression.isEmpty()) {
-//            expression = "e^("
-//            _displayState.value = expression
-//            return
-//        }
-//
-//        if (shouldReset) shouldReset = false
-//
-//        expression = "e^($expression)"
-//        _displayState.value = expression
-//    }
-//
-//    fun onPowerPressed() { //handling the power button (so far)
-//        if (expression.isEmpty()) return
-//
-//        if (shouldReset) shouldReset = false
-//
-//        // Wrap full expression: pow(expression,
-//        expression = "pow($expression, "
-//        _displayState.value = expression
-//    }
-//
-//    fun onGeneralRootPressed() {
-//        if (expression.isEmpty()) return
-//
-//        if (shouldReset) shouldReset = false
-//
-//        // Convert root to pow(expression, 1/
-//        expression = "pow($expression, 1/"
-//        _displayState.value = expression
-//    }
-//
-//    fun onFactorialPressed() { // factorial
-//        if (expression.isEmpty()) return
-//
-//        if (shouldReset) shouldReset = false
-//
-//        // just allow factorial if the last character is a digit or ')'
-//        var last = expression.last()
-//        if (last.isDigit() || last == ')') {
-//            expression += "!"
-//        } else {
-//            _displayState.value = expression
-//        }
-//    }
-//
-//    fun onExpPressed() {
-//        if (shouldReset) shouldReset = false
-//
-//        if (expression.isEmpty()) { // wrap empty expression: exp( (to friendly design)
-//            expression = "exp("
-//            _displayState.value = expression
-//            return
-//        }
-//
-//        // Wrap full expression: exp(expression,
-//        expression = "exp($expression)"
-//        _displayState.value = expression
-//    }
-//
-//    fun onTenPowerPressed() { //handling the 10^x button
-//        if (expression.isEmpty()) return
-//
-//        if (shouldReset) shouldReset = false
-//
-//        if (expression.isEmpty()) {
-//            expression = "10^("
-//            _displayState.value = expression
-//            return
-//        }
-//
-//        expression = "10^($expression)"
-//        _displayState.value = expression
-//    }
-//}
