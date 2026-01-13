@@ -130,4 +130,12 @@ class CalculatorControllerTest {
         assertEquals("e^", controller.expression.text)
     }
 
+    @Test
+    fun `square root should return correct expression`() {
+        controller.onSquareRootPressed()
+        controller.insert("5")
+
+        assertEquals("√5", controller.expression.text)
+    }
+
 }
