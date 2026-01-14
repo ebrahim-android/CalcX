@@ -314,8 +314,17 @@ class CalculatorController {
         insert("10^")
     }
 
+    fun endsWithSameFunction(text: String, function: String): Boolean { // helper function to avoid adding the same function twice
+        val pattern = "$function("
+        return text.endsWith(pattern)
+    }
+
     fun onFunctionPressed(function: String) { //function: cos, sin, tan, pi etc..
         val text = expression.text
+
+        if (endsWithSameFunction(text, function)) {
+            return //to avoid adding the same function twice
+        }
 
         val newText = when {
             text.isEmpty() -> {
