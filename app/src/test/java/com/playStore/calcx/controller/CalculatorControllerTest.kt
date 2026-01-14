@@ -34,7 +34,7 @@ class CalculatorControllerTest {
     }
 
     @Test
-    fun `digit should delate the last character`(){
+    fun `digit should delete the last character`(){
 
         controller.insert("5")
         controller.insert("2")
@@ -136,6 +136,15 @@ class CalculatorControllerTest {
         controller.insert("5")
 
         assertEquals("√5", controller.expression.text)
+    }
+
+    @Test
+    fun `function should return correct expression`() {
+        controller.insert("5")
+        controller.onFunctionPressed("log")
+
+        assertEquals("log(5)", controller.expression.text)
+
     }
 
 }
