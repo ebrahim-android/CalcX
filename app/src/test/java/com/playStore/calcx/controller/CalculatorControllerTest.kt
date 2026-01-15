@@ -156,4 +156,12 @@ class CalculatorControllerTest {
         assertEquals("5^2", controller.expression.text)
     }
 
+    @Test
+    fun `square should return correct expression`() {
+        controller.insert("5")
+        controller.onSquarePress()
+
+        assertEquals("5x²", controller.expression.text)
+    }
+
 }
