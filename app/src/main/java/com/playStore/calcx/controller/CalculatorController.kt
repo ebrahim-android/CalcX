@@ -314,7 +314,10 @@ class CalculatorController {
         insert("10^")
     }
 
-    fun endsWithSameFunction(text: String, function: String): Boolean { // helper function to avoid adding the same function twice
+    fun endsWithSameFunction(
+        text: String,
+        function: String
+    ): Boolean { // helper function to avoid adding the same function twice
         val pattern = "$function("
         return text.endsWith(pattern)
     }
@@ -380,6 +383,20 @@ class CalculatorController {
 
         insert("e^")
     }
+
+    fun onSquarePress() { // to handle the square button
+        val text = expression.text
+
+        if (
+            text.isEmpty() ||
+            text.last().isOperator() ||
+            text.last() == '(' ||
+            text.last() == '²'
+        ) return
+
+        insert("x²")
+    }
+
 
     // -----NORMAL FUNCTION-----
     fun mapOperator(op: String): String { // convert UI symbols into real math operators for the engine

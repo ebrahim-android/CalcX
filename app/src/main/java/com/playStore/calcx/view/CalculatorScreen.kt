@@ -102,7 +102,7 @@ fun CalculatorScreen() {
 //            "sqrt" -> controller.onSquareRootPressed()
 //
 //            // ----- SQUARE -----
-//            "x²" -> controller.onSquarePress()
+            "x²" -> controller.onSquarePress()
 //
 //            // ----- GENERAL POWER -----
             "x^" -> controller.onPowerPressed()
@@ -339,7 +339,7 @@ fun Display(
                 color = Color.White,
                 fontSize = 36.sp,
                 textAlign = TextAlign.End,
-                fontWeight = FontWeight.Bold
+//                fontWeight = FontWeight.Bold
             ),
             onTextLayout = { layoutResult ->
                 textLayoutResult = layoutResult
