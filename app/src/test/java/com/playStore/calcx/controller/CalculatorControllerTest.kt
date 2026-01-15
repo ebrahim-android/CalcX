@@ -147,4 +147,13 @@ class CalculatorControllerTest {
 
     }
 
+    @Test
+    fun `power should return correct expression`() {
+        controller.insert("5")
+        controller.onPowerPressed()
+        controller.insert("2")
+
+        assertEquals("5^2", controller.expression.text)
+    }
+
 }
