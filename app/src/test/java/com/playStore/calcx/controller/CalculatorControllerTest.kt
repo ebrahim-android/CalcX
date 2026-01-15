@@ -164,4 +164,16 @@ class CalculatorControllerTest {
         assertEquals("5x²", controller.expression.text)
     }
 
+    @Test
+    fun `negative should return correct expression`() {
+        controller.insert("5")
+        controller.onOperatorPressed("+")
+        controller.onNegativePressed()
+        controller.insert("8")
+
+        assertEquals("5+(-8", controller.expression.text)
+    }
+
+
+
 }
