@@ -103,6 +103,8 @@ fun CalculatorScreen() {
 //
 //            // ----- SQUARE -----
             "x²" -> controller.onSquarePress()
+
+            "(-)" -> controller.onNegativePressed()
 //
 //            // ----- GENERAL POWER -----
             "x^" -> controller.onPowerPressed()

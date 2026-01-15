@@ -397,6 +397,32 @@ class CalculatorController {
         insert("x²")
     }
 
+    fun onNegativePressed() {
+        val text = expression.text
+        val before = charBeforeCursor()
+
+        // Block obvious invalid cases
+        if (before == '-' || before == '−') return
+
+        // Allow negative at start
+        if (text.isEmpty()) {
+            insert("(-")
+            return
+        }
+
+        // Allow after operators or '('
+        if (before != null && (before.isOperator() || before == '(')) {
+            insert("(-")
+            return
+        }
+
+        // Allow after numbers or ')'
+        if (before != null && (before.isDigit() || before == ')')) {
+            insert("(-")
+        }
+    }
+
+
 
     // -----NORMAL FUNCTION-----
     fun mapOperator(op: String): String { // convert UI symbols into real math operators for the engine
