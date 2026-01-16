@@ -174,6 +174,12 @@ class CalculatorControllerTest {
         assertEquals("5+(-8", controller.expression.text)
     }
 
+    @Test
+    fun `empty display should handling the correct behavior`() {
+        controller.onOperatorPressed("+")
 
+        assertEquals("", controller.expression.text)
+
+    }
 
 }

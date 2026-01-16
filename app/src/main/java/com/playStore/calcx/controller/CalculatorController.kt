@@ -24,6 +24,8 @@ class CalculatorController {
     private var shouldReset = false
     private val engine = CalculatorEngine()
 
+    private val memory: Double? = null // to save some kinda date
+
     //it's gonna be temporal, help us to migrate without
     // break the whole controller
     private fun updateExpression(
@@ -421,6 +423,17 @@ class CalculatorController {
             insert("(-")
         }
     }
+
+    //-------bottoms MS, MC, MR, M+ and M--------
+
+    // MS: save the last result
+    fun onMS(){ //incomplete
+        val text = expression.text
+        val before = charBeforeCursor()
+
+    }
+
+    //
 
 
 
