@@ -116,4 +116,9 @@ class CalculatorEngineTest {
         Assert.assertEquals(20.0, result, 0.0001)
     }
 
+    @Test
+    fun `square should return correct result`() {
+        val result = engine.evaluate("5x²")!!
+        Assert.assertEquals(25.0, result, 0.0001)
+    }
 }
