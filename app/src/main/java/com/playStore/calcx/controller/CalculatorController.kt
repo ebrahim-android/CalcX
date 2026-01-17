@@ -442,6 +442,19 @@ class CalculatorController {
         insert(value.toInt().toString())
     }
 
+    // MC: Clear the memory
+    fun onMC(){
+        memory = null
+    }
+
+
+    // M+: sum the last result to the memory with the current result
+    fun onMPlus() {
+        val value = result.toDoubleOrNull() ?: return
+        memory = (memory ?: 0.0) + value
+    }
+
+
     //
 
 

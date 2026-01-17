@@ -115,7 +115,15 @@ fun CalculatorScreen() {
             "MR" -> controller.onMR()
 
             // ------ MC -------
-//            "MC" -> controller.onMC()
+            "MC" -> controller.onMC()
+
+            // ------ M+ -------
+            "M+" -> controller.onMPlus()
+
+            // ------ M- -------
+//            "M-" -> controller.onMMinus()
+
+            //
 
 //            // ---- SCIENTIFIC FUNCTIONS ----
             else -> controller.onFunctionPressed(label)
