@@ -108,7 +108,15 @@ fun CalculatorScreen() {
 //
 //            // ----- GENERAL POWER -----
             "x^" -> controller.onPowerPressed()
-//
+            // ------ MS -------
+            "MS" -> controller.onMS()
+
+            // ------ MR -------
+            "MR" -> controller.onMR()
+
+            // ------ MC -------
+//            "MC" -> controller.onMC()
+
 //            // ---- SCIENTIFIC FUNCTIONS ----
             else -> controller.onFunctionPressed(label)
         }

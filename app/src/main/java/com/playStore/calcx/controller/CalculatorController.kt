@@ -1,5 +1,6 @@
 package com.playStore.calcx.controller
 
+import android.util.Log
 import androidx.collection.intSetOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,7 +25,7 @@ class CalculatorController {
     private var shouldReset = false
     private val engine = CalculatorEngine()
 
-    private val memory: Double? = null // to save some kinda date
+    private var memory: Double? = null // to save some kinda date
 
     //it's gonna be temporal, help us to migrate without
     // break the whole controller
@@ -259,6 +260,10 @@ class CalculatorController {
             return
         }
 
+//        val evaluated  = engine.evaluate(expression.text)
+//        result = resultValue.toString()
+
+
         val clean = if (resultValue % 1 == 0.0) { // clean the result: remove .0 if it's an integer
             resultValue.toInt().toString()
         } else {
@@ -267,7 +272,7 @@ class CalculatorController {
 
         //update the display with the result
         expression = TextFieldValue(clean, TextRange(clean.length))
-        result = expr
+        result = clean
         shouldReset = true
 
     }
@@ -423,14 +428,18 @@ class CalculatorController {
             insert("(-")
         }
     }
-
     //-------bottoms MS, MC, MR, M+ and M--------
 
     // MS: save the last result
-    fun onMS(){ //incomplete
-        val text = expression.text
-        val before = charBeforeCursor()
+    fun onMS(){
+        val value = result.toDoubleOrNull() ?: return
+        memory = value
+    }
 
+    // MR: read the last saved result to print it
+    fun onMR(){
+        val value = memory?: return // if memory is null, return
+        insert(value.toInt().toString())
     }
 
     //

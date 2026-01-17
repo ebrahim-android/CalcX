@@ -179,7 +179,6 @@ class CalculatorControllerTest {
         controller.onOperatorPressed("+")
 
         assertEquals("", controller.expression.text)
-
     }
 
 }
