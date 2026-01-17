@@ -181,4 +181,17 @@ class CalculatorControllerTest {
         assertEquals("", controller.expression.text)
     }
 
+    @Test
+    fun `MS should save the last result`() {
+        controller.insert("5")
+        controller.onOperatorPressed("+")
+        controller.insert("5")
+        controller.onEqualsPressed() // the result is 10
+
+        controller.onMS() // save this result
+
+        assertEquals("10", controller.expression.text)
+
+    }
+
 }
