@@ -194,4 +194,21 @@ class CalculatorControllerTest {
 
     }
 
+    @Test
+    fun `MR should read the last saved result`() {
+        controller.insert("5")
+        controller.onOperatorPressed("+")
+        controller.insert("4")
+        controller.onEqualsPressed() // the result is 9
+
+        controller.onMS() // save this result
+
+        controller.clear()
+
+        controller.onMR() // read this result
+
+        assertEquals("9", controller.expression.text)
+
+    }
+
 }
