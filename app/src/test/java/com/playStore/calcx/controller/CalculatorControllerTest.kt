@@ -211,4 +211,23 @@ class CalculatorControllerTest {
 
     }
 
+    @Test
+    fun `MC should clear the memory`(){
+        controller.insert("5")
+        controller.onOperatorPressed("+")
+        controller.insert("4")
+        controller.onEqualsPressed() // the result is 9
+
+        controller.onMS() // save this result
+
+        controller.clear()
+
+        controller.onMC() // clear the memory
+
+        controller.onMR() // read this result
+
+        assertEquals("", controller.expression.text)
+
+    }
+
 }
