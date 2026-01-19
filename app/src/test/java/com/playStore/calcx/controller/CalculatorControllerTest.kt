@@ -230,4 +230,30 @@ class CalculatorControllerTest {
 
     }
 
+    @Test
+    fun `M- should subtract the last result to the memory`() {
+        controller.insert("5")
+        controller.onOperatorPressed("+")
+        controller.insert("4")
+        controller.onEqualsPressed() // the result is 9
+
+        controller.onMS() // save this result
+
+        controller.clear()
+
+        controller.insert("6")
+        controller.onOperatorPressed("×")
+        controller.insert("2")
+        controller.onEqualsPressed() // the result is 12
+
+        controller.onMMinus() // subtract this result from the memory
+
+        controller.clear()
+
+        controller.onMR() // read this result
+
+        assertEquals("-3", controller.expression.text)
+
+    }
+
 }
