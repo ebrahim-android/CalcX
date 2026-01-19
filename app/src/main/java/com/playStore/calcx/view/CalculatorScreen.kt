@@ -121,7 +121,7 @@ fun CalculatorScreen() {
             "M+" -> controller.onMPlus()
 
             // ------ M- -------
-//            "M-" -> controller.onMMinus()
+            "M-" -> controller.onMMinus()
 
             //
 

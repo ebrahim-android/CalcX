@@ -454,10 +454,11 @@ class CalculatorController {
         memory = (memory ?: 0.0) + value
     }
 
-
-    //
-
-
+    // M-: subtract the last result to the memory with the current result
+    fun onMMinus() {
+        val value = result.toDoubleOrNull() ?: return
+        memory = (memory ?: 0.0) - value
+    }
 
     // -----NORMAL FUNCTION-----
     fun mapOperator(op: String): String { // convert UI symbols into real math operators for the engine
