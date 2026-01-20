@@ -257,4 +257,15 @@ class CalculatorControllerTest {
 
     }
 
+    @Test
+    fun `parenthesis should have the correct behavior`() {
+        controller.onParenthesisPressed()
+        controller.onParenthesisPressed()
+        controller.insert("5")
+        controller.onParenthesisPressed()
+
+        assertEquals("((5)", controller.expression.text)
+
+    }
+
 }
