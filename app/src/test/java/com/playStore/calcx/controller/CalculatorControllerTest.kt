@@ -177,8 +177,9 @@ class CalculatorControllerTest {
     @Test
     fun `empty display should handling the correct behavior`() {
         controller.onOperatorPressed("+")
+        controller.onOperatorPressed("-")
 
-        assertEquals("", controller.expression.text)
+        assertEquals("-", controller.expression.text)
     }
 
     @Test
