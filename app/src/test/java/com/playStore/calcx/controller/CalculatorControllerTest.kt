@@ -268,4 +268,12 @@ class CalculatorControllerTest {
 
     }
 
+    @Test
+    fun `delete should delete the last character`() {
+        controller.insert("5")
+        controller.insert("2")
+        controller.delete()
+
+        assertEquals("5", controller.expression.text)
+    }
 }
