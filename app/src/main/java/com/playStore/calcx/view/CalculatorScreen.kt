@@ -139,6 +139,9 @@ fun CalculatorScreen() {
         modifier = Modifier
             .fillMaxSize()
             .background(DarkTop)
+            .windowInsetsPadding(
+                WindowInsets.safeDrawing
+            )
     ) {
         // Create references for each main UI section (TopBar, Display, Navigation, Grids).
         val (topBarRef, displayRef, navControlsRef, scientificRef, numberPadRef) = remember {
