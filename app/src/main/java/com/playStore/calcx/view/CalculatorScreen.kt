@@ -480,7 +480,7 @@ fun ScientificButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val buttonBackgroundColor = Color(0xFF4A4A4A)
+    val buttonBackgroundColor = Color(0xFF5A5A5A)
     val cornerRadius = 8.dp
 
     Box(
@@ -573,7 +573,7 @@ fun NumberButton(
         "DEL" -> Color(0xFFD32F2F) // Dark Red
         "AC" -> Color(0xFF00AC4C) // Green
         "=" -> Color(0xFF00AC4C) // Green
-        else -> Color(0xFF5A5A5A)
+        else -> Color(0xFF3F3F3F)
     }
 
     val cornerRadius = 12.dp
