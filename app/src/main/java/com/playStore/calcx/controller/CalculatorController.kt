@@ -21,6 +21,9 @@ class CalculatorController {
 
     var result by mutableStateOf("")
 
+    var lastExpression by mutableStateOf("")
+
+
     // Controller internal status
     private var shouldReset = false
     private val engine = CalculatorEngine()
@@ -119,6 +122,7 @@ class CalculatorController {
             selection = TextRange(0)
         )
         result = ""
+        lastExpression = ""
         shouldReset = false
     }
 
@@ -244,7 +248,6 @@ class CalculatorController {
         }
     }
 
-
     fun onEqualsPressed() {
         val expr = expression.text
         if (expr.isBlank()) return //if the expression is empty, do nothing
@@ -271,6 +274,7 @@ class CalculatorController {
         }
 
         //update the display with the result
+        lastExpression = expr
         expression = TextFieldValue(clean, TextRange(clean.length))
         result = clean
         shouldReset = true

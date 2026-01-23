@@ -189,7 +189,7 @@ fun CalculatorScreen() {
         ) {
             Display(
                 expression = controller.expression,
-                result = controller.result,
+                lastExpression = controller.lastExpression,
                 onExpressionChange = { controller.expression = it } // added this
             )
         }
@@ -288,7 +288,7 @@ fun TopBar(
 // Displays the formula and the result in the display area.
 fun Display(
     expression: TextFieldValue,
-    result: String,
+    lastExpression: String,
     onExpressionChange: (TextFieldValue) -> Unit
 ) {
 
@@ -321,7 +321,7 @@ fun Display(
 
         // Formula (small text)
         Text(
-            text = result,
+            text = lastExpression,
             style = MaterialTheme.typography.bodyMedium,
             maxLines = 1,
             modifier = Modifier.fillMaxWidth(),
