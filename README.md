@@ -1,7 +1,10 @@
 # 🔢 CalcX – Scientific Calculator App
 
-A modern scientific calculator built with Kotlin, using the MVC architecture and a fully custom UI designed in Jetpack Compose.
-CalcX focuses on precision, professional design, and clean architecture—created as a learning and showcase project for advanced Android development.
+CalcX is a modern scientific calculator built with Kotlin and Jetpack Compose, featuring a fully custom UI and a clean implementation of the MVC architecture.
+
+The project focuses on precision, clear separation of responsibilities, and scalable design, serving both as a learning exercise and a professional showcase for advanced Android development.
+
+CalcX is not just a scientific calculator—its goal is to evolve into a complete calculation toolkit, including unit converters for height, distance, temperature, and more.
 
 ---
 
