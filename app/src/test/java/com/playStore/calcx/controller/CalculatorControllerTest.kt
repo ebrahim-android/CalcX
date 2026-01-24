@@ -4,9 +4,8 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-
 class CalculatorControllerTest {
-    
+
     private lateinit var controller: CalculatorController
 
     @Before
@@ -14,19 +13,12 @@ class CalculatorControllerTest {
         controller = CalculatorController()
     }
 
-    @Test
-    fun `digit should be appended to the expression`(){ // to test if the digit is appended to the expression
-
-        // Act
-        controller.insert("5")
-
-        // Assert
-        assertEquals("5", controller.expression.text)
-    }
+    // --------------------
+    // INSERT / DELETE
+    // --------------------
 
     @Test
-    fun `digit should be appended consecutively`(){ // to test if the digit is appended consecutively
-
+    fun `insert should append text at cursor`() {
         controller.insert("5")
         controller.insert("2")
 
@@ -34,74 +26,89 @@ class CalculatorControllerTest {
     }
 
     @Test
-    fun `digit should delete the last character`(){
-
+    fun `delete should remove last character`() {
         controller.insert("5")
         controller.insert("2")
-
         controller.delete()
 
         assertEquals("5", controller.expression.text)
-
     }
 
-    @Test
-    fun `decimal should appended when there is a digit`() {
-
-        controller.insert("5")
-        controller.insert(".")
-
-        assertEquals("5.", controller.expression.text)
-
-    }
+    // --------------------
+    // OPERATORS
+    // --------------------
 
     @Test
-    fun `double decimal should not be appended`() { // we got a problem, I gotta fix it
-
+    fun `operator should be appended after digit`() {
         controller.insert("5")
-        controller.insert(".")
-        controller.insert(".")
-
-        assertEquals("5.", controller.expression.text)
-
-    }
-
-    @Test
-    fun `operator should be appended to the expression`(){
-
-        controller.insert("5")
-
         controller.onOperatorPressed("+")
 
         assertEquals("5+", controller.expression.text)
-
     }
 
     @Test
-    fun `parenthesis should not be appended to the expression`(){
-
+    fun `operator should replace previous operator`() {
         controller.insert("5")
+        controller.onOperatorPressed("+")
+        controller.onOperatorPressed("-")
 
+        assertEquals("5-", controller.expression.text)
+    }
+
+    @Test
+    fun `operator should allow minus as first character`() {
+        controller.onOperatorPressed("-")
+
+        assertEquals("-", controller.expression.text)
+    }
+
+    // --------------------
+    // DECIMAL
+    // --------------------
+
+    @Test
+    fun `decimal should append to number`() {
+        controller.insert("5")
+        controller.onDecimalPressed()
+
+        assertEquals("5.", controller.expression.text)
+    }
+
+    @Test
+    fun `decimal should not be duplicated`() { //problem here
+        controller.insert("5")
+        controller.onDecimalPressed()
+        controller.onDecimalPressed()
+
+        assertEquals("5.", controller.expression.text)
+    }
+
+    // --------------------
+    // PARENTHESIS
+    // --------------------
+
+    @Test
+    fun `parenthesis should open when expression is empty`() {
         controller.onParenthesisPressed()
 
-        assertEquals("5", controller.expression.text)
-
+        assertEquals("(", controller.expression.text)
     }
 
     @Test
-    fun `clear should clear the expression`(){
-
+    fun `parenthesis should close when there is an open one`() {
+        controller.onParenthesisPressed()
         controller.insert("5")
+        controller.onParenthesisPressed()
 
-        controller.clear()
-
-        assertEquals("", controller.expression.text)
-
+        assertEquals("(5)", controller.expression.text)
     }
 
-    @Test
-    fun `equals should evaluate the expression`(){
+    // --------------------
+    // EQUALS
+    // --------------------
 
+    @Test
+    fun `equals should evaluate expression and store lastExpression`() {
         controller.insert("2")
         controller.onOperatorPressed("+")
         controller.insert("2")
@@ -109,46 +116,65 @@ class CalculatorControllerTest {
         controller.onEqualsPressed()
 
         assertEquals("4", controller.expression.text)
-
+        assertEquals("2+2", controller.lastExpression)
+        assertEquals("4", controller.result)
     }
 
     @Test
-    fun `factorial should return correct expression`(){
+    fun `equals should do nothing if expression is empty`() {
+        controller.onEqualsPressed()
 
+        assertEquals("", controller.expression.text)
+    }
+
+    @Test
+    fun `equals should not evaluate if expression ends with operator`() {
+        controller.insert("5")
+        controller.onOperatorPressed("+")
+
+        controller.onEqualsPressed()
+
+        assertEquals("5+", controller.expression.text)
+    }
+
+    // --------------------
+    // RESET BEHAVIOR
+    // --------------------
+
+    @Test
+    fun `insert after equals should start new expression`() { //problem here
+        controller.insert("2")
+        controller.onOperatorPressed("+")
+        controller.insert("2")
+        controller.onEqualsPressed()
+
+        controller.insert("5")
+
+        assertEquals("5", controller.expression.text)
+    }
+
+    // --------------------
+    // FUNCTIONS
+    // --------------------
+
+    @Test
+    fun `factorial should append exclamation`() {
         controller.insert("5")
         controller.onFactorialPressed()
 
         assertEquals("5!", controller.expression.text)
-
     }
 
     @Test
-    fun `euler should return correct expression`() {
-        controller.onEulerPressed()
-        controller.onEulerPressed()
-
-        assertEquals("e^", controller.expression.text)
-    }
-
-    @Test
-    fun `square root should return correct expression`() {
+    fun `square root should prepend symbol`() {
         controller.onSquareRootPressed()
-        controller.insert("5")
+        controller.insert("9")
 
-        assertEquals("√5", controller.expression.text)
+        assertEquals("√9", controller.expression.text)
     }
 
     @Test
-    fun `function should return correct expression`() {
-        controller.insert("5")
-        controller.onFunctionPressed("log")
-
-        assertEquals("log(5)", controller.expression.text)
-
-    }
-
-    @Test
-    fun `power should return correct expression`() {
+    fun `power should append caret`() {
         controller.insert("5")
         controller.onPowerPressed()
         controller.insert("2")
@@ -157,7 +183,7 @@ class CalculatorControllerTest {
     }
 
     @Test
-    fun `square should return correct expression`() {
+    fun `square should append x²`() {
         controller.insert("5")
         controller.onSquarePress()
 
@@ -165,7 +191,27 @@ class CalculatorControllerTest {
     }
 
     @Test
-    fun `negative should return correct expression`() {
+    fun `function should wrap expression`() {
+        controller.insert("5")
+        controller.onFunctionPressed("log")
+
+        assertEquals("log(5)", controller.expression.text)
+    }
+
+    @Test
+    fun `euler should not duplicate`() {
+        controller.onEulerPressed()
+        controller.onEulerPressed()
+
+        assertEquals("e^", controller.expression.text)
+    }
+
+    // --------------------
+    // NEGATIVE
+    // --------------------
+
+    @Test
+    fun `negative should be inserted after operator`() {
         controller.insert("5")
         controller.onOperatorPressed("+")
         controller.onNegativePressed()
@@ -174,106 +220,70 @@ class CalculatorControllerTest {
         assertEquals("5+(-8", controller.expression.text)
     }
 
-    @Test
-    fun `empty display should handling the correct behavior`() {
-        controller.onOperatorPressed("+")
-        controller.onOperatorPressed("-")
-
-        assertEquals("-", controller.expression.text)
-    }
+    // --------------------
+    // MEMORY
+    // --------------------
 
     @Test
-    fun `MS should save the last result`() {
+    fun `MS should save result`() {
         controller.insert("5")
         controller.onOperatorPressed("+")
         controller.insert("5")
-        controller.onEqualsPressed() // the result is 10
+        controller.onEqualsPressed()
 
-        controller.onMS() // save this result
+        controller.onMS()
 
-        assertEquals("10", controller.expression.text)
-
+        assertEquals("10", controller.result)
     }
 
     @Test
-    fun `MR should read the last saved result`() {
+    fun `MR should insert memory value`() {
         controller.insert("5")
         controller.onOperatorPressed("+")
         controller.insert("4")
-        controller.onEqualsPressed() // the result is 9
+        controller.onEqualsPressed()
 
-        controller.onMS() // save this result
-
+        controller.onMS()
         controller.clear()
-
-        controller.onMR() // read this result
+        controller.onMR()
 
         assertEquals("9", controller.expression.text)
-
     }
 
     @Test
-    fun `MC should clear the memory`(){
+    fun `MC should clear memory`() {
         controller.insert("5")
         controller.onOperatorPressed("+")
         controller.insert("4")
-        controller.onEqualsPressed() // the result is 9
+        controller.onEqualsPressed()
 
-        controller.onMS() // save this result
-
+        controller.onMS()
+        controller.onMC()
         controller.clear()
-
-        controller.onMC() // clear the memory
-
-        controller.onMR() // read this result
+        controller.onMR()
 
         assertEquals("", controller.expression.text)
-
     }
 
     @Test
-    fun `M- should subtract the last result to the memory`() {
+    fun `MMinus should subtract from memory`() {
         controller.insert("5")
         controller.onOperatorPressed("+")
         controller.insert("4")
-        controller.onEqualsPressed() // the result is 9
+        controller.onEqualsPressed() // 9
 
-        controller.onMS() // save this result
+        controller.onMS()
 
         controller.clear()
-
         controller.insert("6")
         controller.onOperatorPressed("×")
         controller.insert("2")
-        controller.onEqualsPressed() // the result is 12
+        controller.onEqualsPressed() // 12
 
-        controller.onMMinus() // subtract this result from the memory
-
+        controller.onMMinus()
         controller.clear()
-
-        controller.onMR() // read this result
+        controller.onMR()
 
         assertEquals("-3", controller.expression.text)
-
-    }
-
-    @Test
-    fun `parenthesis should have the correct behavior`() {
-        controller.onParenthesisPressed()
-        controller.onParenthesisPressed()
-        controller.insert("5")
-        controller.onParenthesisPressed()
-
-        assertEquals("((5)", controller.expression.text)
-
-    }
-
-    @Test
-    fun `delete should delete the last character`() {
-        controller.insert("5")
-        controller.insert("2")
-        controller.delete()
-
-        assertEquals("5", controller.expression.text)
     }
 }
