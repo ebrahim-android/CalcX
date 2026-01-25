@@ -23,37 +23,45 @@ CalcX is not just a scientific calculator—its goal is to evolve into a complet
 
 - Professional and responsive design optimized for all screen sizes.
 
-## 🔤 Smart Expression Handling
+# Smart Expression Handling
 
-- Real-time expression building.
+CalcX implements an intelligent expression system designed to guide the user toward valid mathematical input while preserving flexibility and speed.
+Real-time expression construction with full cursor awareness.
 
-- Prevents invalid input:
+### Prevents invalid input scenarios:
 
-  - No double decimal points.
+-   Blocks multiple decimal points in the same number.
+-   Avoids repeated or conflicting operators.
+-   Automatically inserts 0. when a decimal is started without a leading number.
+-   Context-aware negative number handling.
+-   Smart parenthesis management:
+-   Automatically decides between ( and ) based on context.
+-   Prevents unbalanced expressions.
+-   Graceful error handling to keep the app stable and predictable.
 
-  - No repeated operators.
+This logic ensures that every expression reaching the engine is mathematically valid.
 
-  - Auto-inserts 0. when needed.
+# Internal Calculation Engine
 
-- Intelligent parentheses management.
+All calculations are handled by a dedicated internal engine, designed as a standalone and testable component.
 
-- Clean error handling.
+***Expressions are evaluated using a custom CalculatorEngine, built on top of exp4j.***
 
-## 🧮 Internal Calculation Engine
+<img width="485" height="70" alt="image" src="https://github.com/user-attachments/assets/ec1fc0da-7a41-4622-9286-258fef052c2b" />
 
-- Expressions are evaluated using a custom CalculatorEngine built on top of exp4j.
+### Supports:
 
-  - Support for:
+-   Scientific operations (sin, cos, tan, log, ln, √, etc.)
+-   Unary and binary operators
+-   Power, factorial, and custom symbols
+-   Expression validation before evaluation
+-   Completely decoupled from UI and Controller logic.
+-   Designed with extensibility in mind:
+-   Easy to add new functions and operators
+-   Structured as a mini internal math library
+-   Fully unit tested to guarantee accuracy and prevent regressions.
 
-  - Scientific operations
-
-  - Unary and binary operators
-
-  - Expression validation
-
-  - Future extensibility for custom functions
-
-- Clean API-like architecture to simulate a mini internal math library.
+This engine acts as the mathematical core of the application, prioritizing correctness, clarity, and maintainability.
 
 # Unit Testing & Quality Assurance
 
