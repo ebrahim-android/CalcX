@@ -20,6 +20,17 @@ class CalculatorEngineParameterizedTest(
         Assert.assertEquals(expectedResult, result!!, 0.0001)
     }
 
-
-
+    companion object{
+        @JvmStatic
+        @Parameterized.Parameters(name = "{0} = {1}")
+        fun data() = listOf(
+            arrayOf("2+2", 4.0),
+            arrayOf("5-2", 3.0),
+            arrayOf("2*3", 6.0),
+            arrayOf("10/2", 5.0),
+            arrayOf("2^3", 8.0),
+            arrayOf("√9", 3.0),
+            arrayOf("5!", 120.0),
+        )
+    }
 }
