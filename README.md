@@ -55,19 +55,72 @@ CalcX is not just a scientific calculator—its goal is to evolve into a complet
 
 - Clean API-like architecture to simulate a mini internal math library.
 
-## 🧪 Unit Testing
+# Unit Testing & Quality Assurance
 
-- CalculatorEngine unit tests are implemented to verify core math operations and scientific functions:
+CalcX places a strong emphasis on reliable, testable, and maintainable code.
+Unit tests are used not only to validate results, but also to protect behavior, prevent regressions, and support future refactors with confidence.
 
-   - cos(0) returns 1.0
+***Current Test Coverage***
 
-   - sin(0) returns 0.0
+At this stage, the project includes three dedicated test layers:
 
-    - tan(0) returns 0.0
+### 1 - CalculatorEngine Tests
 
-    - Ensures correctness of calculations and prevents regression.
+Core mathematical logic is fully isolated and tested at the engine level.
 
-- Future tests will cover CalculatorController behaviors.
+Validates basic operations:
+
+-   Addition, subtraction, multiplication, division
+
+Validates scientific functions:
+
+<img width="500" height="600" alt="image" src="https://github.com/user-attachments/assets/65e6710b-7137-4f4b-a2a1-ca92a4199dbc" />
+
+
+Square root, power, factorial, etc.
+
+Ensures numerical precision using tolerance-based assertions.
+These tests guarantee that the calculation engine behaves correctly independently of the UI or controller.
+
+### 2 - CalculatorController Tests
+
+Controller tests focus on user interaction logic and expression handling.
+
+Verifies correct behavior when:
+
+-   Digits and operators are inserted
+-   Invalid sequences are blocked (e.g. duplicate operators)
+-   Cursor-based insertion and deletion work as expected
+-   Special buttons (clear, delete, equals, memory actions) behave correctly
+-   Ensures that UI actions translate into valid mathematical expressions.
+
+  <img width="500" height="600" alt="image" src="https://github.com/user-attachments/assets/a2578d5e-376b-4760-bb92-26d5adcf3579" />
+
+
+Helps maintain correctness as new buttons or behaviors are added.
+
+### 3 - Parameterized Tests (Engine Validation)
+
+To avoid duplicated test logic and improve scalability, parameterized tests are used.
+
+Multiple expressions are validated using a single test structure:
+
+<img width="600" height="700" alt="image" src="https://github.com/user-attachments/assets/d7ab218c-ae5c-4cb6-bc82-fee1ad5e162e" />
+
+Makes it easy to extend coverage by adding new cases.
+Improves readability and ensures consistent validation across many expressions.
+
+***Testing Philosophy***
+
+-   Tests are written with a behavior-driven mindset, focusing on what should happen, not implementation details.
+-   Each layer is tested in isolation to keep failures easy to diagnose.
+-   The testing strategy supports long-term evolution of the project, especially as new scientific features are added.
+
+***Planned Improvements***
+
+-   *Expand parameterized tests to cover edge cases and invalid expressions.*
+-   *Add more controller interaction scenarios.*
+-   *Increase test coverage alongside new calculator features.*
 
 ---
 
