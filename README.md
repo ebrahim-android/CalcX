@@ -1,34 +1,28 @@
-# 🔢 CalcX – Scientific Calculator App
-
-CalcX is a modern scientific calculator built with Kotlin and Jetpack Compose, featuring a fully custom UI and a clean implementation of the MVC architecture.
-
-The project focuses on precision, clear separation of responsibilities, and scalable design, serving both as a learning exercise and a professional showcase for advanced Android development.
-
-CalcX is not just a scientific calculator—its goal is to evolve into a complete calculation toolkit, including unit converters for height, distance, temperature, and more.
+<p align="center">🔢 CalcX</p>
+<p align="center">The Precision-Engineered Scientific Toolkit for Android</p>
+<p align="center"> <img src="https://img.shields.io/badge/Kotlin-1.9+-purple?style=for-the-badge&logo=kotlin" alt="Kotlin"> <img src="https://img.shields.io/badge/Jetpack_Compose-Latest-green?style=for-the-badge&logo=jetpackcompose" alt="Compose"> <img src="https://img.shields.io/badge/Architecture-MVC-blue?style=for-the-badge" alt="MVC"> <img src="https://img.shields.io/badge/Tests-Passing-brightgreen?style=for-the-badge&logo=junit5" alt="Tests"> </p>
 
 ---
 
-# 🚀 Features
+CalcX is a high-performance scientific calculator built with a focus on mathematical precision and clean architecture. Built entirely with Kotlin and Jetpack Compose, it serves as a professional showcase of advanced Android development, separating complex business logic from a responsive, modern UI.
 
-###  Scientific Calculator UI
+>  More than just a calculator: CalcX is evolving into a comprehensive toolkit, including unit converters for distance, temperature, and more.
 
-- Fully custom button layout:
-   - 🔢 **Number pad**
-   - ➗ **Basic operators**
-   - 🧮 **Scientific functions** (sin, cos, tan, log, ln, sqrt, etc.)
-   - 🧱 **Parentheses ( )**
-   - 🟰 **Equals**
-   - 🔙 **Backspace**
-   - ❌ **Clear**
+---
 
-- Professional and responsive design optimized for all screen sizes.
+## ✨ Key Features🧮 
+Professional Scientific UICustom Layouts: Optimized number pads and operator grids.Scientific Functions: $sin, cos, tan, log, ln, \sqrt{x},$ and more.Responsive Design: Seamlessly adapts to any screen aspect ratio.
 
-# Smart Expression Handling
+## 🧠 Smart Expression Handling
 
-CalcX implements an intelligent expression system designed to guide the user toward valid mathematical input while preserving flexibility and speed.
-Real-time expression construction with full cursor awareness.
+***The UI isn't just a grid of buttons; it's an intelligent input system that prevents errors before they happen:***
 
-### Prevents invalid input scenarios:
+-   Anti-Error Logic: Blocks duplicate decimals and conflicting operators.
+-   Auto-Correction: Automatically adds 0. for leading decimals and manages negative numbers contextually.
+-   Smart Parentheses: Intelligently toggles between ( and ) based on mathematical context.
+-   Real-time Cursor Awareness: Edit any part of the expression with live feedback.
+
+***Prevents invalid input scenarios:***
 
 -   Blocks multiple decimal points in the same number.
 -   Avoids repeated or conflicting operators.
@@ -41,15 +35,15 @@ Real-time expression construction with full cursor awareness.
 
 This logic ensures that every expression reaching the engine is mathematically valid.
 
-# Internal Calculation Engine
+## ⚙️ Internal Calculation Engine
 
 All calculations are handled by a dedicated internal engine, designed as a standalone and testable component.
 
 ***Expressions are evaluated using a custom CalculatorEngine, built on top of exp4j.***
 
-<img width="485" height="70" alt="image" src="https://github.com/user-attachments/assets/ec1fc0da-7a41-4622-9286-258fef052c2b" />
+<p align="center"> <img width="500" src="https://github.com/user-attachments/assets/ec1fc0da-7a41-4622-9286-258fef052c2b" alt="Engine Preview" style="border-radius: 10px;"/> </p>
 
-### Supports:
+**Supports:**
 
 -   Scientific operations (sin, cos, tan, log, ln, √, etc.)
 -   Unary and binary operators
@@ -62,75 +56,6 @@ All calculations are handled by a dedicated internal engine, designed as a stand
 -   Fully unit tested to guarantee accuracy and prevent regressions.
 
 This engine acts as the mathematical core of the application, prioritizing correctness, clarity, and maintainability.
-
-# Unit Testing & Quality Assurance
-
-CalcX places a strong emphasis on reliable, testable, and maintainable code.
-Unit tests are used not only to validate results, but also to protect behavior, prevent regressions, and support future refactors with confidence.
-
-***Current Test Coverage***
-
-At this stage, the project includes three dedicated test layers:
-
-### 1 - CalculatorEngine Tests
-
-Core mathematical logic is fully isolated and tested at the engine level.
-
-Validates basic operations:
-
--   Addition, subtraction, multiplication, division
-
-Validates scientific functions:
-
-<img width="500" height="600" alt="image" src="https://github.com/user-attachments/assets/65e6710b-7137-4f4b-a2a1-ca92a4199dbc" />
-
-
-Square root, power, factorial, etc.
-
-Ensures numerical precision using tolerance-based assertions.
-These tests guarantee that the calculation engine behaves correctly independently of the UI or controller.
-
-### 2 - CalculatorController Tests
-
-Controller tests focus on user interaction logic and expression handling.
-
-Verifies correct behavior when:
-
--   Digits and operators are inserted
--   Invalid sequences are blocked (e.g. duplicate operators)
--   Cursor-based insertion and deletion work as expected
--   Special buttons (clear, delete, equals, memory actions) behave correctly
--   Ensures that UI actions translate into valid mathematical expressions.
-
-  <img width="500" height="600" alt="image" src="https://github.com/user-attachments/assets/a2578d5e-376b-4760-bb92-26d5adcf3579" />
-
-
-Helps maintain correctness as new buttons or behaviors are added.
-
-### 3 - Parameterized Tests (Engine Validation)
-
-To avoid duplicated test logic and improve scalability, parameterized tests are used.
-
-Multiple expressions are validated using a single test structure:
-
-<img width="600" height="700" alt="image" src="https://github.com/user-attachments/assets/d7ab218c-ae5c-4cb6-bc82-fee1ad5e162e" />
-
-Makes it easy to extend coverage by adding new cases.
-Improves readability and ensures consistent validation across many expressions.
-
-***Testing Philosophy***
-
--   Tests are written with a behavior-driven mindset, focusing on what should happen, not implementation details.
--   Each layer is tested in isolation to keep failures easy to diagnose.
--   The testing strategy supports long-term evolution of the project, especially as new scientific features are added.
-
-***Planned Improvements***
-
--   *Expand parameterized tests to cover edge cases and invalid expressions.*
--   *Add more controller interaction scenarios.*
--   *Increase test coverage alongside new calculator features.*
-
----
 
 ## ⚙️ Tech Stack
 
@@ -145,29 +70,27 @@ Improves readability and ensures consistent validation across many expressions.
 
 ---
 
-## 🖼️ Screenshots
+## 🧪 Unit Testing & Quality Assurance
 
-<img width="240" height="500" alt="image" src="https://github.com/user-attachments/assets/c9a64641-5605-42be-bad3-6264c53c7cce" />
+CalcX maintains a "Logic-First" philosophy. Every mathematical operation is verified through a multi-layered testing strategy.<details><summary><b>1. Engine Validation (Click to expand)</b></summary>Validates the raw mathematical output, ensuring $1 + 1$ is always $2$ and complex scientific functions return precise values using tolerance-based assertions.<img width="450" src="https://github.com/user-attachments/assets/65e6710b-7137-4f4b-a2a1-ca92a4199dbc" /></details><details><summary><b>2. Controller Interaction (Click to expand)</b></summary>Ensures that user clicks translate into valid expressions. It tests cursor placement, deletion logic, and state management.<img width="450" src="https://github.com/user-attachments/assets/a2578d5e-376b-4760-bb92-26d5adcf3579" /></details><details><summary><b>3. Parameterized Testing (Click to expand)</b></summary>We run hundreds of calculations through a single test suite to ensure edge-case stability.<img width="450" src="https://github.com/user-attachments/assets/d7ab218c-ae5c-4cb6-bc82-fee1ad5e162e" /></details>
+
+***Planned Improvements***
+
+-   *Expand parameterized tests to cover edge cases and invalid expressions.*
+-   *Add more controller interaction scenarios.*
+-   *Increase test coverage alongside new calculator features.*
+
+---
+
+📱 Visual Showcase
+<p align="center"> <img width="280" alt="CalcX Screenshot" src="https://github.com/user-attachments/assets/c9a64641-5605-42be-bad3-6264c53c7cce" style="border-radius: 20px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"/> </p>
 
 ---
 
 ### 🗂️ Project Structure
 
-📁 com.playStore.calcx
-│
-├── 🎨 view/ → Jetpack Compose UI (CalculatorScreen, button layout, display)
-│
-├── 🎮 controller/ → Handles all user input
-│ ├── onDigitPressed()
-│ ├── onOperatorPressed()
-│ ├── onDecimalPointPressed()
-│ ├── onParenthesisPressed()
-│ ├── onDeleteLast()
-│ └── onEqualsPressed()
-│
-├── 🧮 engine/ → CalculatorEngine (expression parsing & evaluation)
-│
-└── ⚙️ utils/ → Helpers, formatting, constants
+<img width="658" height="216" alt="image" src="https://github.com/user-attachments/assets/e27664df-fb00-48bf-b84d-a447d54349ea" />
+
 
 ---
 
@@ -214,7 +137,7 @@ CalcX is built as a serious learning project to explore Compose, MVC, and modula
 
 ---
 
-### 📬 Contact
+📬 Connect
+<p align="left"> <a href="mailto:ebrahimsantana35@gmail.com"> <img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" /> </a> <a href="https://www.linkedin.com/in/ebrahim-santana-75a188301/"> <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" /> </a> </p>
 
-✉️ **ebrahimsantana35@gmail.com**  
-💼 **LinkedIn:** [Ebrahim Santana](https://www.linkedin.com/in/ebrahim-santana-75a188301/)
+<p align="center">Developed with ❤️ by Ebrahim Santana</p>
