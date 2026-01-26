@@ -89,8 +89,7 @@ CalcX maintains a "Logic-First" philosophy. Every mathematical operation is veri
 
 ### 🗂️ Project Structure
 
-<img width="658" height="216" alt="image" src="https://github.com/user-attachments/assets/e27664df-fb00-48bf-b84d-a447d54349ea" />
-
+<img width="658" height="216" alt="image" src="https://github.com/user-attachments/assets/7afd75d5-50b2-4b59-b860-46b5b1a7ed34" />
 
 ---
 
