@@ -1,4 +1,5 @@
-<p align="center">🔢 CalcX</p>
+<p align="center"> <img width="150" height="250" alt="ChatGPT Image 26 ene 2026, 04_10_39 p m" src="https://github.com/user-attachments/assets/3dea1f4e-67dc-4cd4-ad50-951cbeafeefa" /></p>
+<p align="center"> CalcX</p>
 <p align="center">The Precision-Engineered Scientific Toolkit for Android</p>
 <p align="center"> <img src="https://img.shields.io/badge/Kotlin-1.9+-purple?style=for-the-badge&logo=kotlin" alt="Kotlin"> <img src="https://img.shields.io/badge/Jetpack_Compose-Latest-green?style=for-the-badge&logo=jetpackcompose" alt="Compose"> <img src="https://img.shields.io/badge/Architecture-MVC-blue?style=for-the-badge" alt="MVC"> <img src="https://img.shields.io/badge/Tests-Passing-brightgreen?style=for-the-badge&logo=junit5" alt="Tests"> </p>
 
