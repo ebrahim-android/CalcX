@@ -123,7 +123,10 @@ fun CalculatorScreen() {
             // ------ M- -------
             "M-" -> controller.onMMinus()
 
-            //
+            // ----- ENG -------
+            "eng" -> controller.onEng()
+
+            // ----- AND -------
 
 //            // ---- SCIENTIFIC FUNCTIONS ----
             else -> controller.onFunctionPressed(label)

@@ -1,7 +1,7 @@
 package com.playStore.calcx.controller
 
-import android.util.Log
-import androidx.collection.intSetOf
+
+import kotlin.math.pow
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -463,6 +463,32 @@ class CalculatorController {
         val value = result.toDoubleOrNull() ?: return
         memory = (memory ?: 0.0) - value
     }
+
+    //ENG
+    fun onEng() {
+        val value = result.toDoubleOrNull() ?: return
+        if (value == 0.0) return
+
+        val exponent = kotlin.math.floor(
+            kotlin.math.log10(kotlin.math.abs(value)) / 3
+        ).toInt() * 3
+
+        val mantissa = value / 10.0.pow(exponent.toDouble())
+
+        val engResult = "${mantissa}E$exponent"
+
+        // internal state
+        result = engResult
+
+        // visible state (UI)
+        expression = TextFieldValue(
+            engResult,
+            TextRange(engResult.length)
+        )
+
+        shouldReset = true
+    }
+
 
     // -----NORMAL FUNCTION-----
     fun mapOperator(op: String): String { // convert UI symbols into real math operators for the engine
