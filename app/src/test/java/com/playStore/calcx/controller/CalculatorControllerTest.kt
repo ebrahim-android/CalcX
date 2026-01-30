@@ -286,4 +286,17 @@ class CalculatorControllerTest {
 
         assertEquals("-3", controller.expression.text)
     }
+
+    @Test
+    fun `eng should convert to scientific notation`() {
+        controller.insert("111")
+        controller.onFactorialPressed()
+        controller.onEqualsPressed()
+
+        controller.onEng()
+
+        assertEquals("2.147483647E9", controller.result)
+
+    }
+
 }
