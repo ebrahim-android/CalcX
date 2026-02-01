@@ -127,4 +127,10 @@ class CalculatorEngineTest {
         val result = engine.evaluate("-5+2")!!
         Assert.assertEquals(-3.0, result, 0.0001)
     }
+
+    @Test
+    fun `mixed operations should return correct result`() {
+        val result = engine.evaluate("2+3*4")!!
+        Assert.assertEquals(14.0, result, 0.0001)
+    }
 }
