@@ -133,4 +133,10 @@ class CalculatorEngineTest {
         val result = engine.evaluate("2+3*4")!!
         Assert.assertEquals(14.0, result, 0.0001)
     }
+
+    @Test
+    fun `invalid expression should return null`() {
+        val result = engine.evaluate("2+x")
+        Assert.assertEquals(null, result)
+    }
 }
