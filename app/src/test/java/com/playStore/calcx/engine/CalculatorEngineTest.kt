@@ -139,4 +139,10 @@ class CalculatorEngineTest {
         val result = engine.evaluate("2+x")
         Assert.assertEquals(null, result)
     }
+
+    @Test
+    fun `square root of negative number should return null`() {
+        val result = engine.evaluate("√-9")
+        Assert.assertEquals(null, result)
+    }
 }
