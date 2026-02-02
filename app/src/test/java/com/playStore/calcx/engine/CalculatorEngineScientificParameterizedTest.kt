@@ -26,7 +26,11 @@ class CalculatorEngineScientificParameterizedTest(
         fun data() = listOf(
             arrayOf("cos(0)", 1.0),
             arrayOf("sin(0)", 0.0),
-            arrayOf("tan(0)", 0.0)
+            arrayOf("tan(0)", 0.0),
+            arrayOf("cos(pi)", -1.0),
+            arrayOf("sin(pi/2)", 1.0),
+            arrayOf("tan(pi/4)", 1.0),
+            arrayOf("pi(1)", 3.141592653589793)
         )
     }
 }
