@@ -257,10 +257,21 @@ class CalculatorController {
         if (before != null && before.isOperator()) return
         if (openParenthesisCount() != 0) return //if there are open parenthesis, do nothing
 
-        val resultValue = engine.evaluate(expr) ?: run {
-            expression = TextFieldValue("Error", TextRange(5))
+        // factorial error
+        val factorialValue = getFactorialOperand(expr)
+        if (factorialValue != null && factorialValue > 170) {
+            expression = TextFieldValue(
+                "Factorial too big",
+                TextRange("Factorial too big".length)
+            )
             shouldReset = true
             return
+        }
+
+        val resultValue = engine.evaluate(expr) ?: run {
+                expression = TextFieldValue("Error", TextRange(5))
+                shouldReset = true
+                return
         }
 
 //        val evaluated  = engine.evaluate(expression.text)
@@ -280,6 +291,13 @@ class CalculatorController {
         shouldReset = true
 
     }
+
+    private fun getFactorialOperand(expr: String): Int? {
+        val regex = Regex("""(\d+)!$""")
+        val match = regex.find(expr)
+        return match?.groupValues?.get(1)?.toIntOrNull()
+    }
+
 
     fun onFactorialPressed() { // to handle the factorial button
         val text = currentText()
