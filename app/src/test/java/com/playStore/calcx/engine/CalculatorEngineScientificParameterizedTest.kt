@@ -30,7 +30,11 @@ class CalculatorEngineScientificParameterizedTest(
             arrayOf("cos(pi)", -1.0),
             arrayOf("sin(pi/2)", 1.0),
             arrayOf("tan(pi/4)", 1.0),
-            arrayOf("pi(1)", 3.141592653589793)
+            arrayOf("pi(1)", 3.141592653589793),
+            arrayOf("sin(cos(8))", -0.14498719803267052),
+            arrayOf("tan(sin(cos(1)))", 0.565114343133041),
+            arrayOf("log(100)", 2.0),
+            arrayOf("e^2", 7.38905609893065)
         )
     }
 }
