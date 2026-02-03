@@ -103,6 +103,15 @@ class CalculatorControllerTest {
         assertEquals("(5)", controller.expression.text)
     }
 
+    @Test
+    fun `parenthesis should not close when there is no open one`() {
+        controller.onParenthesisPressed()
+        controller.onParenthesisPressed()
+        controller.onParenthesisPressed()
+
+        assertEquals("(((", controller.expression.text)
+    }
+
     // --------------------
     // EQUALS
     // --------------------
@@ -164,6 +173,18 @@ class CalculatorControllerTest {
 
         assertEquals("5!", controller.expression.text)
     }
+
+    @Test
+    fun `factorial should return error if too big`() {
+        controller.insert("171")
+        controller.onFactorialPressed()
+
+        controller.onEqualsPressed()
+
+        assertEquals("Factorial too big", controller.expression.text)
+
+    }
+
 
     @Test
     fun `square root should prepend symbol`() {
@@ -287,6 +308,10 @@ class CalculatorControllerTest {
         assertEquals("-3", controller.expression.text)
     }
 
+    // --------------------
+    // ENG notation
+    // --------------------
+
     @Test
     fun `eng should convert to scientific notation`() {
         controller.insert("111")
@@ -298,5 +323,6 @@ class CalculatorControllerTest {
         assertEquals("2.147483647E9", controller.result)
 
     }
+
 
 }
