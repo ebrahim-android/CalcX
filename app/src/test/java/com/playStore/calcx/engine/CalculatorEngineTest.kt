@@ -145,4 +145,10 @@ class CalculatorEngineTest {
         val result = engine.evaluate("√-9")
         Assert.assertEquals(null, result)
     }
+
+    @Test
+    fun `power of negative number should return correct result`() {
+        val result = engine.evaluate("2^-3")!!
+        Assert.assertEquals(0.125, result, 0.001)
+    }
 }
