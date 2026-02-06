@@ -211,7 +211,10 @@ fun CalculatorScreen() {
                 .background(DarkMiddle)
                 .padding(horizontal = 8.dp, vertical = 10.dp)
         ) {
-            NavControlsRow()
+            NavControlsRow(
+                onLeftClick = { controller.moveCursorLeft() },
+                onRightClick = { controller.moveCursorRight() },
+            )
         }
 
         // 5. Scientific Buttons Area (33% -> 70%)

@@ -259,17 +259,6 @@ class CalculatorController {
 
         // factorial error
         val factorialValue = getFactorialOperand(expr)
-//        val factorialNegative = getFactorialNegative(expr)
-//        //negative
-//        if (factorialNegative != null && factorialNegative <= -1) {
-//            expression = TextFieldValue(
-//                "factorial cannot be negative",
-//                TextRange("factorial cannot be negative".length)
-//            )
-//            shouldReset = true
-//            return
-//        }
-        //limit
         if (factorialValue != null && factorialValue > 170) {
             expression = TextFieldValue(
                 "Factorial too big",
@@ -285,10 +274,6 @@ class CalculatorController {
                 return
         }
 
-//        val evaluated  = engine.evaluate(expression.text)
-//        result = resultValue.toString()
-
-
         val clean = if (resultValue % 1 == 0.0) { // clean the result: remove .0 if it's an integer
             resultValue.toInt().toString()
         } else {
@@ -302,12 +287,6 @@ class CalculatorController {
         shouldReset = true
 
     }
-//
-//    private fun getFactorialNegative(expr: String): Int? {
-//        val regex = Regex("""-?\d+!""")
-//        val match = regex.find(expr)
-//        return match?.groupValues?.get(1)?.toIntOrNull()
-//    }
 
     private fun getFactorialOperand(expr: String): Int? {
         val regex = Regex("""(\d+)!$""")
