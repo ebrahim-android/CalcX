@@ -1,5 +1,7 @@
 package com.playStore.calcx.controller
 
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -324,5 +326,28 @@ class CalculatorControllerTest {
 
     }
 
+    @Test
+    fun `moveCursorLeft moves cursor one position to the left`() {
+        controller.expression = TextFieldValue(
+            "12345",
+            selection = TextRange(3)
+        )
+
+        controller.moveCursorLeft()
+
+        assertEquals(2, controller.expression.selection.end)
+    }
+
+    @Test
+    fun `moveCursorRight moves cursor one position to the right`() {
+        controller.expression = TextFieldValue(
+            text = "12345",
+            selection = TextRange(2)
+        )
+
+        controller.moveCursorRight()
+
+        assertEquals(3, controller.expression.selection.end)
+    }
 
 }
