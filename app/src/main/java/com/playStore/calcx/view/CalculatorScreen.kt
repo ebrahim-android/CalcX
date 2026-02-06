@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.playStore.calcx.controller.CalculatorController
+import com.playStore.calcx.controller.CalculatorMode
 
 @Preview(showBackground = true, backgroundColor = 0xFF202020)
 @Composable
@@ -126,6 +127,9 @@ fun CalculatorScreen() {
             // ----- ENG -------
             "eng" -> controller.onEng()
 
+            // ----- MODE -------
+            "Mode" -> controller.onModePressed()
+
             // ----- AND -------
 
 //            // ---- SCIENTIFIC FUNCTIONS ----
@@ -173,7 +177,9 @@ fun CalculatorScreen() {
                 }
                 .background(DarkTop)
         ) {
-            TopBar()
+            TopBar(
+                mode = controller.mode
+            )
         }
 
         // 3. Display Area (8% -> 25%)
@@ -260,7 +266,7 @@ fun CalculatorScreen() {
 @Composable
 // Renders the top menu icon and the current calculator mode text.
 fun TopBar(
-    modeText: String = "Standard",
+    mode: CalculatorMode,
     onMenuClick: () -> Unit = {}
 ) {
     Row(
@@ -282,7 +288,11 @@ fun TopBar(
 
         // Mode text
         Text(
-            text = modeText,
+            text = when(mode) {
+                CalculatorMode.STANDARD -> "Standard"
+                CalculatorMode.SCIENTIFIC -> "Scientific"
+                CalculatorMode.PROGRAMMER -> "Programmer"
+            },
             color = Color.White,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(end = 8.dp)

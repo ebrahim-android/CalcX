@@ -14,6 +14,17 @@ class CalculatorController {
     private val _displayState = mutableStateOf("0")
     val displayState get() = _displayState
 
+    var mode by mutableStateOf(CalculatorMode.STANDARD) //change the mode of the calculator
+        private set
+
+    fun onModePressed() {
+        mode = when (mode) {
+            CalculatorMode.STANDARD -> CalculatorMode.SCIENTIFIC
+            CalculatorMode.SCIENTIFIC -> CalculatorMode.PROGRAMMER
+            CalculatorMode.PROGRAMMER -> CalculatorMode.STANDARD
+        }
+    }
+
     var expression by mutableStateOf(
         TextFieldValue("", TextRange(0))
     )//added
