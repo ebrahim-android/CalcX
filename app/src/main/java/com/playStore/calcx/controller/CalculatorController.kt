@@ -264,8 +264,8 @@ class CalculatorController {
         if (expr.isBlank()) return //if the expression is empty, do nothing
 
         //if the last character is an operator, do nothing
-        val before = charBeforeCursor()
-        if (before != null && before.isOperator()) return
+        val lastChar = expr.lastOrNull()
+        if (lastChar != null && lastChar.isOperator()) return
         if (openParenthesisCount() != 0) return //if there are open parenthesis, do nothing
 
         // factorial error
@@ -279,6 +279,7 @@ class CalculatorController {
             return
         }
 
+        //calculate the result
         val resultValue = engine.evaluate(expr) ?: run {
                 expression = TextFieldValue("Error", TextRange(5))
                 shouldReset = true
