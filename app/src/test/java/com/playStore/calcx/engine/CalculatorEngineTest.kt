@@ -151,4 +151,19 @@ class CalculatorEngineTest {
         val result = engine.evaluate("2^-3")!!
         Assert.assertEquals(0.125, result, 0.001)
     }
+
+    @Test
+    fun `nested functions and parenthesis should return correct result`() {
+        // sin(pi/2 + cos(0)) = sin(1.570796... + 1) = sin(2.570796...)
+        val result = engine.evaluate("sin(pi/2 + cos(0))")!!
+        Assert.assertEquals(Math.sin(Math.PI / 2 + 1), result, 0.0001)
+    }
+
+    @Test
+    fun `factorial applied after power should return correct result`() { //this is not working, I have to fix it
+        // (2^3)! = 8! = 40320
+        val result = engine.evaluate("(2^3)!")!!
+        Assert.assertEquals(40320.0, result, 0.0001)
+    }
+
 }
