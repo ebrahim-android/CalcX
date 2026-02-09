@@ -518,7 +518,7 @@ fun ScientificButton(
     ) {
         Text(
             text = label,
-            color = Color.White,
+            color = if (enabled) Color.White else Color.Gray,
             fontSize = 16.sp,
             modifier = Modifier.padding(horizontal = 4.dp)
         )
@@ -575,11 +575,15 @@ fun ScientificButtonsGrid(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 rowItems.forEach { label ->
+                    val category = categoryFor(label)
+
+                    val enabled = isButtonEnabled(
+                        mode = mode,
+                        category = category
+                    )
                     ScientificButton(
                         label = label,
-                        enabled = isButtonEnabled(mode = mode,
-                            category = ButtonCategory.SCIENTIFIC
-                        ),
+                        enabled = enabled,
                         onClick = { onButtonClick(label) },
                         modifier = Modifier.weight(1f) // Buttons share horizontal space equally
                     )
@@ -588,6 +592,23 @@ fun ScientificButtonsGrid(
         }
     }
 }
+
+fun categoryFor(label: String): ButtonCategory = //categoryFor allow us to know which category the button belongs to
+    when (label) {
+        "Mode" -> ButtonCategory.MODE
+
+        "sin", "cos", "tan",
+        "log", "ln", "√x",
+        "x²", "x^", "e^x",
+        "10^x", "n!" ->
+            ButtonCategory.SCIENTIFIC
+
+        "And", "Or", "hyp", "int" ->
+            ButtonCategory.PROGRAMMER
+
+        else -> ButtonCategory.STANDARD
+    }
+
 
 // ------------------- Number Pad -------------------
 

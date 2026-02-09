@@ -64,6 +64,18 @@ class ModeRulesTest {
             )
         )
     }
+
+    @Test
+    fun `mode button is always enabled`() {
+        CalculatorMode.values().forEach { mode ->
+            assertTrue(
+                isButtonEnabled(
+                    mode = mode,
+                    category = ButtonCategory.MODE
+                )
+            )
+        }
+    }
 }
 
 
