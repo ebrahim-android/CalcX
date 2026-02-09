@@ -20,6 +20,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import com.playStore.calcx.controller.isButtonEnabled
+import com.playStore.calcx.controller.ButtonCategory
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.FocusRequester
@@ -40,6 +43,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.playStore.calcx.controller.CalculatorController
 import com.playStore.calcx.controller.CalculatorMode
+import java.util.Locale
 
 @Preview(showBackground = true, backgroundColor = 0xFF202020)
 @Composable
@@ -236,7 +240,9 @@ fun CalculatorScreen() {
                 }
                 .background(DarkBottom)
         ) {
-            ScientificButtonsGrid(onButtonClick = { label ->
+            ScientificButtonsGrid(
+                mode = controller.mode,
+                onButtonClick = { label ->
                 handleButtonClick(label)
             })
         }
@@ -493,6 +499,7 @@ fun NavCircleButton(
 // Renders a single button for scientific functions.
 fun ScientificButton(
     label: String,
+    enabled: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -504,7 +511,9 @@ fun ScientificButton(
             .fillMaxSize()
             .clip(RoundedCornerShape(cornerRadius))
             .background(buttonBackgroundColor)
-            .clickable { onClick() },
+            .alpha(if (enabled) 1f else 0.5f)
+            .clickable(enabled = enabled) {
+                onClick() },
         contentAlignment = Alignment.Center,
     ) {
         Text(
@@ -519,6 +528,7 @@ fun ScientificButton(
 @Composable
 // Lays out the 5x grid of scientific buttons, ensuring each button takes up equal, responsive space.
 fun ScientificButtonsGrid(
+    mode: CalculatorMode,
     onButtonClick: (String) -> Unit
 ) {
     ConstraintLayout(
@@ -567,6 +577,9 @@ fun ScientificButtonsGrid(
                 rowItems.forEach { label ->
                     ScientificButton(
                         label = label,
+                        enabled = isButtonEnabled(mode = mode,
+                            category = ButtonCategory.SCIENTIFIC
+                        ),
                         onClick = { onButtonClick(label) },
                         modifier = Modifier.weight(1f) // Buttons share horizontal space equally
                     )
