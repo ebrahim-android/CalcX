@@ -238,7 +238,7 @@ class CalculatorController {
 
     }
 
-    fun onParenthesisPressed() {
+    fun onParenthesisPressed(string: String) {
         val before = charBeforeCursor()
         val open = openParenthesisCount()
 
@@ -515,6 +515,80 @@ class CalculatorController {
         shouldReset = true
     }
 
+    // ------- BUTTON CALL ----------
+
+    fun onButtonPressed(id: ButtonId) {
+        when (id) {
+
+            // ---- DIGITS ----
+            ButtonId.DIGIT_0 -> insert("0")
+            ButtonId.DIGIT_1 -> insert("1")
+            ButtonId.DIGIT_2 -> insert("2")
+            ButtonId.DIGIT_3 -> insert("3")
+            ButtonId.DIGIT_4 -> insert("4")
+            ButtonId.DIGIT_5 -> insert("5")
+            ButtonId.DIGIT_6 -> insert("6")
+            ButtonId.DIGIT_7 -> insert("7")
+            ButtonId.DIGIT_8 -> insert("8")
+            ButtonId.DIGIT_9 -> insert("9")
+
+            ButtonId.DECIMAL -> onDecimalPressed()
+
+            // ---- OPERATORS ----
+            ButtonId.ADD -> onOperatorPressed("+")
+            ButtonId.SUBTRACT -> onOperatorPressed("−")
+            ButtonId.MULTIPLY -> onOperatorPressed("×")
+            ButtonId.DIVIDE -> onOperatorPressed("÷")
+            ButtonId.PERCENT -> onOperatorPressed("%")
+
+            // ---- PARENTHESES ----
+            ButtonId.OPEN_PAREN -> onParenthesisPressed("(")
+            ButtonId.CLOSE_PAREN -> onParenthesisPressed(")")
+
+            // ---- CONTROL ----
+            ButtonId.CLEAR -> clear()
+            ButtonId.DELETE -> delete()
+            ButtonId.EQUALS -> onEqualsPressed()
+
+            // ---- SCIENTIFIC ----
+            ButtonId.SIN -> onFunctionPressed("sin")
+            ButtonId.COS -> onFunctionPressed("cos")
+            ButtonId.TAN -> onFunctionPressed("tan")
+
+            ButtonId.LOG -> onFunctionPressed("log")
+            ButtonId.LN -> onFunctionPressed("ln")
+
+            ButtonId.SQRT -> onSquareRootPressed()
+            ButtonId.SQUARE -> onSquarePress()
+            ButtonId.POWER -> onPowerPressed()
+            ButtonId.FACTORIAL -> onFactorialPressed()
+
+            ButtonId.PI -> insert("pi")
+            ButtonId.EULER -> insert("e")
+
+            // ---- MEMORY ----
+            ButtonId.MEMORY_CLEAR -> onMC()
+            ButtonId.MEMORY_READ -> onMR()
+            ButtonId.MEMORY_SAVE -> onMS()
+            ButtonId.MEMORY_ADD -> onMPlus()
+            ButtonId.MEMORY_SUBTRACT -> onMMinus()
+
+            // ---- CURSOR ----
+            ButtonId.CURSOR_LEFT -> moveCursorLeft()
+            ButtonId.CURSOR_RIGHT -> moveCursorRight()
+
+            // ---- MODE ----
+            ButtonId.MODE_TOGGLE -> onModePressed()
+
+            // ---- PROGRAMMER (future safe) ----
+            ButtonId.AND -> onFunctionPressed("AND")
+            ButtonId.OR -> onFunctionPressed("OR")
+            ButtonId.XOR -> onFunctionPressed("XOR")
+            ButtonId.NOT -> onFunctionPressed("NOT")
+
+            else -> Unit
+        }
+    }
 
     // -----NORMAL FUNCTION-----
     fun mapOperator(op: String): String { // convert UI symbols into real math operators for the engine

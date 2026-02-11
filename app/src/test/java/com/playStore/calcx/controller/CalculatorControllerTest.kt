@@ -91,25 +91,25 @@ class CalculatorControllerTest {
 
     @Test
     fun `parenthesis should open when expression is empty`() {
-        controller.onParenthesisPressed()
+        controller.onParenthesisPressed(")")
 
         assertEquals("(", controller.expression.text)
     }
 
     @Test
     fun `parenthesis should close when there is an open one`() {
-        controller.onParenthesisPressed()
+        controller.onParenthesisPressed(")")
         controller.insert("5")
-        controller.onParenthesisPressed()
+        controller.onParenthesisPressed(")")
 
         assertEquals("(5)", controller.expression.text)
     }
 
     @Test
     fun `parenthesis should not close when there is no open one`() {
-        controller.onParenthesisPressed()
-        controller.onParenthesisPressed()
-        controller.onParenthesisPressed()
+        controller.onParenthesisPressed(")")
+        controller.onParenthesisPressed(")")
+        controller.onParenthesisPressed(")")
 
         assertEquals("(((", controller.expression.text)
     }

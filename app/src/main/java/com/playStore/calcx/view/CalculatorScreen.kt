@@ -1,6 +1,5 @@
 package com.playStore.calcx.view
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -28,7 +27,6 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
@@ -36,14 +34,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.playStore.calcx.controller.ButtonId
+import com.playStore.calcx.controller.ButtonsByMode
 import com.playStore.calcx.controller.CalculatorController
 import com.playStore.calcx.controller.CalculatorMode
-import java.util.Locale
 
 @Preview(showBackground = true, backgroundColor = 0xFF202020)
 @Composable
@@ -69,7 +67,7 @@ fun CalculatorScreen() {
 
             // ---- PARENTHESES ----
             "(", ")" ->
-                controller.onParenthesisPressed()
+                controller.onParenthesisPressed(")")
 
             // ---- DECIMAL ----
             "." -> controller.onDecimalPressed()
@@ -242,9 +240,9 @@ fun CalculatorScreen() {
         ) {
             ScientificButtonsGrid(
                 mode = controller.mode,
-                onButtonClick = { label ->
-                handleButtonClick(label)
-            })
+                onButtonPress = { id ->
+                    controller.onButtonPressed(id)
+                })
         }
 
         // 6. Number Pad Area (70% -> 100%)
@@ -294,7 +292,7 @@ fun TopBar(
 
         // Mode text
         Text(
-            text = when(mode) {
+            text = when (mode) {
                 CalculatorMode.STANDARD -> "Standard"
                 CalculatorMode.SCIENTIFIC -> "Scientific"
                 CalculatorMode.PROGRAMMER -> "Programmer"
@@ -328,7 +326,7 @@ fun Display(
     var cursorVisile by remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) {
-        while(true){
+        while (true) {
             cursorVisile = !cursorVisile
             kotlinx.coroutines.delay(500)
         }
@@ -359,7 +357,7 @@ fun Display(
             modifier = Modifier
                 .fillMaxWidth()
                 .focusRequester(focusRequester)
-                .drawBehind{
+                .drawBehind {
                     val layout = textLayoutResult ?: return@drawBehind
 
                     val cursorIndex = expression.selection.start
@@ -513,7 +511,8 @@ fun ScientificButton(
             .background(buttonBackgroundColor)
             .alpha(if (enabled) 1f else 0.5f)
             .clickable(enabled = enabled) {
-                onClick() },
+                onClick()
+            },
         contentAlignment = Alignment.Center,
     ) {
         Text(
@@ -529,8 +528,12 @@ fun ScientificButton(
 // Lays out the 5x grid of scientific buttons, ensuring each button takes up equal, responsive space.
 fun ScientificButtonsGrid(
     mode: CalculatorMode,
-    onButtonClick: (String) -> Unit
+    onButtonPress: (ButtonId) -> Unit
 ) {
+    val buttons = ButtonsByMode.buttonsFor(mode)
+
+    val buttonMap = buttons.associateBy { it.label }
+
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
@@ -575,25 +578,33 @@ fun ScientificButtonsGrid(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 rowItems.forEach { label ->
-                    val category = categoryFor(label)
 
-                    val enabled = isButtonEnabled(
-                        mode = mode,
-                        category = category
-                    )
-                    ScientificButton(
-                        label = label,
-                        enabled = enabled,
-                        onClick = { onButtonClick(label) },
-                        modifier = Modifier.weight(1f) // Buttons share horizontal space equally
-                    )
+                    val button = buttonMap[label]
+
+                    if (button != null) {
+
+                        val enabled = isButtonEnabled(mode, button.category)
+
+                        ScientificButton(
+                            label = button.label,
+                            enabled = enabled,
+                            onClick = { onButtonPress(button.id) },
+                            modifier = Modifier.weight(1f)
+                        )
+
+                    } else {
+
+                        Spacer(modifier = Modifier.weight(1f))
+                    }
                 }
             }
+
         }
     }
 }
 
-fun categoryFor(label: String): ButtonCategory = //categoryFor allow us to know which category the button belongs to
+fun categoryFor(label: String): ButtonCategory =
+    //categoryFor allow us to know which category the button belongs to
     when (label) {
         "Mode" -> ButtonCategory.MODE
 
