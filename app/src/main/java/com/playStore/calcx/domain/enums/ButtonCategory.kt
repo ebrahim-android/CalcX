@@ -1,4 +1,4 @@
-package com.playStore.calcx.controller
+package com.playStore.calcx.domain.enums
 
 enum class ButtonCategory {
     STANDARD,

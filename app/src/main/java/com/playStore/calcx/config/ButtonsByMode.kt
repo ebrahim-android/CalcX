@@ -1,4 +1,9 @@
-package com.playStore.calcx.controller
+package com.playStore.calcx.config
+
+import com.playStore.calcx.domain.CalculatorButton
+import com.playStore.calcx.domain.enums.ButtonCategory
+import com.playStore.calcx.domain.enums.ButtonId
+import com.playStore.calcx.domain.enums.CalculatorMode
 
 object ButtonsByMode {
 

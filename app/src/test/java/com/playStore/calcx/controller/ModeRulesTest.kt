@@ -1,9 +1,10 @@
 package com.playStore.calcx.controller
 
+import com.playStore.calcx.domain.enums.ButtonCategory
+import com.playStore.calcx.domain.enums.CalculatorMode
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
 import org.junit.Test
-import kotlin.test.assertEquals
 
 class ModeRulesTest {
 

@@ -1,4 +1,4 @@
-package com.playStore.calcx.view
+package com.playStore.calcx.ui.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -21,7 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import com.playStore.calcx.controller.isButtonEnabled
-import com.playStore.calcx.controller.ButtonCategory
+import com.playStore.calcx.domain.enums.ButtonCategory
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.FocusRequester
@@ -38,10 +38,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.playStore.calcx.controller.ButtonId
-import com.playStore.calcx.controller.ButtonsByMode
+import com.playStore.calcx.domain.enums.ButtonId
+import com.playStore.calcx.config.ButtonsByMode
 import com.playStore.calcx.controller.CalculatorController
-import com.playStore.calcx.controller.CalculatorMode
+import com.playStore.calcx.domain.enums.CalculatorMode
+import kotlinx.coroutines.delay
 
 @Preview(showBackground = true, backgroundColor = 0xFF202020)
 @Composable
@@ -328,7 +329,7 @@ fun Display(
     LaunchedEffect(Unit) {
         while (true) {
             cursorVisile = !cursorVisile
-            kotlinx.coroutines.delay(500)
+            delay(500)
         }
     }
 

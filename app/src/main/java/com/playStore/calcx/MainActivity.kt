@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 
-import com.playStore.calcx.view.CalculatorScreen
+import com.playStore.calcx.ui.view.CalculatorScreen
 import com.playStore.calcx.ui.theme.CalcXTheme
 
 class MainActivity : ComponentActivity() {
