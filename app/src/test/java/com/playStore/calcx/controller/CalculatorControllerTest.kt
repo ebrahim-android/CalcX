@@ -2,6 +2,7 @@ package com.playStore.calcx.controller
 
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
+import com.playStore.calcx.domain.enums.CalculatorMode
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -348,6 +349,35 @@ class CalculatorControllerTest {
         controller.moveCursorRight()
 
         assertEquals(3, controller.expression.selection.end)
+    }
+
+     // --------------------
+    // MODE
+    // --------------------
+
+    @Test
+    fun `mode button should cycle through modes`() {
+        assertEquals(CalculatorMode.STANDARD, controller.mode)
+
+        controller.onModePressed()
+        assertEquals(CalculatorMode.SCIENTIFIC, controller.mode)
+
+        controller.onModePressed()
+        assertEquals(CalculatorMode.PROGRAMMER, controller.mode)
+
+        controller.onModePressed()
+        assertEquals(CalculatorMode.STANDARD, controller.mode)
+    }
+
+    @Test
+    fun `changing mode should not clear expression`() {
+        controller.insert("5")
+        controller.onOperatorPressed("+")
+        controller.insert("3")
+
+        controller.onModePressed() // STANDARD → SCIENTIFIC
+
+        assertEquals("5+3", controller.expression.text)
     }
 
 }
