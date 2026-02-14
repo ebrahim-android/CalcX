@@ -380,4 +380,29 @@ class CalculatorControllerTest {
         assertEquals("5+3", controller.expression.text)
     }
 
+    @Test
+    fun `changing mode should not clear result`() {
+        controller.insert("5")
+        controller.onOperatorPressed("+")
+        controller.insert("3")
+
+        controller.onEqualsPressed()
+
+        controller.onModePressed() // STANDARD → SCIENTIFIC
+
+        assertEquals("8", controller.result)
+    }
+
+    @Test
+    fun `changing mode should not clear lastExpression`() {
+        controller.insert("5")
+        controller.onOperatorPressed("+")
+        controller.insert("3")
+
+        controller.onEqualsPressed()
+
+        controller.onModePressed() // STANDARD → SCIENTIFIC
+
+        assertEquals("5+3", controller.lastExpression)
+    }
 }
