@@ -15,6 +15,15 @@ object ButtonsByMode {
         }
     }
 
+    fun standardCompactButtons(): List<CalculatorButton> {
+        return listOf(
+            CalculatorButton(ButtonId.POWER, "xʸ", ButtonCategory.SCIENTIFIC),
+            CalculatorButton(ButtonId.OPEN_PAREN, "(", ButtonCategory.STANDARD),
+            CalculatorButton(ButtonId.CLOSE_PAREN, ")", ButtonCategory.STANDARD),
+            CalculatorButton(ButtonId.MODE_TOGGLE, "Mode", ButtonCategory.MODE)
+        )
+    }
+
     private val standardButtons = listOf(
         CalculatorButton(ButtonId.DIGIT_0, "0", ButtonCategory.STANDARD),
         CalculatorButton(ButtonId.DIGIT_1, "1", ButtonCategory.STANDARD),

@@ -1,5 +1,6 @@
 package com.playStore.calcx.ui.view
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -41,6 +42,7 @@ import androidx.constraintlayout.compose.Dimension
 import com.playStore.calcx.domain.enums.ButtonId
 import com.playStore.calcx.config.ButtonsByMode
 import com.playStore.calcx.controller.CalculatorController
+import com.playStore.calcx.domain.CalculatorButton
 import com.playStore.calcx.domain.enums.CalculatorMode
 import kotlinx.coroutines.delay
 
@@ -50,6 +52,27 @@ import kotlinx.coroutines.delay
 fun CalculatorScreen() {
 
     val controller = remember { CalculatorController() } // Controller instance
+    val mode = controller.mode
+
+    val displayHeight by animateDpAsState(
+        targetValue = when (mode) {
+            CalculatorMode.STANDARD -> 120.dp
+            CalculatorMode.SCIENTIFIC -> 160.dp
+            CalculatorMode.PROGRAMMER -> 140.dp
+        },
+        label = "displayHeight"
+    )
+
+    val scientificHeight by animateDpAsState(
+        targetValue = when (mode) {
+            CalculatorMode.STANDARD -> 72.dp      // colapsado
+            CalculatorMode.SCIENTIFIC -> 220.dp  // expandido
+            CalculatorMode.PROGRAMMER -> 180.dp
+        },
+        label = "scientificHeight"
+    )
+
+
 
     val localExpression = remember {
         mutableStateOf(TextFieldValue(""))
@@ -162,10 +185,10 @@ fun CalculatorScreen() {
         // Total sum: 8% + 17% + 8% + 37% + 30% = 100%
         val topGuide = createGuidelineFromTop(0f)
         val endTopBar = createGuidelineFromTop(0.08f)   // TopBar (8%)
-        val endDisplay = createGuidelineFromTop(0.28f)  // Display (17%)
-        val endNavControls = createGuidelineFromTop(0.35f) // NavControls (8%)
-        val endScientific = createGuidelineFromTop(0.70f) // Scientific Grid (37%)
-        val endNumberPad = createGuidelineFromBottom(0f) // Number Pad (30%)
+//        val endDisplay = createGuidelineFromTop(0.28f)  // Display (17%)
+//        val endNavControls = createGuidelineFromTop(0.35f) // NavControls (8%)
+//        val endScientific = createGuidelineFromTop(0.70f) // Scientific Grid (37%)
+//        val endNumberPad = createGuidelineFromBottom(0f) // Number Pad (30%)
 
         // 2. TopBar Area (0% -> 8%)
         Box(
@@ -189,13 +212,12 @@ fun CalculatorScreen() {
         Box(
             modifier = Modifier
                 .constrainAs(displayRef) {
-                    top.linkTo(endTopBar)
+                    top.linkTo(topBarRef.bottom)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                    bottom.linkTo(endDisplay)
-                    width = Dimension.fillToConstraints
-                    height = Dimension.fillToConstraints
                 }
+                .fillMaxWidth()
+                .height(displayHeight)
                 .background(DarkTop)
                 .padding(8.dp)
         ) {
@@ -210,14 +232,12 @@ fun CalculatorScreen() {
         Box(
             modifier = Modifier
                 .constrainAs(navControlsRef) {
-                    top.linkTo(endDisplay)
+                    top.linkTo(displayRef.bottom)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                    bottom.linkTo(endNavControls)
-                    width = Dimension.fillToConstraints
-                    height = Dimension.fillToConstraints
                 }
                 .background(DarkMiddle)
+                .height(64.dp)
                 .padding(horizontal = 8.dp, vertical = 10.dp)
         ) {
             NavControlsRow(
@@ -230,13 +250,12 @@ fun CalculatorScreen() {
         Box(
             modifier = Modifier
                 .constrainAs(scientificRef) {
-                    top.linkTo(endNavControls)
+                    top.linkTo(navControlsRef.bottom)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                    bottom.linkTo(endScientific)
-                    width = Dimension.fillToConstraints
-                    height = Dimension.fillToConstraints
                 }
+                .fillMaxWidth()
+                .height(scientificHeight)
                 .background(DarkBottom)
         ) {
             ScientificButtonsGrid(
@@ -250,11 +269,10 @@ fun CalculatorScreen() {
         Box(
             modifier = Modifier
                 .constrainAs(numberPadRef) {
-                    top.linkTo(endScientific)
+                    top.linkTo(scientificRef.bottom)
+                    bottom.linkTo(parent.bottom)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                    bottom.linkTo(endNumberPad)
-                    width = Dimension.fillToConstraints
                     height = Dimension.fillToConstraints
                 }
                 .background(DarkBottom)
@@ -531,7 +549,11 @@ fun ScientificButtonsGrid(
     mode: CalculatorMode,
     onButtonPress: (ButtonId) -> Unit
 ) {
-    val buttons = ButtonsByMode.buttonsFor(mode)
+    val buttons = when (mode) {
+        CalculatorMode.STANDARD -> ButtonsByMode.standardCompactButtons()
+        else -> ButtonsByMode.buttonsFor(mode)
+    }
+
 
     val buttonMap = buttons.associateBy { it.label }
 
@@ -540,20 +562,30 @@ fun ScientificButtonsGrid(
             .fillMaxSize()
             .padding(horizontal = 12.dp, vertical = 12.dp)
     ) {
-        val items = listOf(
-            listOf("hyp", "And", "Or", "int", "Mode"),
-            listOf("÷", "√x", "log", "eng", "π", "ln"),
-            listOf("Rcl", "x²", "x^", "sin", "cos", "tan"),
-            listOf("(-)", "e^x", "10^x", "n!", "MC", "abs"),
-            listOf("MS", "(", ")", "M+", "M-", "MR")
-        )
+        val items = when (mode) {
+
+            CalculatorMode.STANDARD -> listOf(
+                listOf("xʸ", "(", ")", "Mode")
+            )
+
+            else -> listOf(
+                listOf("hyp", "And", "Or", "int", "Mode"),
+                listOf("÷", "√x", "log", "eng", "π", "ln"),
+                listOf("Rcl", "x²", "x^", "sin", "cos", "tan"),
+                listOf("(-)", "e^x", "10^x", "n!", "MC", "abs"),
+                listOf("MS", "(", ")", "M+", "M-", "MR")
+            )
+        }
+
 
         // 1. Create references for each row
         val rowRefs = items.map { createRef() }.toTypedArray()
 
         // 2. Create Guidelines to divide the height into 5 equal parts (20% each).
-        val horizontalGuides =
-            (0..5).map { createGuidelineFromTop(it * 0.20f) }
+        val rowCount = items.size
+        val horizontalGuides = (0..rowCount).map {
+            createGuidelineFromTop(it * (1f / rowCount))
+        }
 
         // Vertical spacing between rows
         val rowSpacing = 8.dp
