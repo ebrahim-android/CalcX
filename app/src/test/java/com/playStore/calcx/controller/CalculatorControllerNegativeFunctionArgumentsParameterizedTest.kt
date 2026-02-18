@@ -39,7 +39,11 @@ class CalculatorControllerNegativeFunctionArgumentsParameterizedTest(
 //            arrayOf("-cos(pi)", "1"),
             arrayOf("-sin(pi/2)", "-1"),
 //            arrayOf("-tan(pi/4)", "-1"),
-            arrayOf("-log(100)", "-2")
+            arrayOf("-log(100)", "-2"),
+            arrayOf("-ln(10)", "-2.302585092994046"),
+            arrayOf("-sqrt(16)", "-4"),
+            arrayOf("-pi(1)", "-3.141592653589793"),
+            arrayOf("-e(1)", "-2.718281828")
         )
     }
 }
