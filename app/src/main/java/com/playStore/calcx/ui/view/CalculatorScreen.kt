@@ -181,6 +181,8 @@ fun CalculatorScreen() {
             createRefs()
         }
 
+        val numberPadHeight = 320.dp   // ajustable según tu diseño
+
         // Define Guidelines to divide vertical space based on percentages.
         // Total sum: 8% + 17% + 8% + 37% + 30% = 100%
         val topGuide = createGuidelineFromTop(0f)
@@ -213,8 +215,11 @@ fun CalculatorScreen() {
             modifier = Modifier
                 .constrainAs(displayRef) {
                     top.linkTo(topBarRef.bottom)
+                    bottom.linkTo(navControlsRef.top)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
+
+                    height = Dimension.fillToConstraints
                 }
                 .fillMaxWidth()
                 .height(displayHeight)
@@ -232,13 +237,13 @@ fun CalculatorScreen() {
         Box(
             modifier = Modifier
                 .constrainAs(navControlsRef) {
-                    top.linkTo(displayRef.bottom)
+                    bottom.linkTo(scientificRef.top)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }
-                .background(DarkMiddle)
                 .height(64.dp)
-                .padding(horizontal = 8.dp, vertical = 10.dp)
+//                .padding(horizontal = 8.dp, vertical = 10.dp)
+                .background(DarkMiddle)
         ) {
             NavControlsRow(
                 onLeftClick = { controller.moveCursorLeft() },
@@ -250,11 +255,10 @@ fun CalculatorScreen() {
         Box(
             modifier = Modifier
                 .constrainAs(scientificRef) {
-                    top.linkTo(navControlsRef.bottom)
+                    bottom.linkTo(numberPadRef.top)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }
-                .fillMaxWidth()
                 .height(scientificHeight)
                 .background(DarkBottom)
         ) {
@@ -269,12 +273,11 @@ fun CalculatorScreen() {
         Box(
             modifier = Modifier
                 .constrainAs(numberPadRef) {
-                    top.linkTo(scientificRef.bottom)
                     bottom.linkTo(parent.bottom)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                    height = Dimension.fillToConstraints
                 }
+                .height(numberPadHeight)
                 .background(DarkBottom)
         ) {
             NumberPadGrid(onButtonClick = { label ->
