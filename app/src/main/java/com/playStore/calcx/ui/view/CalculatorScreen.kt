@@ -65,9 +65,9 @@ fun CalculatorScreen() {
 
     val scientificHeight by animateDpAsState(
         targetValue = when (mode) {
-            CalculatorMode.STANDARD -> 72.dp      // colapsado
-            CalculatorMode.SCIENTIFIC -> 220.dp  // expandido
-            CalculatorMode.PROGRAMMER -> 180.dp
+            CalculatorMode.STANDARD -> 72.dp      // collapsed
+            CalculatorMode.SCIENTIFIC -> 290.dp  // expanded
+            CalculatorMode.PROGRAMMER -> 290.dp
         },
         label = "scientificHeight"
     )
@@ -181,7 +181,7 @@ fun CalculatorScreen() {
             createRefs()
         }
 
-        val numberPadHeight = 320.dp   // ajustable según tu diseño
+        val numberPadHeight = 280.dp   // size of the number pad
 
         // Define Guidelines to divide vertical space based on percentages.
         // Total sum: 8% + 17% + 8% + 37% + 30% = 100%
