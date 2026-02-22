@@ -43,7 +43,8 @@ class CalculatorControllerNegativeFunctionArgumentsParameterizedTest(
             arrayOf("-ln(10)", "-2.302585092994046"),
             arrayOf("-sqrt(16)", "-4"),
             arrayOf("-pi(1)", "-3.141592653589793"),
-            arrayOf("-e(1)", "-2.718281828")
+            arrayOf("-e(1)", "-2.718281828"),
+            arrayOf("-tan(pi)", "1.2246467991473532E-16"),
         )
     }
 }

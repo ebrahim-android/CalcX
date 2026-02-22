@@ -565,7 +565,7 @@ class CalculatorController {
             ButtonId.POWER -> onPowerPressed()
             ButtonId.FACTORIAL -> onFactorialPressed()
 
-            ButtonId.PI -> insert("pi")
+            ButtonId.PI -> insert("π")
             ButtonId.EULER -> insert("e")
 
             // ---- MEMORY ----
