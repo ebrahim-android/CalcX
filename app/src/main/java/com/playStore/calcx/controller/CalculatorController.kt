@@ -10,6 +10,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import com.playStore.calcx.domain.enums.ButtonId
 import com.playStore.calcx.domain.enums.CalculatorMode
 import com.playStore.calcx.model.CalculatorEngine
+import java.text.NumberFormat
+import java.util.Locale
 
 class CalculatorController {
     //To show the principal display (0, 123, sin(1) so on...)
@@ -296,7 +298,9 @@ class CalculatorController {
 
         //update the display with the result
         lastExpression = expr
-        expression = TextFieldValue(clean, TextRange(clean.length))
+//        expression = TextFieldValue(clean, TextRange(clean.length))
+        expression = TextFieldValue(formatNumber(clean.toDouble()),
+            TextRange(formatNumber(clean.toDouble()).length))
         result = clean
         shouldReset = true
 
@@ -589,6 +593,18 @@ class CalculatorController {
             ButtonId.NOT -> onFunctionPressed("NOT")
 
             else -> Unit
+        }
+    }
+
+    //format number to comma separated
+    fun formatNumber(value: Double): String {
+        val formatter = NumberFormat.getNumberInstance(Locale.US)
+        formatter.maximumFractionDigits = 10
+
+        return if (value % 1.0 == 0.0) {
+            formatter.format(value.toLong())
+        } else {
+            formatter.format(value)
         }
     }
 

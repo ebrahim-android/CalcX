@@ -48,7 +48,7 @@ object ButtonsByMode {
         CalculatorButton(ButtonId.EQUALS, "=", ButtonCategory.STANDARD),
         CalculatorButton(ButtonId.DELETE, "DEL", ButtonCategory.STANDARD),
         CalculatorButton(ButtonId.CLEAR, "AC", ButtonCategory.STANDARD),
-        CalculatorButton(ButtonId.MODE_TOGGLE, "Mode", ButtonCategory.MODE),
+        CalculatorButton(ButtonId.MODE_TOGGLE, "Mode", ButtonCategory.MODE)
     )
 
     private val scientificButtons = listOf(
@@ -67,13 +67,13 @@ object ButtonsByMode {
         CalculatorButton(ButtonId.MEMORY_READ, "MR", ButtonCategory.SCIENTIFIC),
         CalculatorButton(ButtonId.MEMORY_SAVE, "MS", ButtonCategory.SCIENTIFIC),
         CalculatorButton(ButtonId.MEMORY_ADD, "M+", ButtonCategory.SCIENTIFIC),
-        CalculatorButton(ButtonId.MEMORY_SUBTRACT, "M-", ButtonCategory.SCIENTIFIC),
+        CalculatorButton(ButtonId.MEMORY_SUBTRACT, "M-", ButtonCategory.SCIENTIFIC)
     )
 
     private val programmerButtons = listOf(
         CalculatorButton(ButtonId.AND, "AND", ButtonCategory.PROGRAMMER),
         CalculatorButton(ButtonId.OR, "OR", ButtonCategory.PROGRAMMER),
         CalculatorButton(ButtonId.XOR, "XOR", ButtonCategory.PROGRAMMER),
-        CalculatorButton(ButtonId.NOT, "NOT", ButtonCategory.PROGRAMMER),
+        CalculatorButton(ButtonId.NOT, "NOT", ButtonCategory.PROGRAMMER)
     )
 }
