@@ -18,6 +18,9 @@ enum class ButtonId {
     LOG, LN,
     POWER, SQUARE, SQRT, FACTORIAL,
     PI, EULER,
+    ENG, RECALL,
+    NEGATE, EXP_E,
+    TEN_POWER, ABS,
 
     // Memory
     MEMORY_CLEAR, MEMORY_READ, MEMORY_SAVE,

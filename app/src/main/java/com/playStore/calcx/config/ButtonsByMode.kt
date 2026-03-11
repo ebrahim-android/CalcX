@@ -67,13 +67,21 @@ object ButtonsByMode {
         CalculatorButton(ButtonId.MEMORY_READ, "MR", ButtonCategory.SCIENTIFIC),
         CalculatorButton(ButtonId.MEMORY_SAVE, "MS", ButtonCategory.SCIENTIFIC),
         CalculatorButton(ButtonId.MEMORY_ADD, "M+", ButtonCategory.SCIENTIFIC),
-        CalculatorButton(ButtonId.MEMORY_SUBTRACT, "M-", ButtonCategory.SCIENTIFIC)
-    )
+        //NEW
+        CalculatorButton(ButtonId.MEMORY_SUBTRACT, "M-", ButtonCategory.SCIENTIFIC),
+        CalculatorButton(ButtonId.ENG, "eng", ButtonCategory.SCIENTIFIC),
+        CalculatorButton(ButtonId.RECALL, "Rcl", ButtonCategory.SCIENTIFIC),
+        CalculatorButton(ButtonId.NEGATE, "(-)", ButtonCategory.SCIENTIFIC),
+        CalculatorButton(ButtonId.EXP_E, "e^x", ButtonCategory.SCIENTIFIC),
+        CalculatorButton(ButtonId.TEN_POWER, "10^x", ButtonCategory.SCIENTIFIC),
+        CalculatorButton(ButtonId.ABS, "abs", ButtonCategory.SCIENTIFIC),
+
+        )
 
     private val programmerButtons = listOf(
-        CalculatorButton(ButtonId.AND, "AND", ButtonCategory.PROGRAMMER),
-        CalculatorButton(ButtonId.OR, "OR", ButtonCategory.PROGRAMMER),
-        CalculatorButton(ButtonId.XOR, "XOR", ButtonCategory.PROGRAMMER),
-        CalculatorButton(ButtonId.NOT, "NOT", ButtonCategory.PROGRAMMER)
+        CalculatorButton(ButtonId.AND, "And", ButtonCategory.PROGRAMMER),
+        CalculatorButton(ButtonId.OR, "Or", ButtonCategory.PROGRAMMER),
+        CalculatorButton(ButtonId.XOR, "hyp", ButtonCategory.PROGRAMMER),
+        CalculatorButton(ButtonId.NOT, "int", ButtonCategory.PROGRAMMER)
     )
 }
