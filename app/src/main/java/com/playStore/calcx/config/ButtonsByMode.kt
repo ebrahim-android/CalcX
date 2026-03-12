@@ -72,7 +72,7 @@ object ButtonsByMode {
         CalculatorButton(ButtonId.ENG, "eng", ButtonCategory.SCIENTIFIC),
         CalculatorButton(ButtonId.RECALL, "Rcl", ButtonCategory.SCIENTIFIC),
         CalculatorButton(ButtonId.NEGATE, "(-)", ButtonCategory.SCIENTIFIC),
-        CalculatorButton(ButtonId.EXP_E, "e^x", ButtonCategory.SCIENTIFIC),
+        CalculatorButton(ButtonId.EULER, "e^x", ButtonCategory.SCIENTIFIC),
         CalculatorButton(ButtonId.TEN_POWER, "10^x", ButtonCategory.SCIENTIFIC),
         CalculatorButton(ButtonId.ABS, "abs", ButtonCategory.SCIENTIFIC),
 

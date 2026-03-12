@@ -19,7 +19,7 @@ enum class ButtonId {
     POWER, SQUARE, SQRT, FACTORIAL,
     PI, EULER,
     ENG, RECALL,
-    NEGATE, EXP_E,
+    NEGATE, //EXP_E,
     TEN_POWER, ABS,
 
     // Memory

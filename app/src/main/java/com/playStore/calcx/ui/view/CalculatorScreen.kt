@@ -73,94 +73,8 @@ fun CalculatorScreen() {
     )
 
 
-
     val localExpression = remember {
         mutableStateOf(TextFieldValue(""))
-    }
-
-    fun handleButtonClick(label: String) {
-        when (label) {
-
-            // ---- DIGITS ----
-            "0", "00", "1", "2", "3", "4", "5", "6", "7", "8", "9" ->
-                controller.insert(label) //changed SO FAR
-
-            // ---- OPERATORS ----
-            "+", "−", "×", "÷", "%" ->
-                controller.onOperatorPressed(label)
-
-            // ---- PARENTHESES ----
-            "(", ")" ->
-                controller.onParenthesisPressed(")")
-
-            // ---- DECIMAL ----
-            "." -> controller.onDecimalPressed()
-//
-            // ---- CLEAR ----
-            "AC" -> controller.clear()
-
-            // ---- DELETE ----
-            "DEL" -> controller.delete()
-
-
-            // ---- EQUALS ----
-            "=" -> controller.onEqualsPressed()
-//
-//            // ---- NEW FUNCTIONS ----
-//
-            // ----- FACTORIAL -----
-            "n!" -> controller.onFactorialPressed()
-//
-//            // ----- EXPONENTIAL -----
-//            "exp" -> controller.onExpPressed()
-//
-//            // ----- TEN POWER -----
-            "10^x" -> controller.onTenPowerPressed()
-
-//            "log" -> controller.onFunctionPressed("log")
-
-            // ----- EULER -----
-            "e^x" -> controller.onEulerPressed()
-//
-//            // ----- GENERAL ROOT -----
-            "√x" -> controller.onSquareRootPressed()
-//
-//            // ----- SQUARE ROOT -----
-//            "sqrt" -> controller.onSquareRootPressed()
-//
-//            // ----- SQUARE -----
-            "x²" -> controller.onSquarePress()
-
-            "(-)" -> controller.onNegativePressed()
-//
-//            // ----- GENERAL POWER -----
-            "x^" -> controller.onPowerPressed()
-            // ------ MS -------
-            "MS" -> controller.onMS()
-
-            // ------ MR -------
-            "MR" -> controller.onMR()
-
-            // ------ MC -------
-            "MC" -> controller.onMC()
-
-            // ------ M+ -------
-            "M+" -> controller.onMPlus()
-
-            // ------ M- -------
-            "M-" -> controller.onMMinus()
-
-            // ----- ENG -------
-            "eng" -> controller.onEng()
-
-            // ----- MODE -------
-            "Mode" -> controller.onModePressed()
-
-            // ----- AND -------
-
-//            // ---- SCIENTIFIC FUNCTIONS ----
-            else -> controller.onFunctionPressed(label)
-        }
     }
 
     // === Layout Colors ===
@@ -280,8 +194,8 @@ fun CalculatorScreen() {
                 .height(numberPadHeight)
                 .background(DarkBottom)
         ) {
-            NumberPadGrid(onButtonClick = { label ->
-                handleButtonClick(label)
+            NumberPadGrid(onButtonClick = { id ->
+                controller.onButtonPressed(id)
             })
         }
     }
@@ -695,7 +609,7 @@ fun NumberButton(
 @Composable
 // Lays out the 4x5 number pad grid, ensuring compact and equally sized buttons.
 fun NumberPadGrid(
-    onButtonClick: (String) -> Unit
+    onButtonClick: (ButtonId) -> Unit
 ) {
     ConstraintLayout(
         modifier = Modifier
@@ -743,11 +657,41 @@ fun NumberPadGrid(
                 rowItems.forEach { label ->
                     NumberButton(
                         label = label,
-                        onClick = { onButtonClick(label) },
+                        onClick = { onButtonClick(labelToButtonId(label)) },
                         modifier = Modifier.weight(1f)
                     )
                 }
             }
         }
+    }
+}
+
+fun labelToButtonId(label: String): ButtonId {
+    return when (label) {
+        "0" -> ButtonId.DIGIT_0
+        "00" -> ButtonId.DIGIT_0
+        "1" -> ButtonId.DIGIT_1
+        "2" -> ButtonId.DIGIT_2
+        "3" -> ButtonId.DIGIT_3
+        "4" -> ButtonId.DIGIT_4
+        "5" -> ButtonId.DIGIT_5
+        "6" -> ButtonId.DIGIT_6
+        "7" -> ButtonId.DIGIT_7
+        "8" -> ButtonId.DIGIT_8
+        "9" -> ButtonId.DIGIT_9
+
+        "+" -> ButtonId.ADD
+        "−" -> ButtonId.SUBTRACT
+        "×" -> ButtonId.MULTIPLY
+        "÷" -> ButtonId.DIVIDE
+        "%" -> ButtonId.PERCENT
+
+        "." -> ButtonId.DECIMAL
+
+        "DEL" -> ButtonId.DELETE
+        "AC" -> ButtonId.CLEAR
+        "=" -> ButtonId.EQUALS
+
+        else -> error("Unknown label: $label")
     }
 }

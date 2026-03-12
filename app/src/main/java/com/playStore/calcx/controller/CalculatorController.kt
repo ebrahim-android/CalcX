@@ -568,9 +568,12 @@ class CalculatorController {
             ButtonId.SQUARE -> onSquarePress()
             ButtonId.POWER -> onPowerPressed()
             ButtonId.FACTORIAL -> onFactorialPressed()
+            ButtonId.NEGATE -> onNegativePressed()
 
-            ButtonId.PI -> insert("π")
-            ButtonId.EULER -> insert("e")
+            ButtonId.PI -> onFunctionPressed("π")
+            ButtonId.EULER -> onEulerPressed()
+            ButtonId.TEN_POWER -> onTenPowerPressed()
+
 
             // ---- MEMORY ----
             ButtonId.MEMORY_CLEAR -> onMC()
