@@ -72,7 +72,6 @@ fun CalculatorScreen() {
         label = "scientificHeight"
     )
 
-
     val localExpression = remember {
         mutableStateOf(TextFieldValue(""))
     }
@@ -618,10 +617,10 @@ fun NumberPadGrid(
     ) {
         // Grid layout (4 rows, 5 columns)
         val items = listOf(
-            listOf("7", "8", "9", "DEL", "AC"),
-            listOf("4", "5", "6", "×", "÷"),
-            listOf("1", "2", "3", "+", "−"),
-            listOf("0", "00", ".", "%", "=")
+            listOf(ButtonId.DIGIT_7, ButtonId.DIGIT_8, ButtonId.DIGIT_9, ButtonId.DELETE, ButtonId.CLEAR),
+            listOf(ButtonId.DIGIT_4, ButtonId.DIGIT_5, ButtonId.DIGIT_6, ButtonId.MULTIPLY, ButtonId.DIVIDE),
+            listOf(ButtonId.DIGIT_1, ButtonId.DIGIT_2, ButtonId.DIGIT_3, ButtonId.ADD, ButtonId.SUBTRACT),
+            listOf(ButtonId.DIGIT_0, ButtonId.DIGIT_0, ButtonId.DECIMAL, ButtonId.PERCENT, ButtonId.EQUALS)
         )
 
         // 1. Create references for each row
@@ -654,44 +653,14 @@ fun NumberPadGrid(
                 },
                 horizontalArrangement = Arrangement.spacedBy(spacing)
             ) {
-                rowItems.forEach { label ->
+                rowItems.forEach { id ->
                     NumberButton(
-                        label = label,
-                        onClick = { onButtonClick(labelToButtonId(label)) },
+                        label = id.label,
+                        onClick = { onButtonClick(id) },
                         modifier = Modifier.weight(1f)
                     )
                 }
             }
         }
-    }
-}
-
-fun labelToButtonId(label: String): ButtonId {
-    return when (label) {
-        "0" -> ButtonId.DIGIT_0
-        "00" -> ButtonId.DIGIT_0
-        "1" -> ButtonId.DIGIT_1
-        "2" -> ButtonId.DIGIT_2
-        "3" -> ButtonId.DIGIT_3
-        "4" -> ButtonId.DIGIT_4
-        "5" -> ButtonId.DIGIT_5
-        "6" -> ButtonId.DIGIT_6
-        "7" -> ButtonId.DIGIT_7
-        "8" -> ButtonId.DIGIT_8
-        "9" -> ButtonId.DIGIT_9
-
-        "+" -> ButtonId.ADD
-        "−" -> ButtonId.SUBTRACT
-        "×" -> ButtonId.MULTIPLY
-        "÷" -> ButtonId.DIVIDE
-        "%" -> ButtonId.PERCENT
-
-        "." -> ButtonId.DECIMAL
-
-        "DEL" -> ButtonId.DELETE
-        "AC" -> ButtonId.CLEAR
-        "=" -> ButtonId.EQUALS
-
-        else -> error("Unknown label: $label")
     }
 }
