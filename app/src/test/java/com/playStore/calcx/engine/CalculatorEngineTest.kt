@@ -166,4 +166,23 @@ class CalculatorEngineTest {
         Assert.assertEquals(40320.0, result, 0.0001)
     }
 
+    @Test
+    fun `log of negative number should return null`() {
+        val result = engine.evaluate("log(-10)")
+        Assert.assertEquals(null, result)
+    }
+
+    @Test
+    fun `parenthesis should override operator precedence`() {
+        val result = engine.evaluate("(2+3)*4")!!
+        Assert.assertEquals(20.0, result, 0.0001)
+    }
+
+    @Test
+    fun `factorial of zero should return one`() {
+        val result = engine.evaluate("0!")!!
+        Assert.assertEquals(1.0, result, 0.0001)
+    }
+
+
 }
