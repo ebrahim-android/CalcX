@@ -444,7 +444,6 @@ fun ScientificButton(
             .fillMaxSize()
             .clip(RoundedCornerShape(cornerRadius))
             .background(buttonBackgroundColor)
-            .alpha(if (enabled) 1f else 0.5f)
             .clickable(enabled = enabled) {
                 onClick()
             },
@@ -452,7 +451,7 @@ fun ScientificButton(
     ) {
         Text(
             text = label,
-            color = if (enabled) Color.White else Color.Gray,
+            color = if (enabled) Color.White else Color.White.copy(alpha = 0.4f),
             fontSize = 16.sp,
             modifier = Modifier.padding(horizontal = 4.dp)
         )

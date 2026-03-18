@@ -6,5 +6,5 @@ import com.playStore.calcx.domain.enums.ButtonId
 data class CalculatorButton (
     val id: ButtonId,
     val label: String,
-    val category: ButtonCategory,
+    val category: ButtonCategory
 )

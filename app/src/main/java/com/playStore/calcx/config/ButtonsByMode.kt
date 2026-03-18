@@ -10,7 +10,7 @@ object ButtonsByMode {
     fun buttonsFor(mode: CalculatorMode): List<CalculatorButton> {
         return when (mode) {
             CalculatorMode.STANDARD -> standardButtons
-            CalculatorMode.SCIENTIFIC -> standardButtons + scientificButtons
+            CalculatorMode.SCIENTIFIC -> standardButtons + scientificButtons + programmerButtons
             CalculatorMode.PROGRAMMER -> standardButtons + scientificButtons + programmerButtons
         }
     }
