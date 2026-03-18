@@ -283,6 +283,10 @@ class CalculatorController {
             return
         }
 
+        if (expr.contains("AND")) {
+            handleAndOperation(expr)
+            return
+        }
         //calculate the result
         val resultValue = engine.evaluate(expr) ?: run {
                 expression = TextFieldValue("Error", TextRange(5))
@@ -521,6 +525,38 @@ class CalculatorController {
         shouldReset = true
     }
 
+    // ------------ PRGRAMMERS BUTTONS ---------------
+
+    // AND
+    private fun handleAndOperation(expr: String) {
+
+        val parts = expr.split("AND")
+
+        if (parts.size != 2) {
+            expression = TextFieldValue("Error", TextRange(5))
+            shouldReset = true
+            return
+        }
+
+        val a = parts[0].trim().toIntOrNull()
+        val b = parts[1].trim().toIntOrNull()
+
+        if (a == null || b == null) {
+            expression = TextFieldValue("Error", TextRange(5))
+            shouldReset = true
+            return
+        }
+
+        val resultValue = a and b
+
+        val clean = resultValue.toString()
+
+        lastExpression = expr
+        expression = TextFieldValue(clean, TextRange(clean.length))
+        result = clean
+        shouldReset = true
+    }
+
     // ------- BUTTON CALL ----------
 
     fun onButtonPressed(id: ButtonId) {
@@ -569,6 +605,7 @@ class CalculatorController {
             ButtonId.POWER -> onPowerPressed()
             ButtonId.FACTORIAL -> onFactorialPressed()
             ButtonId.NEGATE -> onNegativePressed()
+            ButtonId.ABS -> onFunctionPressed("abs")
 
             ButtonId.PI -> onFunctionPressed("π")
             ButtonId.EULER -> onEulerPressed()
@@ -590,7 +627,7 @@ class CalculatorController {
             ButtonId.MODE_TOGGLE -> onModePressed()
 
             // ---- PROGRAMMER (future safe) ----
-            ButtonId.AND -> onFunctionPressed("AND")
+            ButtonId.AND -> onOperatorPressed("AND")
             ButtonId.OR -> onFunctionPressed("OR")
             ButtonId.XOR -> onFunctionPressed("XOR")
             ButtonId.NOT -> onFunctionPressed("NOT")
