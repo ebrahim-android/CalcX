@@ -287,6 +287,11 @@ class CalculatorController {
             handleAndOperation(expr)
             return
         }
+
+        if (expr.contains("OR")) {
+            handleOrOperation(expr)
+            return
+        }
         //calculate the result
         val resultValue = engine.evaluate(expr) ?: run {
                 expression = TextFieldValue("Error", TextRange(5))
@@ -557,6 +562,36 @@ class CalculatorController {
         shouldReset = true
     }
 
+    // OR
+    fun handleOrOperation(expr: String) {
+
+        val parts = expr.split("OR")
+
+        if (parts.size != 2) {
+            expression = TextFieldValue("Error", TextRange(5))
+            shouldReset = true
+            return
+        }
+
+        val a = parts[0].trim().toIntOrNull()
+        val b = parts[1].trim().toIntOrNull()
+
+        if (a == null || b == null) {
+            expression = TextFieldValue("Error", TextRange(5))
+            shouldReset = true
+            return
+        }
+
+        val resultValue = a or b
+
+        val clean = resultValue.toString()
+
+        lastExpression = expr
+        expression = TextFieldValue(clean, TextRange(clean.length))
+        result = clean
+        shouldReset = true
+
+    }
     // ------- BUTTON CALL ----------
 
     fun onButtonPressed(id: ButtonId) {
@@ -628,7 +663,7 @@ class CalculatorController {
 
             // ---- PROGRAMMER (future safe) ----
             ButtonId.AND -> onOperatorPressed("AND")
-            ButtonId.OR -> onFunctionPressed("OR")
+            ButtonId.OR -> onOperatorPressed("OR")
             ButtonId.XOR -> onFunctionPressed("XOR")
             ButtonId.NOT -> onFunctionPressed("NOT")
 
