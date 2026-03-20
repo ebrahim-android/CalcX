@@ -405,4 +405,35 @@ class CalculatorControllerTest {
 
         assertEquals("5+3", controller.lastExpression)
     }
+
+    // ----- programmer buttons ------
+    @Test
+    fun `AND operation works correctly`() {
+        val controller = CalculatorController()
+
+        controller.expression = TextFieldValue("5 AND 3")
+        controller.onEqualsPressed()
+
+        assertEquals("1", controller.expression.text)
+    }
+
+    @Test
+    fun `OR operation works correctly`() {
+        val controller = CalculatorController()
+
+        controller.expression = TextFieldValue("5 OR 3")
+        controller.onEqualsPressed()
+
+        assertEquals("7", controller.expression.text)
+    }
+
+    @Test
+    fun `NOT operation works correctly`() {
+        val controller = CalculatorController()
+
+        controller.expression = TextFieldValue("NOT 5")
+        controller.onEqualsPressed()
+
+        assertEquals((-6).toString(), controller.expression.text)
+    }
 }
