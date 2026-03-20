@@ -1,6 +1,7 @@
 package com.playStore.calcx.controller
 
 
+import android.util.Log
 import kotlin.math.pow
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -292,6 +293,17 @@ class CalculatorController {
             handleOrOperation(expr)
             return
         }
+
+//        if (expr.uppercase().contains("XOR")) {
+//            handleXorOperation(expr)
+//            return
+//        }
+
+        if (expr.startsWith("NOT")) {
+            handleNotOperation(expr)
+            return
+        }
+
         //calculate the result
         val resultValue = engine.evaluate(expr) ?: run {
                 expression = TextFieldValue("Error", TextRange(5))
@@ -592,6 +604,90 @@ class CalculatorController {
         shouldReset = true
 
     }
+
+    //XOR
+//    fun handleXorOperation(expr: String) {
+//
+//        val parts = expr.uppercase().split("XOR")
+//
+//        if (parts.size != 2) {
+//            expression = TextFieldValue("Error", TextRange(5))
+//            shouldReset = true
+//            return
+//        }
+//
+//        val a = parts[0].trim().toIntOrNull()
+//        val b = parts[1].trim().toIntOrNull()
+//
+//        if (a == null || b == null) {
+//            expression = TextFieldValue("Error", TextRange(5))
+//            shouldReset = true
+//            return
+//        }
+//
+//        val resultValue = a xor b
+//
+//        val clean = resultValue.toString()
+//
+//        lastExpression = expr
+//        expression = TextFieldValue(clean, TextRange(clean.length))
+//        result = clean
+//        shouldReset = true
+//
+//    }
+
+    //NOT
+
+    fun onNotPressed() { //use case to NOT
+
+        val current = expression.text
+
+        if (current.isEmpty()) {
+            expression = TextFieldValue("NOT ", TextRange(4))
+            return
+        }
+
+    }
+
+    fun handleNotOperation(expr: String) { //NORMAL HANDLE
+
+        val normalized = expr.uppercase().trim()
+
+        // avoid expressions like NOTNOT, just one not and must be first
+        if (!normalized.startsWith("NOT")) {
+            expression = TextFieldValue("Error", TextRange(5))
+            shouldReset = true
+            return
+        }
+
+        // remove the first NOT
+        val valuePart = normalized.removePrefix("NOT").trim()
+
+        // avoid expressions like NOT5NOT3
+        if (valuePart.contains("NOT")) {
+            expression = TextFieldValue("Error", TextRange(5))
+            shouldReset = true
+            return
+        }
+
+        val value = valuePart.toIntOrNull()
+
+        if (value == null) {
+            expression = TextFieldValue("Error", TextRange(5))
+            shouldReset = true
+            return
+        }
+
+        val resultValue = value.inv()
+
+        val clean = resultValue.toString()
+
+        lastExpression = expr
+        expression = TextFieldValue(clean, TextRange(clean.length))
+        result = clean
+        shouldReset = true
+    }
+
     // ------- BUTTON CALL ----------
 
     fun onButtonPressed(id: ButtonId) {
@@ -664,8 +760,8 @@ class CalculatorController {
             // ---- PROGRAMMER (future safe) ----
             ButtonId.AND -> onOperatorPressed("AND")
             ButtonId.OR -> onOperatorPressed("OR")
-            ButtonId.XOR -> onFunctionPressed("XOR")
-            ButtonId.NOT -> onFunctionPressed("NOT")
+            ButtonId.XOR -> onOperatorPressed("XOR")
+            ButtonId.NOT -> onNotPressed()
 
             else -> Unit
         }

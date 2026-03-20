@@ -484,7 +484,7 @@ fun ScientificButtonsGrid(
             )
 
             else -> listOf(
-                listOf("hyp", "And", "Or", "int", "Mode"),
+                listOf("XOR", "AND", "OR", "NOT", "Mode"),
                 listOf("÷", "√x", "log", "eng", "π", "ln"),
                 listOf("Rcl", "x²", "x^", "sin", "cos", "tan"),
                 listOf("(-)", "e^x", "10^x", "n!", "MC", "abs"),
@@ -562,7 +562,7 @@ fun categoryFor(label: String): ButtonCategory =
         "10^x", "n!" ->
             ButtonCategory.SCIENTIFIC
 
-        "And", "Or", "hyp", "int" ->
+        "XOR", "AND", "OR", "NOT" ->
             ButtonCategory.PROGRAMMER
 
         else -> ButtonCategory.STANDARD

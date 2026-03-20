@@ -79,9 +79,9 @@ object ButtonsByMode {
         )
 
     private val programmerButtons = listOf(
-        CalculatorButton(ButtonId.AND, "And", ButtonCategory.PROGRAMMER),
-        CalculatorButton(ButtonId.OR, "Or", ButtonCategory.PROGRAMMER),
-        CalculatorButton(ButtonId.XOR, "hyp", ButtonCategory.PROGRAMMER),
-        CalculatorButton(ButtonId.NOT, "int", ButtonCategory.PROGRAMMER)
+        CalculatorButton(ButtonId.AND, "AND", ButtonCategory.PROGRAMMER),
+        CalculatorButton(ButtonId.OR, "OR", ButtonCategory.PROGRAMMER),
+        CalculatorButton(ButtonId.XOR, "XOR", ButtonCategory.PROGRAMMER),
+        CalculatorButton(ButtonId.NOT, "NOT", ButtonCategory.PROGRAMMER)
     )
 }
