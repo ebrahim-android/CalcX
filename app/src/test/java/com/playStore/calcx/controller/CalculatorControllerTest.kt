@@ -436,4 +436,24 @@ class CalculatorControllerTest {
 
         assertEquals((-6).toString(), controller.expression.text)
     }
+
+    @Test
+    fun `invalid AND expression returns error`() {
+        val controller = CalculatorController()
+
+        controller.expression = TextFieldValue("5 AND")
+        controller.onEqualsPressed()
+
+        assertEquals("Error", controller.expression.text)
+    }
+
+    @Test
+    fun `invalid NOT expression returns error`() {
+        val controller = CalculatorController()
+
+        controller.expression = TextFieldValue("5 NOT")
+        controller.onEqualsPressed()
+
+        assertEquals("Error", controller.expression.text)
+    }
 }
