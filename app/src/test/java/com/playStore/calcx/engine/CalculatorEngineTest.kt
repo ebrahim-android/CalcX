@@ -184,5 +184,22 @@ class CalculatorEngineTest {
         Assert.assertEquals(1.0, result, 0.0001)
     }
 
+    @Test
+    fun `division with decimals should return correct result`() {
+        val result = engine.evaluate("5/2")!!
+        Assert.assertEquals(2.5, result, 0.0001)
+    }
+
+    @Test
+    fun `deep nested parenthesis should return correct result`() {
+        val result = engine.evaluate("((2+3)*(1+1))")!!
+        Assert.assertEquals(10.0, result, 0.0001)
+    }
+
+    @Test
+    fun `empty expression should return null`() {
+        val result = engine.evaluate("")
+        Assert.assertEquals(null, result)
+    }
 
 }
