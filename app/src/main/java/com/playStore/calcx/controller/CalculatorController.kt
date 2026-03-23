@@ -284,22 +284,24 @@ class CalculatorController {
             return
         }
 
-        if (expr.contains("AND")) {
+        val upper = expr.uppercase()
+
+        if (upper.contains("XOR")) {
+            handleXorOperation(expr)
+            return
+        }
+
+        if (upper.contains("AND")) {
             handleAndOperation(expr)
             return
         }
 
-        if (expr.contains("OR")) {
+        if (upper.contains("OR")) {
             handleOrOperation(expr)
             return
         }
 
-//        if (expr.uppercase().contains("XOR")) {
-//            handleXorOperation(expr)
-//            return
-//        }
-
-        if (expr.startsWith("NOT")) {
+        if (upper.startsWith("NOT")) {
             handleNotOperation(expr)
             return
         }
@@ -606,35 +608,36 @@ class CalculatorController {
     }
 
     //XOR
-//    fun handleXorOperation(expr: String) {
-//
-//        val parts = expr.uppercase().split("XOR")
-//
-//        if (parts.size != 2) {
-//            expression = TextFieldValue("Error", TextRange(5))
-//            shouldReset = true
-//            return
-//        }
-//
-//        val a = parts[0].trim().toIntOrNull()
-//        val b = parts[1].trim().toIntOrNull()
-//
-//        if (a == null || b == null) {
-//            expression = TextFieldValue("Error", TextRange(5))
-//            shouldReset = true
-//            return
-//        }
-//
-//        val resultValue = a xor b
-//
-//        val clean = resultValue.toString()
-//
-//        lastExpression = expr
-//        expression = TextFieldValue(clean, TextRange(clean.length))
-//        result = clean
-//        shouldReset = true
-//
-//    }
+    fun handleXorOperation(expr: String) {
+
+        val normalized = expr.uppercase()
+
+        val parts = normalized.split("XOR")
+
+        if (parts.size != 2) {
+            expression = TextFieldValue("Error", TextRange(5))
+            shouldReset = true
+            return
+        }
+
+        val a = parts[0].trim().toIntOrNull()
+        val b = parts[1].trim().toIntOrNull()
+
+        if (a == null || b == null) {
+            expression = TextFieldValue("Error", TextRange(5))
+            shouldReset = true
+            return
+        }
+
+        val resultValue = a xor b
+
+        val clean = resultValue.toString()
+
+        lastExpression = expr
+        expression = TextFieldValue(clean, TextRange(clean.length))
+        result = clean
+        shouldReset = true
+    }
 
     //NOT
 
