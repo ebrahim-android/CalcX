@@ -456,4 +456,16 @@ class CalculatorControllerTest {
 
         assertEquals("Error", controller.expression.text)
     }
+
+    @Test
+    fun `invalid OR expression returns error`() {
+        val controller = CalculatorController()
+
+        controller.expression = TextFieldValue("5 OR")
+        controller.onEqualsPressed()
+
+        assertEquals("Error", controller.expression.text)
+    }
+
+
 }
