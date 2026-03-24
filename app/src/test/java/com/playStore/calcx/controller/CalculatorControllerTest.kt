@@ -438,6 +438,17 @@ class CalculatorControllerTest {
     }
 
     @Test
+    fun `XOR operation works correctly`() {
+        val controller = CalculatorController()
+
+        controller.expression = TextFieldValue("5 XOR 3")
+        controller.onEqualsPressed()
+
+        assertEquals("6", controller.expression.text)
+    }
+
+
+    @Test
     fun `invalid AND expression returns error`() {
         val controller = CalculatorController()
 
@@ -466,6 +477,5 @@ class CalculatorControllerTest {
 
         assertEquals("Error", controller.expression.text)
     }
-
 
 }
