@@ -202,4 +202,28 @@ class CalculatorEngineTest {
         Assert.assertEquals(null, result)
     }
 
+    @Test
+    fun `power operator should be right associative`() {
+        val result = engine.evaluate("2^3^2")!!
+        Assert.assertEquals(512.0, result, 0.0001)
+    }
+
+    @Test
+    fun `multiple negative signs should return correct result`() {
+        val result = engine.evaluate("--5")!!
+        Assert.assertEquals(5.0, result, 0.0001)
+    }
+
+    @Test
+    fun `expression with spaces should return correct result`() {
+        val result = engine.evaluate(" 2 + 3 * 4 ")!!
+        Assert.assertEquals(14.0, result, 0.0001)
+    }
+
+    @Test
+    fun `multiple functions chained should return correct result`() {
+        val result = engine.evaluate("log(100) + sin(0) + cos(0)")!!
+        Assert.assertEquals(3.0, result, 0.0001) // 2 + 0 + 1
+    }
+
 }
