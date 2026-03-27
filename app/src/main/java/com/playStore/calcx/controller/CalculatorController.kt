@@ -8,14 +8,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
-import com.playStore.calcx.domain.ABS_KEY
-import com.playStore.calcx.domain.COS_KEY
 import com.playStore.calcx.domain.FunctionKey
-import com.playStore.calcx.domain.LN_KEY
-import com.playStore.calcx.domain.LOG_KEY
-import com.playStore.calcx.domain.PI_KEY
-import com.playStore.calcx.domain.SIN_KEY
-import com.playStore.calcx.domain.TAN_KEY
+import com.playStore.calcx.domain.FunctionKeys
 import com.playStore.calcx.domain.enums.ButtonId
 import com.playStore.calcx.domain.enums.CalculatorMode
 import com.playStore.calcx.domain.enums.FunctionMode
@@ -761,21 +755,21 @@ class CalculatorController {
             ButtonId.EQUALS -> onEqualsPressed()
 
             // ---- SCIENTIFIC ----
-            ButtonId.SIN -> onFunctionPressed(SIN_KEY)
-            ButtonId.COS -> onFunctionPressed(COS_KEY)
-            ButtonId.TAN -> onFunctionPressed(TAN_KEY)
+            ButtonId.SIN -> onFunctionPressed(FunctionKeys.SIN)
+            ButtonId.COS -> onFunctionPressed(FunctionKeys.COS)
+            ButtonId.TAN -> onFunctionPressed(FunctionKeys.TAN)
 
-            ButtonId.LOG -> onFunctionPressed(LOG_KEY)
-            ButtonId.LN -> onFunctionPressed(LN_KEY)
+            ButtonId.LOG -> onFunctionPressed(FunctionKeys.LOG)
+            ButtonId.LN -> onFunctionPressed(FunctionKeys.LN)
 
             ButtonId.SQRT -> onSquareRootPressed()
             ButtonId.SQUARE -> onSquarePress()
             ButtonId.POWER -> onPowerPressed()
             ButtonId.FACTORIAL -> onFactorialPressed()
             ButtonId.NEGATE -> onNegativePressed()
-            ButtonId.ABS -> onFunctionPressed(ABS_KEY)
+            ButtonId.ABS -> onFunctionPressed(FunctionKeys.ABS)
 
-            ButtonId.PI -> onFunctionPressed(PI_KEY)
+            ButtonId.PI -> onFunctionPressed(FunctionKeys.PI)
             ButtonId.EULER -> onEulerPressed()
             ButtonId.TEN_POWER -> onTenPowerPressed()
 
