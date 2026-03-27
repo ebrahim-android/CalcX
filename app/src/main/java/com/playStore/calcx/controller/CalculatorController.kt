@@ -8,8 +8,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
+import com.playStore.calcx.domain.ABS_KEY
+import com.playStore.calcx.domain.COS_KEY
+import com.playStore.calcx.domain.FunctionKey
+import com.playStore.calcx.domain.LN_KEY
+import com.playStore.calcx.domain.LOG_KEY
+import com.playStore.calcx.domain.PI_KEY
+import com.playStore.calcx.domain.SIN_KEY
+import com.playStore.calcx.domain.TAN_KEY
 import com.playStore.calcx.domain.enums.ButtonId
 import com.playStore.calcx.domain.enums.CalculatorMode
+import com.playStore.calcx.domain.enums.FunctionMode
+import com.playStore.calcx.domain.key
 import com.playStore.calcx.model.CalculatorEngine
 import java.text.NumberFormat
 import java.util.Locale
@@ -27,6 +37,18 @@ class CalculatorController {
             CalculatorMode.STANDARD -> CalculatorMode.SCIENTIFIC
             CalculatorMode.SCIENTIFIC -> CalculatorMode.PROGRAMMER
             CalculatorMode.PROGRAMMER -> CalculatorMode.STANDARD
+        }
+    }
+
+    //SHIFT
+    var functionMode by mutableStateOf(FunctionMode.PRIMARY)
+        private set
+
+    fun onShiftPressed() {
+        functionMode = if (functionMode == FunctionMode.PRIMARY) {
+            FunctionMode.SECONDARY
+        } else {
+            FunctionMode.PRIMARY
         }
     }
 
@@ -388,29 +410,41 @@ class CalculatorController {
         return text.endsWith(pattern)
     }
 
-    fun onFunctionPressed(function: String) { //function: cos, sin, tan, pi etc..
+    fun onFunctionPressed(key: FunctionKey) {
         val text = expression.text
 
-        if (endsWithSameFunction(text, function)) {
-            return //to avoid adding the same function twice
+        val functionName = when (functionMode) {
+            FunctionMode.PRIMARY -> key.primary
+            FunctionMode.SECONDARY -> key.secondary
+        }
+
+        if (endsWithSameFunction(text, functionName)) {
+            return
+        }
+
+        val functionCall = if (key.requiresParenthesis) {
+            "$functionName("
+        } else {
+            functionName
         }
 
         val newText = when {
             text.isEmpty() -> {
-                "$function("
+                functionCall
             }
 
             text.last().isOperator() || text.last() == '(' -> {
-                text + "$function("
+                text + functionCall
             }
 
             else -> {
-                "$function($text)"
+                "$functionCall$text)"
             }
         }
 
         expression = TextFieldValue(
-            newText, TextRange(newText.length)
+            newText,
+            TextRange(newText.length)
         )
     }
 
@@ -727,21 +761,21 @@ class CalculatorController {
             ButtonId.EQUALS -> onEqualsPressed()
 
             // ---- SCIENTIFIC ----
-            ButtonId.SIN -> onFunctionPressed("sin")
-            ButtonId.COS -> onFunctionPressed("cos")
-            ButtonId.TAN -> onFunctionPressed("tan")
+            ButtonId.SIN -> onFunctionPressed(SIN_KEY)
+            ButtonId.COS -> onFunctionPressed(COS_KEY)
+            ButtonId.TAN -> onFunctionPressed(TAN_KEY)
 
-            ButtonId.LOG -> onFunctionPressed("log")
-            ButtonId.LN -> onFunctionPressed("ln")
+            ButtonId.LOG -> onFunctionPressed(LOG_KEY)
+            ButtonId.LN -> onFunctionPressed(LN_KEY)
 
             ButtonId.SQRT -> onSquareRootPressed()
             ButtonId.SQUARE -> onSquarePress()
             ButtonId.POWER -> onPowerPressed()
             ButtonId.FACTORIAL -> onFactorialPressed()
             ButtonId.NEGATE -> onNegativePressed()
-            ButtonId.ABS -> onFunctionPressed("abs")
+            ButtonId.ABS -> onFunctionPressed(ABS_KEY)
 
-            ButtonId.PI -> onFunctionPressed("π")
+            ButtonId.PI -> onFunctionPressed(PI_KEY)
             ButtonId.EULER -> onEulerPressed()
             ButtonId.TEN_POWER -> onTenPowerPressed()
 
