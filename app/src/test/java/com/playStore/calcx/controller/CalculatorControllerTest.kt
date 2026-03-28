@@ -2,6 +2,7 @@ package com.playStore.calcx.controller
 
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
+import com.playStore.calcx.domain.FunctionKeys
 import com.playStore.calcx.domain.enums.CalculatorMode
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -217,7 +218,7 @@ class CalculatorControllerTest {
     @Test
     fun `function should wrap expression`() {
         controller.insert("5")
-        controller.onFunctionPressed("log")
+        controller.onFunctionPressed(FunctionKeys.LOG)
 
         assertEquals("log(5)", controller.expression.text)
     }
@@ -478,4 +479,31 @@ class CalculatorControllerTest {
         assertEquals("Error", controller.expression.text)
     }
 
+
+    @Test
+    fun `function should be appended after operator`() {
+        controller.insert("5")
+        controller.onOperatorPressed("+")
+        controller.onFunctionPressed(FunctionKeys.SIN)
+
+        assertEquals("5+sin(", controller.expression.text)
+    }
+
+    @Test
+    fun `function should start expression when empty`() {
+        controller.onFunctionPressed(FunctionKeys.COS)
+
+        assertEquals("cos(", controller.expression.text)
+    }
+
+    @Test
+    fun `function should wrap entire expression when needed`() {
+        controller.insert("2")
+        controller.onOperatorPressed("+")
+        controller.insert("3")
+
+        controller.onFunctionPressed(FunctionKeys.SIN)
+
+        assertEquals("sin(2+3)", controller.expression.text)
+    }
 }
