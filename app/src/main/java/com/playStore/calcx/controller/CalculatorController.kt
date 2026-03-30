@@ -13,7 +13,6 @@ import com.playStore.calcx.domain.FunctionKeys
 import com.playStore.calcx.domain.enums.ButtonId
 import com.playStore.calcx.domain.enums.CalculatorMode
 import com.playStore.calcx.domain.enums.FunctionMode
-import com.playStore.calcx.domain.key
 import com.playStore.calcx.model.CalculatorEngine
 import java.text.NumberFormat
 import java.util.Locale
@@ -38,13 +37,21 @@ class CalculatorController {
     var functionMode by mutableStateOf(FunctionMode.PRIMARY)
         private set
 
-    fun onShiftPressed() {
+    fun onShiftPressed() { //SHIFT
         functionMode = if (functionMode == FunctionMode.PRIMARY) {
             FunctionMode.SECONDARY
         } else {
             FunctionMode.PRIMARY
         }
     }
+
+    fun getFunctionLabel(key: FunctionKey): String {
+        return when (functionMode) {
+            FunctionMode.PRIMARY -> key.primary
+            FunctionMode.SECONDARY -> key.secondary
+        }
+    }
+
 
     var expression by mutableStateOf(
         TextFieldValue("", TextRange(0))
@@ -726,6 +733,7 @@ class CalculatorController {
 
             // ---- DIGITS ----
             ButtonId.DIGIT_0 -> insert("0")
+            ButtonId.DIGIT_DOUBLE_0 -> insert("00")
             ButtonId.DIGIT_1 -> insert("1")
             ButtonId.DIGIT_2 -> insert("2")
             ButtonId.DIGIT_3 -> insert("3")
@@ -787,6 +795,9 @@ class CalculatorController {
 
             // ---- MODE ----
             ButtonId.MODE_TOGGLE -> onModePressed()
+
+            // --- SHIFT ---
+            ButtonId.SHIFT -> onShiftPressed()
 
             // ---- PROGRAMMER (future safe) ----
             ButtonId.AND -> onOperatorPressed("AND")

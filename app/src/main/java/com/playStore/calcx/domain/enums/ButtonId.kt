@@ -3,7 +3,7 @@ package com.playStore.calcx.domain.enums
 enum class ButtonId(val label: String) {
 
     // Digits
-    DIGIT_0("0"), DIGIT_1("1"), DIGIT_2("2"), DIGIT_3("3"), DIGIT_4("4"),
+    DIGIT_DOUBLE_0("00"),DIGIT_0("0"), DIGIT_1("1"), DIGIT_2("2"), DIGIT_3("3"), DIGIT_4("4"),
     DIGIT_5("5"), DIGIT_6("6"), DIGIT_7("7"), DIGIT_8("8"), DIGIT_9("9"),
 
     // Basic operators
@@ -31,6 +31,9 @@ enum class ButtonId(val label: String) {
 
     // Mode
     MODE_TOGGLE("Mode"),
+
+    // Shift
+    SHIFT("SHIFT"),
 
     // Programmer (future)
     AND("AND"), OR("OR"), XOR("XOR"), NOT("NOT"),

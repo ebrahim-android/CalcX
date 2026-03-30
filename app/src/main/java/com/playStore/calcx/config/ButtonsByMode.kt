@@ -26,6 +26,7 @@ object ButtonsByMode {
 
     private val standardButtons = listOf(
         CalculatorButton(ButtonId.DIGIT_0, "0", ButtonCategory.STANDARD),
+        CalculatorButton(ButtonId.DIGIT_0, "00", ButtonCategory.STANDARD),
         CalculatorButton(ButtonId.DIGIT_1, "1", ButtonCategory.STANDARD),
         CalculatorButton(ButtonId.DIGIT_2, "2", ButtonCategory.STANDARD),
         CalculatorButton(ButtonId.DIGIT_3, "3", ButtonCategory.STANDARD),
@@ -75,8 +76,8 @@ object ButtonsByMode {
         CalculatorButton(ButtonId.EULER, "e^x", ButtonCategory.SCIENTIFIC),
         CalculatorButton(ButtonId.TEN_POWER, "10^x", ButtonCategory.SCIENTIFIC),
         CalculatorButton(ButtonId.ABS, "abs", ButtonCategory.SCIENTIFIC),
-
-        )
+        CalculatorButton(ButtonId.SHIFT, "SHIFT", ButtonCategory.SCIENTIFIC)
+    )
 
     private val programmerButtons = listOf(
         CalculatorButton(ButtonId.AND, "AND", ButtonCategory.PROGRAMMER),

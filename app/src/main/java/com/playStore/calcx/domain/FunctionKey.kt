@@ -18,8 +18,3 @@ object FunctionKeys {
     val ABS = FunctionKey("abs", "abs")
     val PI = FunctionKey("π", "π", requiresParenthesis = false)
 }
-val key = FunctionKey(
-    primary = "sin",
-    secondary = "sinh",
-    requiresParenthesis = true
-)

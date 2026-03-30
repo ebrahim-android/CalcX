@@ -13,6 +13,8 @@ import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -43,7 +45,9 @@ import com.playStore.calcx.domain.enums.ButtonId
 import com.playStore.calcx.config.ButtonsByMode
 import com.playStore.calcx.controller.CalculatorController
 import com.playStore.calcx.domain.CalculatorButton
+import com.playStore.calcx.domain.FunctionKeys
 import com.playStore.calcx.domain.enums.CalculatorMode
+import com.playStore.calcx.domain.enums.FunctionMode
 import kotlinx.coroutines.delay
 
 @Preview(showBackground = true, backgroundColor = 0xFF202020)
@@ -177,6 +181,7 @@ fun CalculatorScreen() {
         ) {
             ScientificButtonsGrid(
                 mode = controller.mode,
+                controller = controller,
                 onButtonPress = { id ->
                     controller.onButtonPressed(id)
                 })
@@ -461,9 +466,14 @@ fun ScientificButton(
 @Composable
 // Lays out the 5x grid of scientific buttons, ensuring each button takes up equal, responsive space.
 fun ScientificButtonsGrid(
+    controller: CalculatorController,
     mode: CalculatorMode,
-    onButtonPress: (ButtonId) -> Unit
+    onButtonPress: (ButtonId) -> Unit,
 ) {
+
+    val isScientific = mode == CalculatorMode.SCIENTIFIC
+    val isShift = controller.functionMode == FunctionMode.SECONDARY
+
     val buttons = when (mode) {
         CalculatorMode.STANDARD -> ButtonsByMode.standardCompactButtons()
         else -> ButtonsByMode.buttonsFor(mode)
@@ -484,7 +494,7 @@ fun ScientificButtonsGrid(
             )
 
             else -> listOf(
-                listOf("XOR", "AND", "OR", "NOT", "Mode"),
+                listOf("XOR", "AND", "OR", "NOT", "SHIFT", "Mode"),
                 listOf("÷", "√x", "log", "eng", "π", "ln"),
                 listOf("Rcl", "x²", "x^", "sin", "cos", "tan"),
                 listOf("(-)", "e^x", "10^x", "n!", "MC", "abs"),
@@ -527,26 +537,50 @@ fun ScientificButtonsGrid(
             ) {
                 rowItems.forEach { label ->
 
-                    val button = buttonMap[label]
+                    if (label == "SHIFT") {
 
-                    if (button != null) {
-
-                        val enabled = isButtonEnabled(mode, button.category)
-
-                        ScientificButton(
-                            label = button.label,
-                            enabled = enabled,
-                            onClick = { onButtonPress(button.id) },
-                            modifier = Modifier.weight(1f)
-                        )
+                        Button(
+                            onClick = { controller.onShiftPressed() },
+                            enabled = isScientific,
+                            modifier = Modifier.weight(1f),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = if (isShift) Color(0xFFFFC107) else Color.DarkGray
+                            )
+                        ) {
+                            Text("SHIFT")
+                        }
 
                     } else {
 
-                        Spacer(modifier = Modifier.weight(1f))
+                        val button = buttonMap[label]
+
+                        if (button != null) {
+
+                            val dynamicLabel = when (button.id) {
+                                ButtonId.SIN -> controller.getFunctionLabel(FunctionKeys.SIN)
+                                ButtonId.COS -> controller.getFunctionLabel(FunctionKeys.COS)
+                                ButtonId.TAN -> controller.getFunctionLabel(FunctionKeys.TAN)
+                                ButtonId.LOG -> controller.getFunctionLabel(FunctionKeys.LOG)
+                                ButtonId.LN -> controller.getFunctionLabel(FunctionKeys.LN)
+                                else -> button.label
+                            }
+
+                            val enabled = isButtonEnabled(mode, button.category)
+
+                            ScientificButton(
+                                label = dynamicLabel,
+                                enabled = enabled,
+                                onClick = { onButtonPress(button.id) },
+                                modifier = Modifier.weight(1f)
+                            )
+
+                        } else {
+
+                            Spacer(modifier = Modifier.weight(1f))
+                        }
                     }
                 }
             }
-
         }
     }
 }
@@ -604,6 +638,7 @@ fun NumberButton(
     }
 }
 
+
 @Composable
 // Lays out the 4x5 number pad grid, ensuring compact and equally sized buttons.
 fun NumberPadGrid(
@@ -616,10 +651,34 @@ fun NumberPadGrid(
     ) {
         // Grid layout (4 rows, 5 columns)
         val items = listOf(
-            listOf(ButtonId.DIGIT_7, ButtonId.DIGIT_8, ButtonId.DIGIT_9, ButtonId.DELETE, ButtonId.CLEAR),
-            listOf(ButtonId.DIGIT_4, ButtonId.DIGIT_5, ButtonId.DIGIT_6, ButtonId.MULTIPLY, ButtonId.DIVIDE),
-            listOf(ButtonId.DIGIT_1, ButtonId.DIGIT_2, ButtonId.DIGIT_3, ButtonId.ADD, ButtonId.SUBTRACT),
-            listOf(ButtonId.DIGIT_0, ButtonId.DIGIT_0, ButtonId.DECIMAL, ButtonId.PERCENT, ButtonId.EQUALS)
+            listOf(
+                ButtonId.DIGIT_7,
+                ButtonId.DIGIT_8,
+                ButtonId.DIGIT_9,
+                ButtonId.DELETE,
+                ButtonId.CLEAR
+            ),
+            listOf(
+                ButtonId.DIGIT_4,
+                ButtonId.DIGIT_5,
+                ButtonId.DIGIT_6,
+                ButtonId.MULTIPLY,
+                ButtonId.DIVIDE
+            ),
+            listOf(
+                ButtonId.DIGIT_1,
+                ButtonId.DIGIT_2,
+                ButtonId.DIGIT_3,
+                ButtonId.ADD,
+                ButtonId.SUBTRACT
+            ),
+            listOf(
+                ButtonId.DIGIT_0,
+                ButtonId.DIGIT_DOUBLE_0,
+                ButtonId.DECIMAL,
+                ButtonId.PERCENT,
+                ButtonId.EQUALS
+            )
         )
 
         // 1. Create references for each row
@@ -663,3 +722,4 @@ fun NumberPadGrid(
         }
     }
 }
+
