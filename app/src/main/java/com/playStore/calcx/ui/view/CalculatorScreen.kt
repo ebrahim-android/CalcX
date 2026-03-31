@@ -36,6 +36,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -474,6 +475,8 @@ fun ScientificButtonsGrid(
     val isScientific = mode == CalculatorMode.SCIENTIFIC
     val isShift = controller.functionMode == FunctionMode.SECONDARY
 
+    val CalculatorButtonShape = RoundedCornerShape(8.dp)
+
     val buttons = when (mode) {
         CalculatorMode.STANDARD -> ButtonsByMode.standardCompactButtons()
         else -> ButtonsByMode.buttonsFor(mode)
@@ -494,7 +497,7 @@ fun ScientificButtonsGrid(
             )
 
             else -> listOf(
-                listOf("XOR", "AND", "OR", "NOT", "SHIFT", "Mode"),
+                listOf("XOR", "AND", "OR", "NOT", "SH", "Mode"),
                 listOf("÷", "√x", "log", "eng", "π", "ln"),
                 listOf("Rcl", "x²", "x^", "sin", "cos", "tan"),
                 listOf("(-)", "e^x", "10^x", "n!", "MC", "abs"),
@@ -537,17 +540,27 @@ fun ScientificButtonsGrid(
             ) {
                 rowItems.forEach { label ->
 
-                    if (label == "SHIFT") {
+                    if (label == "SH") {
 
                         Button(
                             onClick = { controller.onShiftPressed() },
                             enabled = isScientific,
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier.weight(1f)
+                                .fillMaxHeight(),
+                            shape = CalculatorButtonShape,
+                            contentPadding = PaddingValues(0.dp),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = if (isShift) Color(0xFFFFC107) else Color.DarkGray
                             )
                         ) {
-                            Text("SHIFT")
+                            Text(
+                                text = label,
+                                fontSize = 16.sp,
+                                maxLines = 1,
+                                softWrap = false,
+                                overflow = TextOverflow.Clip,
+                                modifier = Modifier.padding(horizontal = 4.dp)
+                            )
                         }
 
                     } else {
