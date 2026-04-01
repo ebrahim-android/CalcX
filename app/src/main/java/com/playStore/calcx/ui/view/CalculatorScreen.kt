@@ -13,12 +13,14 @@ import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,6 +60,30 @@ fun CalculatorScreen() {
 
     val controller = remember { CalculatorController() } // Controller instance
     val mode = controller.mode
+
+    var showMenu by remember { mutableStateOf(false) } //to menu
+
+    if (showMenu) {
+        AlertDialog(
+            onDismissRequest = { showMenu = false },
+            confirmButton = {
+                TextButton(onClick = { showMenu = false }) {
+                    Text("OK")
+                }
+            },
+            title = {
+                Text("Próximas actualizaciones")
+            },
+            text = {
+                Text(
+                    "• Sistema de fracciones\n" +
+                            "• Historial de cálculos\n" +
+                            "• Mejoras en funciones científicas\n" +
+                            "• Más modos y conversiones"
+                )
+            }
+        )
+    }
 
     val displayHeight by animateDpAsState(
         targetValue = when (mode) {
@@ -124,7 +150,8 @@ fun CalculatorScreen() {
                 .background(DarkTop)
         ) {
             TopBar(
-                mode = controller.mode
+                mode = controller.mode,
+                onMenuClick = { showMenu = true },
             )
         }
 
