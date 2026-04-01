@@ -33,7 +33,7 @@ enum class ButtonId(val label: String) {
     MODE_TOGGLE("Mode"),
 
     // Shift
-    SHIFT("SHIFT"),
+    SHIFT("SH"),
 
     // Programmer (future)
     AND("AND"), OR("OR"), XOR("XOR"), NOT("NOT"),

@@ -12,9 +12,9 @@ object FunctionKeys {
     val COS = FunctionKey("cos", "cosh")
     val TAN = FunctionKey("tan", "tanh")
 
-    val LOG = FunctionKey("log", "10^", requiresParenthesis = false)
-    val LN = FunctionKey("ln", "e^", requiresParenthesis = false)
+    val LOG = FunctionKey("log", "log")
+    val LN = FunctionKey("ln", "ln")
 
     val ABS = FunctionKey("abs", "abs")
-    val PI = FunctionKey("π", "π", requiresParenthesis = false)
+    val PI = FunctionKey("π", "π")
 }

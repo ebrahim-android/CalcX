@@ -472,7 +472,7 @@ fun ScientificButtonsGrid(
     onButtonPress: (ButtonId) -> Unit,
 ) {
 
-    val isScientific = mode == CalculatorMode.SCIENTIFIC
+    val isScientific = mode == CalculatorMode.SCIENTIFIC || mode == CalculatorMode.PROGRAMMER
     val isShift = controller.functionMode == FunctionMode.SECONDARY
 
     val CalculatorButtonShape = RoundedCornerShape(8.dp)
@@ -550,7 +550,7 @@ fun ScientificButtonsGrid(
                             shape = CalculatorButtonShape,
                             contentPadding = PaddingValues(0.dp),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = if (isShift) Color(0xFFFFC107) else Color.DarkGray
+                                containerColor = if (isShift) Color(0xFFFFC107) else Color(0xFF5A5A5A)
                             )
                         ) {
                             Text(
