@@ -2,4 +2,14 @@
 <resources>
 
     <style name="Theme.CalcX" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.Calcx.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#121212</item>
+
+        <!-- Logo -->
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_foreground</item>
+
+        <!-- Opcional -->
+        <item name="postSplashScreenTheme">@style/Theme.CalcX</item>
+    </style>
 </resources>

@@ -47,6 +47,8 @@ dependencies {
     //xp4j
     implementation("net.objecthunter:exp4j:0.4.8")
 
+    implementation("androidx.core:core-splashscreen:1.0.1")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
