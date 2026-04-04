@@ -29,6 +29,14 @@ class CalculatorEngineEdgeCasesTest (
             arrayOf("2++2"),
             arrayOf("2--2"),
             arrayOf("2*"),
+            arrayOf("2/"),
+            arrayOf("2^"),
+            arrayOf("2√"),
+            arrayOf("2!"),
+            arrayOf("2sin"),
+            arrayOf("2cos"),
+            arrayOf("2tan"),
+            arrayOf("2log"),
         )
     }
 }
