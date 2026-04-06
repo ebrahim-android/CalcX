@@ -37,6 +37,17 @@ class CalculatorEngineEdgeCasesTest (
             arrayOf("2cos"),
             arrayOf("2tan"),
             arrayOf("2log"),
+            arrayOf("2ln"),
+            arrayOf("2π"),
+            arrayOf("2e"),
+            arrayOf("2AND"),
+            arrayOf("2OR"),
+            arrayOf("2XOR"),
+            arrayOf("2NOT"),
+            arrayOf("2MS"),
+            arrayOf("2MR"),
+            arrayOf("2MC"),
+            arrayOf("2M-")
         )
     }
 }
