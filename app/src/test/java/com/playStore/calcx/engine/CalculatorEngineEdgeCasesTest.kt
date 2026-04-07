@@ -47,7 +47,13 @@ class CalculatorEngineEdgeCasesTest (
             arrayOf("2MS"),
             arrayOf("2MR"),
             arrayOf("2MC"),
-            arrayOf("2M-")
+            arrayOf("2M-"),
+            arrayOf("2M+"),
+            arrayOf("2eng"),
+            arrayOf("2Rcl"),
+            arrayOf("2(-)"),
+            arrayOf("210^"),
+            arrayOf("2abs")
         )
     }
 }
