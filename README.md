@@ -3,7 +3,7 @@
 <p align="center">The Precision-Engineered Scientific Toolkit for Android</p>
 <p align="center"> <img src="https://img.shields.io/badge/Kotlin-1.9+-purple?style=for-the-badge&logo=kotlin" alt="Kotlin"> <img src="https://img.shields.io/badge/Jetpack_Compose-Latest-green?style=for-the-badge&logo=jetpackcompose" alt="Compose"> <img src="https://img.shields.io/badge/Architecture-MVC-blue?style=for-the-badge" alt="MVC"> <img src="https://img.shields.io/badge/Tests-Passing-brightgreen?style=for-the-badge&logo=junit5" alt="Tests"> </p>
 
----
+----
 
 CalcX is a high-performance scientific calculator built with a focus on mathematical precision and clean architecture. Built entirely with Kotlin and Jetpack Compose, it serves as a professional showcase of advanced Android development, separating complex business logic from a responsive, modern UI.
 
@@ -97,6 +97,7 @@ CalcX maintains a "Logic-First" philosophy. Every mathematical operation is veri
   </tr>
 </table>
 </p>
+
 ---
 
 ### 🗂️ Project Structure
