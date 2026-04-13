@@ -84,8 +84,19 @@ CalcX maintains a "Logic-First" philosophy. Every mathematical operation is veri
 ---
 
 📱 Visual Showcase
-<p align="center"> <img width="280" alt="CalcX Screenshot" src="https://github.com/user-attachments/assets/c9a64641-5605-42be-bad3-6264c53c7cce" style="border-radius: 20px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"/> </p>
 
+<p align="center">
+<table>
+  <tr>
+    <td><img width="180" src="https://github.com/user-attachments/assets/98022498-e31f-45a6-aa00-ef888f333eca" alt="Calculadora Vista 1" /></td>
+    <td><img width="180" src="https://github.com/user-attachments/assets/9770674f-c7b5-4b53-8900-68705870f157" alt="Calculadora Vista 2" /></td>
+  </tr>
+  <tr>
+    <td><img width="180" src="https://github.com/user-attachments/assets/2b7c5852-f60d-48ba-8978-feb515a8e257" alt="Calculadora Vista 3" /></td>
+    <td><img width="180" src="https://github.com/user-attachments/assets/53b624e2-6072-48a2-88d8-cb67b2e0a7c4" alt="Calculadora Vista 4" /></td>
+  </tr>
+</table>
+</p>
 ---
 
 ### 🗂️ Project Structure
