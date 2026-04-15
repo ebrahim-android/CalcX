@@ -329,8 +329,10 @@ class CalculatorController {
             return
         }
 
+        val sanitizedExpr = expr.replace(",", "")
+
         //calculate the result
-        val resultValue = engine.evaluate(expr) ?: run {
+        val resultValue = engine.evaluate(sanitizedExpr) ?: run {
                 expression = TextFieldValue("Error", TextRange(5))
                 shouldReset = true
                 return
@@ -347,7 +349,7 @@ class CalculatorController {
 //        expression = TextFieldValue(clean, TextRange(clean.length))
         expression = TextFieldValue(formatNumber(clean.toDouble()),
             TextRange(formatNumber(clean.toDouble()).length))
-        result = clean
+        result = resultValue.toString()
         shouldReset = true
 
     }
@@ -776,6 +778,7 @@ class CalculatorController {
             ButtonId.FACTORIAL -> onFactorialPressed()
             ButtonId.NEGATE -> onNegativePressed()
             ButtonId.ABS -> onFunctionPressed(FunctionKeys.ABS)
+            ButtonId.ENG -> onEng()
 
             ButtonId.PI -> onFunctionPressed(FunctionKeys.PI)
             ButtonId.EULER -> onEulerPressed()
