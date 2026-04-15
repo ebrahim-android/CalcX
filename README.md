@@ -3,7 +3,7 @@
 <p align="center">The Precision-Engineered Scientific Toolkit for Android</p>
 <p align="center"> <img src="https://img.shields.io/badge/Kotlin-1.9+-purple?style=for-the-badge&logo=kotlin" alt="Kotlin"> <img src="https://img.shields.io/badge/Jetpack_Compose-Latest-green?style=for-the-badge&logo=jetpackcompose" alt="Compose"> <img src="https://img.shields.io/badge/Architecture-MVC-blue?style=for-the-badge" alt="MVC"> <img src="https://img.shields.io/badge/Tests-Passing-brightgreen?style=for-the-badge&logo=junit5" alt="Tests"> </p>
 
----
+----
 
 CalcX is a high-performance scientific calculator built with a focus on mathematical precision and clean architecture. Built entirely with Kotlin and Jetpack Compose, it serves as a professional showcase of advanced Android development, separating complex business logic from a responsive, modern UI.
 
@@ -84,7 +84,19 @@ CalcX maintains a "Logic-First" philosophy. Every mathematical operation is veri
 ---
 
 📱 Visual Showcase
-<p align="center"> <img width="280" alt="CalcX Screenshot" src="https://github.com/user-attachments/assets/c9a64641-5605-42be-bad3-6264c53c7cce" style="border-radius: 20px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"/> </p>
+
+<p align="center">
+<table>
+  <tr>
+    <td><img width="180" src="https://github.com/user-attachments/assets/98022498-e31f-45a6-aa00-ef888f333eca" alt="Calculadora Vista 1" /></td>
+    <td><img width="180" src="https://github.com/user-attachments/assets/9770674f-c7b5-4b53-8900-68705870f157" alt="Calculadora Vista 2" /></td>
+  </tr>
+  <tr>
+    <td><img width="180" src="https://github.com/user-attachments/assets/2b7c5852-f60d-48ba-8978-feb515a8e257" alt="Calculadora Vista 3" /></td>
+    <td><img width="180" src="https://github.com/user-attachments/assets/53b624e2-6072-48a2-88d8-cb67b2e0a7c4" alt="Calculadora Vista 4" /></td>
+  </tr>
+</table>
+</p>
 
 ---
 
