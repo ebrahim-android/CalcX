@@ -16,7 +16,7 @@ enum class ButtonId(val label: String) {
     // Scientific
     SIN("sin"), COS("cos"), TAN("tan"),
     LOG("log"), LN("ln"),
-    POWER("x^"), SQUARE("x²"), SQRT("√x"), FACTORIAL("n!"),
+    POWER("xʸ"), SQUARE("x²"), SQRT("√x"), FACTORIAL("n!"),
     PI("π"), EULER("e"),
     ENG("eng"), RECALL("Rcl"),
     NEGATE("(-)"),

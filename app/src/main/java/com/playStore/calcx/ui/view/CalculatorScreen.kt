@@ -1,9 +1,13 @@
 package com.playStore.calcx.ui.view
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -108,10 +112,6 @@ fun CalculatorScreen() {
         label = "scientificHeight"
     )
 
-    val localExpression = remember {
-        mutableStateOf(TextFieldValue(""))
-    }
-
     // === Layout Colors ===
     val DarkTop = Color(0xFF202020)
     val DarkMiddle = Color(0xFF2A2A2A)
@@ -121,19 +121,14 @@ fun CalculatorScreen() {
         modifier = Modifier
             .fillMaxSize()
             .background(DarkTop)
-            .windowInsetsPadding(
-                WindowInsets.safeDrawing
-            )
+            .windowInsetsPadding(WindowInsets.safeDrawing)
     ) {
+
         // Create references for each main UI section (TopBar, Display, Navigation, Grids).
-        val (topBarRef, displayRef, navControlsRef, scientificRef, numberPadRef) = remember {
-            createRefs()
-        }
+        val (topBarRef, displayRef, navControlsRef, scientificRef, numberPadRef) = createRefs()
 
         val numberPadHeight = 280.dp   // size of the number pad
 
-        // Define Guidelines to divide vertical space based on percentages.
-        // Total sum: 8% + 17% + 8% + 37% + 30% = 100%
         val topGuide = createGuidelineFromTop(0f)
         val endTopBar = createGuidelineFromTop(0.08f)   // TopBar (8%)
 
@@ -164,7 +159,6 @@ fun CalculatorScreen() {
                     bottom.linkTo(navControlsRef.top)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-
                     height = Dimension.fillToConstraints
                 }
                 .fillMaxWidth()
@@ -175,7 +169,7 @@ fun CalculatorScreen() {
             Display(
                 expression = controller.expression,
                 lastExpression = controller.lastExpression,
-                onExpressionChange = { controller.expression = it } // added this
+                onExpressionChange = { controller.expression = it }
             )
         }
 
@@ -188,7 +182,6 @@ fun CalculatorScreen() {
                     end.linkTo(parent.end)
                 }
                 .height(64.dp)
-//                .padding(horizontal = 8.dp, vertical = 10.dp)
                 .background(DarkMiddle)
         ) {
             NavControlsRow(
@@ -208,12 +201,58 @@ fun CalculatorScreen() {
                 .height(scientificHeight)
                 .background(DarkBottom)
         ) {
-            ScientificButtonsGrid(
-                mode = controller.mode,
-                controller = controller,
-                onButtonPress = { id ->
-                    controller.onButtonPressed(id)
-                })
+
+            // Animated content switch between compact and full scientific layout
+            AnimatedContent(
+                targetState = mode,
+                transitionSpec = {
+                    fadeIn(animationSpec = tween(220)) togetherWith
+                            fadeOut(animationSpec = tween(150))
+                },
+                label = "scientific_transition"
+            ) { targetMode ->
+
+                if (targetMode == CalculatorMode.STANDARD) {
+
+                    // Compact row (important: keeps Mode button accessible)
+                    Row(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(12.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        listOf("xʸ", "(", ")", "Mode").forEach { label ->
+
+                            val id = when (label) {
+                                "xʸ" -> ButtonId.POWER
+                                "(" -> ButtonId.OPEN_PAREN
+                                ")" -> ButtonId.CLOSE_PAREN
+                                "Mode" -> ButtonId.MODE_TOGGLE
+                                else -> null
+                            }
+
+                            if (id != null) {
+                                CalculatorButtonView(
+                                    label = label,
+                                    onClick = { controller.onButtonPressed(id) },
+                                    modifier = Modifier.weight(1f)
+                                )
+                            }
+                        }
+                    }
+
+                } else {
+
+                    // Full grid
+                    ScientificButtonsGrid(
+                        mode = controller.mode,
+                        controller = controller,
+                        onButtonPress = { id ->
+                            controller.onButtonPressed(id)
+                        }
+                    )
+                }
+            }
         }
 
         // 6. Number Pad Area (70% -> 100%)
@@ -227,9 +266,11 @@ fun CalculatorScreen() {
                 .height(numberPadHeight)
                 .background(DarkBottom)
         ) {
-            NumberPadGrid(onButtonClick = { id ->
-                controller.onButtonPressed(id)
-            })
+            NumberPadGrid(
+                onButtonClick = { id ->
+                    controller.onButtonPressed(id)
+                }
+            )
         }
     }
 }
@@ -514,7 +555,7 @@ fun ScientificButtonsGrid(
             else -> listOf(
                 listOf("XOR", "AND", "OR", "NOT", "SH", "Mode"),
                 listOf("÷", "√x", "log", "eng", "π", "ln"),
-                listOf("Rcl", "x²", "x^", "sin", "cos", "tan"),
+                listOf("Rcl", "x²", "xʸ", "sin", "cos", "tan"),
                 listOf("(-)", "e^x", "10^x", "n!", "MC", "abs"),
                 listOf("MS", "(", ")", "M+", "M-", "MR")
             )
@@ -626,7 +667,7 @@ fun categoryFor(label: String): ButtonCategory =
 
         "sin", "cos", "tan",
         "log", "ln", "√x",
-        "x²", "x^", "e^x",
+        "x²", "xʸ", "e^x",
         "10^x", "n!" ->
             ButtonCategory.SCIENTIFIC
 

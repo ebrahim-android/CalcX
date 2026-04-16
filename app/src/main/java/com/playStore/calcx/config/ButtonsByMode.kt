@@ -61,7 +61,7 @@ object ButtonsByMode {
         CalculatorButton(ButtonId.LOG, "log", ButtonCategory.SCIENTIFIC),
         CalculatorButton(ButtonId.LN, "ln", ButtonCategory.SCIENTIFIC),
         CalculatorButton(ButtonId.SQUARE, "x²", ButtonCategory.SCIENTIFIC),
-        CalculatorButton(ButtonId.POWER, "x^", ButtonCategory.SCIENTIFIC),
+        CalculatorButton(ButtonId.POWER, "xʸ", ButtonCategory.SCIENTIFIC),
         CalculatorButton(ButtonId.SQRT, "√x", ButtonCategory.SCIENTIFIC),
         CalculatorButton(ButtonId.FACTORIAL, "n!", ButtonCategory.SCIENTIFIC),
         CalculatorButton(ButtonId.MEMORY_CLEAR, "MC", ButtonCategory.SCIENTIFIC),
