@@ -131,10 +131,6 @@ fun CalculatorScreen() {
         // Total sum: 8% + 17% + 8% + 37% + 30% = 100%
         val topGuide = createGuidelineFromTop(0f)
         val endTopBar = createGuidelineFromTop(0.08f)   // TopBar (8%)
-//        val endDisplay = createGuidelineFromTop(0.28f)  // Display (17%)
-//        val endNavControls = createGuidelineFromTop(0.35f) // NavControls (8%)
-//        val endScientific = createGuidelineFromTop(0.70f) // Scientific Grid (37%)
-//        val endNumberPad = createGuidelineFromBottom(0f) // Number Pad (30%)
 
         // 2. TopBar Area (0% -> 8%)
         Box(
@@ -273,143 +269,109 @@ fun TopBar(
 }
 
 @Composable
-// Displays the formula and the result in the display area.
+// Displays the formula and the result in a modern card-style container.
 fun Display(
     expression: TextFieldValue,
     lastExpression: String,
     onExpressionChange: (TextFieldValue) -> Unit
 ) {
 
-    // this allow us to focus on the text field when the screen is opened
+    // Request focus when the screen is opened
     val focusRequester = remember { FocusRequester() }
 
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
     }
 
-    // this allow us to know the size of the text
+    // Track text layout for custom cursor drawing
     var textLayoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
 
-    // animation of the cursor
-    var cursorVisile by remember { mutableStateOf(true) }
+    // Blinking cursor animation
+    var cursorVisible by remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) {
         while (true) {
-            cursorVisile = !cursorVisile
+            cursorVisible = !cursorVisible
             delay(500)
         }
     }
 
-    Column(
+    // Card-style container for display
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 12.dp, vertical = 16.dp),
-        verticalArrangement = Arrangement.Bottom
+            .clip(RoundedCornerShape(20.dp))
+            .background(Color(0xFF2A2A2A))
+            .padding(horizontal = 16.dp, vertical = 20.dp)
     ) {
 
-        // Formula (small text)
-        Text(
-            text = lastExpression,
-            style = MaterialTheme.typography.bodyMedium,
-            maxLines = 1,
-            modifier = Modifier.fillMaxWidth(),
-            color = Color(0xFFB0B0B0)
-        )
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Bottom
+        ) {
 
-        Spacer(modifier = Modifier.height(8.dp))
+            // Previous expression (small text)
+            Text(
+                text = lastExpression,
+                style = MaterialTheme.typography.bodyMedium,
+                maxLines = 1,
+                modifier = Modifier.fillMaxWidth(),
+                color = Color(0xFF9E9E9E),
+                textAlign = TextAlign.End
+            )
 
-        // this allow us have a cursor to move around the text
-        BasicTextField(
-            value = expression,
-            onValueChange = onExpressionChange,
-            modifier = Modifier
-                .fillMaxWidth()
-                .focusRequester(focusRequester)
-                .drawBehind {
-                    val layout = textLayoutResult ?: return@drawBehind
+            Spacer(modifier = Modifier.height(8.dp))
 
-                    val cursorIndex = expression.selection.start
-                    val cursorRect = layout.getCursorRect(cursorIndex)
+            // Main expression / result (large text)
+            BasicTextField(
+                value = expression,
+                onValueChange = onExpressionChange,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .focusRequester(focusRequester)
+                    .drawBehind {
+                        val layout = textLayoutResult ?: return@drawBehind
 
-                    if (cursorVisile) {
-                        drawLine(
-                            color = Color.White,
-                            start = cursorRect.topLeft,
-                            end = cursorRect.bottomRight,
-                            strokeWidth = 2f
+                        val cursorIndex = expression.selection.start
+                        val cursorRect = layout.getCursorRect(cursorIndex)
+
+                        if (cursorVisible) {
+                            drawLine(
+                                color = Color.White,
+                                start = cursorRect.topLeft,
+                                end = cursorRect.bottomRight,
+                                strokeWidth = 2f
+                            )
+                        }
+                    },
+                singleLine = true,
+                readOnly = true, // Prevent manual typing
+                interactionSource = remember { MutableInteractionSource() },
+                textStyle = TextStyle(
+                    color = Color.White,
+                    fontSize = 42.sp,
+                    textAlign = TextAlign.End,
+                    fontWeight = FontWeight.SemiBold
+                ),
+                onTextLayout = { layoutResult ->
+                    textLayoutResult = layoutResult
+                },
+                decorationBox = { innerTextField ->
+                    if (expression.text.isEmpty()) {
+                        Text(
+                            text = "0",
+                            color = Color.Gray,
+                            fontSize = 42.sp,
+                            textAlign = TextAlign.End,
+                            modifier = Modifier.fillMaxWidth()
                         )
                     }
-                },
-            singleLine = true,
-            readOnly = true, // so the user can't type in the display
-            interactionSource = remember { MutableInteractionSource() },
-//            cursorBrush = SolidColor(Color.White),
-            textStyle = TextStyle(
-                color = Color.White,
-                fontSize = 36.sp,
-                textAlign = TextAlign.End,
-//                fontWeight = FontWeight.Bold
-            ),
-            onTextLayout = { layoutResult ->
-                textLayoutResult = layoutResult
-            },
-            decorationBox = { innerTextField ->
-                if (expression.text.isEmpty()) {
-                    Text(
-                        text = "0",
-                        color = Color.Gray,
-                        fontSize = 36.sp,
-                        textAlign = TextAlign.End,
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                    innerTextField()
                 }
-                innerTextField()
-            }
-        )
+            )
+        }
     }
 }
-
-//@SuppressLint("UnusedBoxWithConstraintsScope")
-//@Composable
-//// Dynamically adjusts the font size of the text to fit within its container width.
-//fun AutoResizeText(
-//    text: String,
-//    modifier: Modifier = Modifier,
-//    maxFontSize: TextUnit = 48.sp,
-//    minFontSize: TextUnit = 16.sp,
-//    color: Color = Color.White,
-//    textAlign: TextAlign = TextAlign.End,
-//    fontWeight: FontWeight = FontWeight.Bold
-//) {
-//    var textStyle by remember { mutableStateOf(TextStyle(fontSize = maxFontSize)) }
-//    var readyToDraw by remember { mutableStateOf(false) }
-//
-//    BoxWithConstraints(modifier = modifier) {
-//
-//        Text(
-//            text = text,
-//            color = color,
-//            textAlign = textAlign,
-//            fontWeight = fontWeight,
-//            maxLines = 1,
-//            softWrap = false,
-//            style = textStyle,
-//
-//            onTextLayout = { result ->
-//                if (!readyToDraw && result.didOverflowWidth) {
-//                    val newFontSize = textStyle.fontSize * 0.9f
-//                    if (newFontSize >= minFontSize) {
-//                        textStyle = textStyle.copy(fontSize = newFontSize)
-//                    } else {
-//                        readyToDraw = true
-//                    }
-//                } else {
-//                    readyToDraw = true
-//                }
-//            }
-//        )
-//    }
-//}
 
 @Composable
 // Renders the row of navigation (arrow) buttons for input editing.
