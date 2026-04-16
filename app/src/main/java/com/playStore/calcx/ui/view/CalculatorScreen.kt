@@ -1,9 +1,11 @@
 package com.playStore.calcx.ui.view
 
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -32,6 +34,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
@@ -424,21 +427,38 @@ fun NavCircleButton(
 // ------------------- Scientific Buttons -------------------
 
 @Composable
-// Scientific button with unified styling.
+// Scientific button with press animation.
 fun ScientificButton(
     label: String,
     enabled: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val background = Color(0xFF3A3A3A)
+
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+
+    val scale by animateFloatAsState(
+        targetValue = if (isPressed) 0.95f else 1f,
+        label = "scientific_scale"
+    )
 
     Box(
         modifier = modifier
             .fillMaxSize()
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
+            }
             .clip(RoundedCornerShape(14.dp))
-            .background(background)
-            .clickable(enabled = enabled) { onClick() },
+            .background(Color(0xFF3A3A3A))
+            .clickable(
+                enabled = enabled,
+                interactionSource = interactionSource,
+                indication = null
+            ) {
+                onClick()
+            },
         contentAlignment = Alignment.Center
     ) {
         Text(
@@ -605,7 +625,7 @@ fun categoryFor(label: String): ButtonCategory =
 // ------------------- Number Pad -------------------
 
 @Composable
-// Base button used across the calculator for consistent styling.
+// Base button with press animation for better user feedback.
 fun CalculatorButtonView(
     label: String,
     onClick: () -> Unit,
@@ -614,31 +634,46 @@ fun CalculatorButtonView(
     isDanger: Boolean = false
 ) {
 
-    val background = when {
-        isPrimary -> Color(0xFF00AC4C) // primary action (=)
-        isDanger -> Color(0xFFD32F2F)  // destructive (DEL)
-        else -> Color(0xFF3A3A3A)      // default
-    }
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
 
-    val textColor = Color.White
+    // Scale animation when pressed
+    val scale by animateFloatAsState(
+        targetValue = if (isPressed) 0.95f else 1f,
+        label = "button_scale"
+    )
+
+    val background = when {
+        isPrimary -> Color(0xFF00AC4C)
+        isDanger -> Color(0xFFD32F2F)
+        else -> Color(0xFF3A3A3A)
+    }
 
     Box(
         modifier = modifier
             .fillMaxSize()
-            .clip(RoundedCornerShape(14.dp)) // smoother corners
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
+            }
+            .clip(RoundedCornerShape(14.dp))
             .background(background)
-            .clickable { onClick() },
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null // remove default ripple for cleaner feel
+            ) {
+                onClick()
+            },
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = label,
-            color = textColor,
+            color = Color.White,
             fontSize = 18.sp,
             fontWeight = FontWeight.Medium
         )
     }
 }
-
 
 @Composable
 // Lays out the 4x5 number pad grid, ensuring compact and equally sized buttons.
