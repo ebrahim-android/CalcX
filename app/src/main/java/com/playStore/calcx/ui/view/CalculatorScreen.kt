@@ -1,7 +1,9 @@
 package com.playStore.calcx.ui.view
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -292,6 +294,11 @@ fun Display(
     // Blinking cursor animation
     var cursorVisible by remember { mutableStateOf(true) }
 
+    val animatedAlpha by animateFloatAsState(
+        targetValue = if (expression.text.isNotEmpty()) 1f else 0.5f,
+        label = "resultAlpha"
+    )
+
     LaunchedEffect(Unit) {
         while (true) {
             cursorVisible = !cursorVisible
@@ -318,7 +325,8 @@ fun Display(
                 text = lastExpression,
                 style = MaterialTheme.typography.bodyMedium,
                 maxLines = 1,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
+                    .alpha(animatedAlpha),
                 color = Color(0xFF9E9E9E),
                 textAlign = TextAlign.End
             )
@@ -332,6 +340,7 @@ fun Display(
                 modifier = Modifier
                     .fillMaxWidth()
                     .focusRequester(focusRequester)
+                    .alpha(animatedAlpha)
                     .drawBehind {
                         val layout = textLayoutResult ?: return@drawBehind
 
@@ -546,6 +555,11 @@ fun ScientificButtonsGrid(
             ) {
                 rowItems.forEach { label ->
 
+                    val shiftColor by animateColorAsState(
+                        targetValue = if (isShift) Color(0xFFFFC107) else Color(0xFF3A3A3A),
+                        label = "shiftColor"
+                    )
+
                     if (label == "SH") {
 
                         Button(
@@ -556,12 +570,13 @@ fun ScientificButtonsGrid(
                             shape = CalculatorButtonShape,
                             contentPadding = PaddingValues(0.dp),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = if (isShift) Color(0xFFFFC107) else Color(0xFF5A5A5A)
+                                containerColor = shiftColor
                             )
                         ) {
                             Text(
                                 text = label,
                                 fontSize = 16.sp,
+                                color = Color.White,
                                 maxLines = 1,
                                 softWrap = false,
                                 overflow = TextOverflow.Clip,
@@ -639,7 +654,10 @@ fun CalculatorButtonView(
 
     // Scale animation when pressed
     val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.95f else 1f,
+        targetValue = if (isPressed) 0.92f else 1f,
+        animationSpec = tween(
+            durationMillis = 100
+        ),
         label = "button_scale"
     )
 
