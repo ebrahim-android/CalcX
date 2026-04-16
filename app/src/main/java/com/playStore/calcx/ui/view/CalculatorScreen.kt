@@ -424,31 +424,28 @@ fun NavCircleButton(
 // ------------------- Scientific Buttons -------------------
 
 @Composable
-// Renders a single button for scientific functions.
+// Scientific button with unified styling.
 fun ScientificButton(
     label: String,
     enabled: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val buttonBackgroundColor = Color(0xFF5A5A5A)
-    val cornerRadius = 8.dp
+    val background = Color(0xFF3A3A3A)
 
     Box(
         modifier = modifier
             .fillMaxSize()
-            .clip(RoundedCornerShape(cornerRadius))
-            .background(buttonBackgroundColor)
-            .clickable(enabled = enabled) {
-                onClick()
-            },
-        contentAlignment = Alignment.Center,
+            .clip(RoundedCornerShape(14.dp))
+            .background(background)
+            .clickable(enabled = enabled) { onClick() },
+        contentAlignment = Alignment.Center
     ) {
         Text(
             text = label,
             color = if (enabled) Color.White else Color.White.copy(alpha = 0.4f),
-            fontSize = 16.sp,
-            modifier = Modifier.padding(horizontal = 4.dp)
+            fontSize = 15.sp,
+            fontWeight = FontWeight.Medium
         )
     }
 }
@@ -464,7 +461,7 @@ fun ScientificButtonsGrid(
     val isScientific = mode == CalculatorMode.SCIENTIFIC || mode == CalculatorMode.PROGRAMMER
     val isShift = controller.functionMode == FunctionMode.SECONDARY
 
-    val CalculatorButtonShape = RoundedCornerShape(8.dp)
+    val CalculatorButtonShape = RoundedCornerShape(14.dp)
 
     val buttons = when (mode) {
         CalculatorMode.STANDARD -> ButtonsByMode.standardCompactButtons()
@@ -608,34 +605,36 @@ fun categoryFor(label: String): ButtonCategory =
 // ------------------- Number Pad -------------------
 
 @Composable
-// Renders a single number or primary operator button, with special colors for AC/DEL/=.
-fun NumberButton(
+// Base button used across the calculator for consistent styling.
+fun CalculatorButtonView(
     label: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isPrimary: Boolean = false,
+    isDanger: Boolean = false
 ) {
-    val background = when (label) {
-        "DEL" -> Color(0xFFD32F2F) // Dark Red
-        "AC" -> Color(0xFF00AC4C) // Green
-        "=" -> Color(0xFF00AC4C) // Green
-        else -> Color(0xFF3F3F3F)
+
+    val background = when {
+        isPrimary -> Color(0xFF00AC4C) // primary action (=)
+        isDanger -> Color(0xFFD32F2F)  // destructive (DEL)
+        else -> Color(0xFF3A3A3A)      // default
     }
 
-    val cornerRadius = 12.dp
+    val textColor = Color.White
 
     Box(
         modifier = modifier
-            .fillMaxSize() // Fills the space provided by the ConstraintLayout row cell.
-            .clip(RoundedCornerShape(cornerRadius))
+            .fillMaxSize()
+            .clip(RoundedCornerShape(14.dp)) // smoother corners
             .background(background)
             .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = label,
-            color = Color.White,
+            color = textColor,
             fontSize = 18.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Medium
         )
     }
 }
@@ -714,10 +713,12 @@ fun NumberPadGrid(
                 horizontalArrangement = Arrangement.spacedBy(spacing)
             ) {
                 rowItems.forEach { id ->
-                    NumberButton(
+                    CalculatorButtonView(
                         label = id.label,
                         onClick = { onButtonClick(id) },
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        isPrimary = id == ButtonId.EQUALS,
+                        isDanger = id == ButtonId.DELETE
                     )
                 }
             }
