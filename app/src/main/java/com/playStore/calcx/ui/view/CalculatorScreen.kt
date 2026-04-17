@@ -94,28 +94,28 @@ fun CalculatorScreen() {
         )
     }
 
-    val displayHeight by animateDpAsState(
-        targetValue = when (mode) {
-            CalculatorMode.STANDARD -> 120.dp
-            CalculatorMode.SCIENTIFIC -> 160.dp
-            CalculatorMode.PROGRAMMER -> 140.dp
-        },
-        label = "displayHeight"
-    )
+//    val displayHeight by animateDpAsState(
+//        targetValue = when (mode) {
+//            CalculatorMode.STANDARD -> 180.dp
+//            CalculatorMode.SCIENTIFIC -> 200.dp
+//            CalculatorMode.PROGRAMMER -> 180.dp
+//        },
+//        label = "displayHeight"
+//    )
 
     val scientificHeight by animateDpAsState(
         targetValue = when (mode) {
-            CalculatorMode.STANDARD -> 72.dp      // collapsed
-            CalculatorMode.SCIENTIFIC -> 290.dp  // expanded
-            CalculatorMode.PROGRAMMER -> 290.dp
+            CalculatorMode.STANDARD -> 80.dp
+            CalculatorMode.SCIENTIFIC -> 300.dp
+            CalculatorMode.PROGRAMMER -> 300.dp
         },
         label = "scientificHeight"
     )
 
-    // === Layout Colors ===
-    val DarkTop = Color(0xFF202020)
-    val DarkMiddle = Color(0xFF2A2A2A)
-    val DarkBottom = Color(0xFF333333)
+    // === Layout Colors (refined palette) ===
+    val DarkTop = Color(0xFF1C1C1E)
+    val DarkMiddle = Color(0xFF252527)
+    val DarkBottom = Color(0xFF2C2C2E)
 
     ConstraintLayout(
         modifier = Modifier
@@ -124,47 +124,39 @@ fun CalculatorScreen() {
             .windowInsetsPadding(WindowInsets.safeDrawing)
     ) {
 
-        // Create references for each main UI section (TopBar, Display, Navigation, Grids).
-        val (topBarRef, displayRef, navControlsRef, scientificRef, numberPadRef) = createRefs()
+        val (topBarRef, displayRef, scientificRef, numberPadRef) = createRefs()
 
-        val numberPadHeight = 280.dp   // size of the number pad
+        val numberPadHeight = 300.dp
 
-        val topGuide = createGuidelineFromTop(0f)
-        val endTopBar = createGuidelineFromTop(0.08f)   // TopBar (8%)
-
-        // 2. TopBar Area (0% -> 8%)
+        // 1. TopBar
         Box(
             modifier = Modifier
                 .constrainAs(topBarRef) {
-                    top.linkTo(topGuide)
+                    top.linkTo(parent.top)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                    bottom.linkTo(endTopBar)
-                    width = Dimension.fillToConstraints
-                    height = Dimension.fillToConstraints
                 }
-                .background(DarkTop)
+                .height(56.dp)
+                .fillMaxWidth()
         ) {
             TopBar(
                 mode = controller.mode,
-                onMenuClick = { showMenu = true },
+                onMenuClick = { showMenu = true }
             )
         }
 
-        // 3. Display Area (8% -> 25%)
+        // 2. Display (now more prominent, like a hero card)
         Box(
             modifier = Modifier
                 .constrainAs(displayRef) {
                     top.linkTo(topBarRef.bottom)
-                    bottom.linkTo(navControlsRef.top)
+                    bottom.linkTo(scientificRef.top)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
+
                     height = Dimension.fillToConstraints
                 }
-                .fillMaxWidth()
-                .height(displayHeight)
-                .background(DarkTop)
-                .padding(8.dp)
+                .padding(horizontal = 12.dp, vertical = 8.dp)
         ) {
             Display(
                 expression = controller.expression,
@@ -173,48 +165,32 @@ fun CalculatorScreen() {
             )
         }
 
-        // 4. NavControls Area (25% -> 33%)
-        Box(
-            modifier = Modifier
-                .constrainAs(navControlsRef) {
-                    bottom.linkTo(scientificRef.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }
-                .height(64.dp)
-                .background(DarkMiddle)
-        ) {
-            NavControlsRow(
-                onLeftClick = { controller.moveCursorLeft() },
-                onRightClick = { controller.moveCursorRight() },
-            )
-        }
-
-        // 5. Scientific Buttons Area (33% -> 70%)
+        // 3. Scientific Panel (curved + elevated look)
         Box(
             modifier = Modifier
                 .constrainAs(scientificRef) {
+                    top.linkTo(displayRef.bottom)
                     bottom.linkTo(numberPadRef.top)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }
+                .padding(horizontal = 8.dp)
                 .height(scientificHeight)
-                .background(DarkBottom)
+                .clip(RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
+                .background(DarkMiddle)
         ) {
 
-            // Animated content switch between compact and full scientific layout
             AnimatedContent(
                 targetState = mode,
                 transitionSpec = {
-                    fadeIn(animationSpec = tween(220)) togetherWith
-                            fadeOut(animationSpec = tween(150))
+                    fadeIn(tween(220)) togetherWith fadeOut(tween(150))
                 },
                 label = "scientific_transition"
             ) { targetMode ->
 
                 if (targetMode == CalculatorMode.STANDARD) {
 
-                    // Compact row (important: keeps Mode button accessible)
+                    // Compact row
                     Row(
                         modifier = Modifier
                             .fillMaxSize()
@@ -243,7 +219,6 @@ fun CalculatorScreen() {
 
                 } else {
 
-                    // Full grid
                     ScientificButtonsGrid(
                         mode = controller.mode,
                         controller = controller,
@@ -255,7 +230,7 @@ fun CalculatorScreen() {
             }
         }
 
-        // 6. Number Pad Area (70% -> 100%)
+        // 4. NumberPad (visually separated)
         Box(
             modifier = Modifier
                 .constrainAs(numberPadRef) {
@@ -264,6 +239,7 @@ fun CalculatorScreen() {
                     end.linkTo(parent.end)
                 }
                 .height(numberPadHeight)
+                .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
                 .background(DarkBottom)
         ) {
             NumberPadGrid(
@@ -425,29 +401,29 @@ fun Display(
         }
     }
 }
-
-@Composable
-// Renders the row of navigation (arrow) buttons for input editing.
-fun NavControlsRow(
-    modifier: Modifier = Modifier,
-    onLeftClick: () -> Unit = {},
-    onRightClick: () -> Unit = {},
-    onUpClick: () -> Unit = {},
-    onDownClick: () -> Unit = {}
-) {
-    Row(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = 12.dp),
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        NavCircleButton(icon = Icons.Default.KeyboardArrowLeft, onClick = onLeftClick)
-        NavCircleButton(icon = Icons.Default.KeyboardArrowUp, onClick = onUpClick)
-        NavCircleButton(icon = Icons.Default.KeyboardArrowDown, onClick = onDownClick)
-        NavCircleButton(icon = Icons.Default.KeyboardArrowRight, onClick = onRightClick)
-    }
-}
+//
+//@Composable
+//// Renders the row of navigation (arrow) buttons for input editing.
+//fun NavControlsRow(
+//    modifier: Modifier = Modifier,
+//    onLeftClick: () -> Unit = {},
+//    onRightClick: () -> Unit = {},
+//    onUpClick: () -> Unit = {},
+//    onDownClick: () -> Unit = {}
+//) {
+//    Row(
+//        modifier = modifier
+//            .fillMaxSize()
+//            .padding(horizontal = 12.dp),
+//        horizontalArrangement = Arrangement.SpaceEvenly,
+//        verticalAlignment = Alignment.CenterVertically
+//    ) {
+//        NavCircleButton(icon = Icons.Default.KeyboardArrowLeft, onClick = onLeftClick)
+//        NavCircleButton(icon = Icons.Default.KeyboardArrowUp, onClick = onUpClick)
+//        NavCircleButton(icon = Icons.Default.KeyboardArrowDown, onClick = onDownClick)
+//        NavCircleButton(icon = Icons.Default.KeyboardArrowRight, onClick = onRightClick)
+//    }
+//}
 
 @Composable
 fun NavCircleButton(
