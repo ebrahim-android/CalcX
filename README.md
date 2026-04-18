@@ -88,12 +88,15 @@ CalcX maintains a "Logic-First" philosophy. Every mathematical operation is veri
 <p align="center">
 <table>
   <tr>
-    <td><img width="180" src="https://github.com/user-attachments/assets/98022498-e31f-45a6-aa00-ef888f333eca" alt="Calculadora Vista 1" /></td>
-    <td><img width="180" src="https://github.com/user-attachments/assets/9770674f-c7b5-4b53-8900-68705870f157" alt="Calculadora Vista 2" /></td>
+    <td><img width="180" src="https://github.com/user-attachments/assets/09002975-ecdf-43d4-9e52-3bc59bbb7b3e" alt="Vista 1" /></td>
+    <td><img width="180" src="https://github.com/user-attachments/assets/4616f417-efb0-4132-8ccf-73dc205c327e" alt="Vista 2" /></td>
   </tr>
   <tr>
-    <td><img width="180" src="https://github.com/user-attachments/assets/2b7c5852-f60d-48ba-8978-feb515a8e257" alt="Calculadora Vista 3" /></td>
-    <td><img width="180" src="https://github.com/user-attachments/assets/53b624e2-6072-48a2-88d8-cb67b2e0a7c4" alt="Calculadora Vista 4" /></td>
+    <td><img width="180" src="https://github.com/user-attachments/assets/9a0d411f-b38e-4322-9e72-b94cf5313a64" alt="Vista 3" /></td>
+    <td><img width="180" src="https://github.com/user-attachments/assets/fbc90eab-8f2b-42de-9431-93bbc4d49a08" alt="Vista 4" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><img width="180" src="https://github.com/user-attachments/assets/f156b8c0-7809-4fcd-ab3f-18996ac7b675" alt="Vista 5" /></td>
   </tr>
 </table>
 </p>
