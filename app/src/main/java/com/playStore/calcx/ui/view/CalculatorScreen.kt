@@ -94,15 +94,6 @@ fun CalculatorScreen() {
         )
     }
 
-//    val displayHeight by animateDpAsState(
-//        targetValue = when (mode) {
-//            CalculatorMode.STANDARD -> 180.dp
-//            CalculatorMode.SCIENTIFIC -> 200.dp
-//            CalculatorMode.PROGRAMMER -> 180.dp
-//        },
-//        label = "displayHeight"
-//    )
-
     val scientificHeight by animateDpAsState(
         targetValue = when (mode) {
             CalculatorMode.STANDARD -> 80.dp
@@ -153,7 +144,6 @@ fun CalculatorScreen() {
                     bottom.linkTo(scientificRef.top)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-
                     height = Dimension.fillToConstraints
                 }
                 .padding(horizontal = 12.dp, vertical = 8.dp)
@@ -176,61 +166,67 @@ fun CalculatorScreen() {
                 }
                 .padding(horizontal = 8.dp)
                 .height(scientificHeight)
+                .offset(y = 5.dp)
                 .clip(RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
                 .background(DarkMiddle)
         ) {
 
-            AnimatedContent(
-                targetState = mode,
-                transitionSpec = {
-                    fadeIn(tween(220)) togetherWith fadeOut(tween(150))
-                },
-                label = "scientific_transition"
-            ) { targetMode ->
+                Box(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    AnimatedContent(
+                        targetState = mode,
+                        transitionSpec = {
+                            fadeIn(tween(220)) togetherWith fadeOut(tween(150))
+                        },
+                        label = "scientific_transition"
+                    ) { targetMode ->
 
-                if (targetMode == CalculatorMode.STANDARD) {
+                        if (targetMode == CalculatorMode.STANDARD) {
 
-                    // Compact row
-                    Row(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(12.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        listOf("xʸ", "(", ")", "Mode").forEach { label ->
+                            // Compact row
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(12.dp),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                listOf("xʸ", "(", ")", "Mode").forEach { label ->
 
-                            val id = when (label) {
-                                "xʸ" -> ButtonId.POWER
-                                "(" -> ButtonId.OPEN_PAREN
-                                ")" -> ButtonId.CLOSE_PAREN
-                                "Mode" -> ButtonId.MODE_TOGGLE
-                                else -> null
+                                    val id = when (label) {
+                                        "xʸ" -> ButtonId.POWER
+                                        "(" -> ButtonId.OPEN_PAREN
+                                        ")" -> ButtonId.CLOSE_PAREN
+                                        "Mode" -> ButtonId.MODE_TOGGLE
+                                        else -> null
+                                    }
+
+                                    if (id != null) {
+                                        CalculatorButtonView(
+                                            label = label,
+                                            onClick = { controller.onButtonPressed(id) },
+                                            modifier = Modifier.weight(1f)
+                                        )
+                                    }
+                                }
                             }
 
-                            if (id != null) {
-                                CalculatorButtonView(
-                                    label = label,
-                                    onClick = { controller.onButtonPressed(id) },
-                                    modifier = Modifier.weight(1f)
-                                )
-                            }
+                        } else {
+
+                            ScientificButtonsGrid(
+                                mode = controller.mode,
+                                controller = controller,
+                                onButtonPress = { id ->
+                                    controller.onButtonPressed(id)
+                                }
+                            )
                         }
                     }
-
-                } else {
-
-                    ScientificButtonsGrid(
-                        mode = controller.mode,
-                        controller = controller,
-                        onButtonPress = { id ->
-                            controller.onButtonPressed(id)
-                        }
-                    )
                 }
-            }
+
         }
 
-        // 4. NumberPad (visually separated)
+        // 4. NumberPad (visually separated + drag handle for future history)
         Box(
             modifier = Modifier
                 .constrainAs(numberPadRef) {
@@ -242,17 +238,39 @@ fun CalculatorScreen() {
                 .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
                 .background(DarkBottom)
         ) {
-            NumberPadGrid(
-                onButtonClick = { id ->
-                    controller.onButtonPressed(id)
+
+            Column(
+                modifier = Modifier.fillMaxSize()
+            ) {
+
+                //Drag handle
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(top = 8.dp, bottom = 4.dp)
+                        .size(width = 40.dp, height = 4.dp)
+                        .background(
+                            Color.White.copy(alpha = 0.12f),
+                            RoundedCornerShape(2.dp)
+                        )
+                )
+
+                // Number pad content
+                Box(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    NumberPadGrid(
+                        onButtonClick = { id ->
+                            controller.onButtonPressed(id)
+                        }
+                    )
                 }
-            )
+            }
         }
     }
 }
 
 // ------------------- TopBar -------------------
-
 @Composable
 // Renders the top menu icon and the current calculator mode text.
 fun TopBar(
@@ -342,7 +360,8 @@ fun Display(
                 text = lastExpression,
                 style = MaterialTheme.typography.bodyMedium,
                 maxLines = 1,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .alpha(animatedAlpha),
                 color = Color(0xFF9E9E9E),
                 textAlign = TextAlign.End
@@ -582,7 +601,8 @@ fun ScientificButtonsGrid(
                         Button(
                             onClick = { controller.onShiftPressed() },
                             enabled = isScientific,
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier
+                                .weight(1f)
                                 .fillMaxHeight(),
                             shape = CalculatorButtonShape,
                             contentPadding = PaddingValues(0.dp),
@@ -795,4 +815,3 @@ fun NumberPadGrid(
         }
     }
 }
-
