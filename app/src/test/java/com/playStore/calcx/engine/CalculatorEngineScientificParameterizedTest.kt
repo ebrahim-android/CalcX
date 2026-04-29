@@ -1,6 +1,6 @@
 package com.playStore.calcx.engine
 
-import com.playStore.calcx.model.CalculatorEngine
+import com.playStore.calcx.domain.model.CalculatorEngine
 import org.junit.Assert
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized

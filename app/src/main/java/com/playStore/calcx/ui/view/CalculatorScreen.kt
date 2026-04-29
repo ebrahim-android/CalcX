@@ -60,6 +60,7 @@ import com.playStore.calcx.domain.CalculatorButton
 import com.playStore.calcx.domain.FunctionKeys
 import com.playStore.calcx.domain.enums.CalculatorMode
 import com.playStore.calcx.domain.enums.FunctionMode
+import com.playStore.calcx.domain.model.HistoryItem
 import kotlinx.coroutines.delay
 
 @Preview(showBackground = true, backgroundColor = 0xFF202020)
@@ -264,6 +265,11 @@ fun CalculatorScreen() {
                             controller.onButtonPressed(id)
                         }
                     )
+
+                    if (controller.history.isNotEmpty()) {
+                        HistoryList(controller.history)
+                    }
+
                 }
             }
         }
@@ -811,6 +817,38 @@ fun NumberPadGrid(
                         isDanger = id == ButtonId.DELETE
                     )
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun HistoryList(history: List<HistoryItem>) {
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+
+        history.forEach { item ->
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 6.dp)
+            ) {
+                Text(
+                    text = item.expression,
+                    color = Color.Gray,
+                    fontSize = 14.sp
+                )
+
+                Text(
+                    text = item.result,
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
     }

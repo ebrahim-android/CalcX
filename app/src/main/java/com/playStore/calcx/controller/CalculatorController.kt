@@ -1,7 +1,6 @@
 package com.playStore.calcx.controller
 
 
-import android.util.Log
 import kotlin.math.pow
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -13,7 +12,8 @@ import com.playStore.calcx.domain.FunctionKeys
 import com.playStore.calcx.domain.enums.ButtonId
 import com.playStore.calcx.domain.enums.CalculatorMode
 import com.playStore.calcx.domain.enums.FunctionMode
-import com.playStore.calcx.model.CalculatorEngine
+import com.playStore.calcx.domain.model.CalculatorEngine
+import com.playStore.calcx.domain.model.HistoryItem
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -23,6 +23,9 @@ class CalculatorController {
     val displayState get() = _displayState
 
     var mode by mutableStateOf(CalculatorMode.STANDARD) //change the mode of the calculator
+        private set
+
+    var history = mutableListOf<HistoryItem>()
         private set
 
     fun onModePressed() {
@@ -88,26 +91,6 @@ class CalculatorController {
     private fun cursor(): Int { //read the cursor position
         return expression.selection.end
     }
-
-//     when the user presses a digit (1, 5 or 8)
-//    fun onDigitPressed(digit: String) {
-//        if (shouldReset) {//to reset the display is the user pressed "="
-//            _displayState.value = digit
-//            expression = digit
-//            shouldReset = false
-//            return
-//        }
-//
-//        if (_displayState.value == "0") { //to replaced the "0" with the first digit pressed
-//            _displayState.value = digit
-//            expression = digit
-//            return
-//        }
-//
-//        //to add the digit to the display next to the previous digit (normal)
-//        _displayState.value += digit
-//        expression += digit
-//    }
 
 
     // -----TESTE NEW FUNCTION------
@@ -343,6 +326,14 @@ class CalculatorController {
         } else {
             resultValue.toString()
         }
+
+        history.add(
+            0,
+            HistoryItem(
+                expression = expr,
+                result = resultValue.toString()
+            )
+        )
 
         //update the display with the result
         lastExpression = expr

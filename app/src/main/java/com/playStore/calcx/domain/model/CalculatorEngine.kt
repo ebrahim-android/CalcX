@@ -1,4 +1,4 @@
-package com.playStore.calcx.model
+package com.playStore.calcx.domain.model
 
 import com.playStore.calcx.engine.CustomFunctions
 import net.objecthunter.exp4j.ExpressionBuilder
