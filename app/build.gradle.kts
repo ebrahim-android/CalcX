@@ -44,6 +44,8 @@ dependencies {
     // to resposive desing
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
+    implementation("com.google.code.gson:gson:2.10.1")
+
     //xp4j
     implementation("net.objecthunter:exp4j:0.4.8")
 
