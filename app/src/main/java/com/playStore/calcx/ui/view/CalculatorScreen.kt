@@ -42,6 +42,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -56,6 +57,7 @@ import androidx.constraintlayout.compose.Dimension
 import com.playStore.calcx.domain.enums.ButtonId
 import com.playStore.calcx.config.ButtonsByMode
 import com.playStore.calcx.controller.CalculatorController
+import com.playStore.calcx.data.HistoryStorage
 import com.playStore.calcx.domain.CalculatorButton
 import com.playStore.calcx.domain.FunctionKeys
 import com.playStore.calcx.domain.enums.CalculatorMode
@@ -68,7 +70,8 @@ import kotlinx.coroutines.delay
 // Main composable that structures the entire calculator UI responsively using ConstraintLayout.
 fun CalculatorScreen() {
 
-    val controller = remember { CalculatorController() } // Controller instance
+    val context = LocalContext.current
+    val controller = remember { CalculatorController(HistoryStorage(context)) } // Controller instance
     val mode = controller.mode
 
     var showMenu by remember { mutableStateOf(false) } //to menu

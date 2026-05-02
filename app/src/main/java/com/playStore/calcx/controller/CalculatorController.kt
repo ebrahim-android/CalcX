@@ -3,10 +3,12 @@ package com.playStore.calcx.controller
 
 import kotlin.math.pow
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
+import com.playStore.calcx.data.HistoryStorage
 import com.playStore.calcx.domain.FunctionKey
 import com.playStore.calcx.domain.FunctionKeys
 import com.playStore.calcx.domain.enums.ButtonId
@@ -17,7 +19,9 @@ import com.playStore.calcx.domain.model.HistoryItem
 import java.text.NumberFormat
 import java.util.Locale
 
-class CalculatorController {
+class CalculatorController (
+    private val storage: HistoryStorage
+){
     //To show the principal display (0, 123, sin(1) so on...)
     private val _displayState = mutableStateOf("0")
     val displayState get() = _displayState
@@ -25,8 +29,13 @@ class CalculatorController {
     var mode by mutableStateOf(CalculatorMode.STANDARD) //change the mode of the calculator
         private set
 
-    var history = mutableListOf<HistoryItem>()
+    var history = mutableStateListOf<HistoryItem>()
         private set
+
+    init {
+        history.clear()
+        history.addAll(storage.load())
+    }
 
     fun onModePressed() {
         mode = when (mode) {
@@ -331,9 +340,15 @@ class CalculatorController {
             0,
             HistoryItem(
                 expression = expr,
-                result = resultValue.toString()
+                result = formatResult(resultValue)
             )
         )
+
+        if (history.size > 50) {
+            history.removeAt(history.lastIndex)
+        }
+
+        storage.save(history)
 
         //update the display with the result
         lastExpression = expr
@@ -343,6 +358,14 @@ class CalculatorController {
         result = resultValue.toString()
         shouldReset = true
 
+    }
+
+    fun formatResult(value: Double): String {
+        return if (value % 1.0 == 0.0) {
+            value.toInt().toString()
+        } else {
+            "%.6f".format(value).trimEnd('0').trimEnd('.')
+        }
     }
 
     private fun getFactorialOperand(expr: String): Int? {
