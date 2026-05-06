@@ -74,6 +74,8 @@ fun CalculatorScreen() {
     val controller = remember { CalculatorController(HistoryStorage(context)) } // Controller instance
     val mode = controller.mode
 
+    var showHistory by remember { mutableStateOf(false) } //to history
+
     var showMenu by remember { mutableStateOf(false) } //to menu
 
     if (showMenu) {
@@ -253,10 +255,9 @@ fun CalculatorScreen() {
                         .align(Alignment.CenterHorizontally)
                         .padding(top = 8.dp, bottom = 4.dp)
                         .size(width = 40.dp, height = 4.dp)
-                        .background(
-                            Color.White.copy(alpha = 0.12f),
-                            RoundedCornerShape(2.dp)
-                        )
+                        .clip(RoundedCornerShape(2.dp))
+                        .background(Color.White.copy(alpha = 0.12f))
+                        .clickable { showHistory = !showHistory }
                 )
 
                 // Number pad content
@@ -269,10 +270,15 @@ fun CalculatorScreen() {
                         }
                     )
 
-                    if (controller.history.isNotEmpty()) {
-                        HistoryList(controller.history)
+                    if (showHistory && controller.history.isNotEmpty()) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(Color.Black.copy(alpha = 0.6f))
+                        ) {
+                            HistoryList(controller.history)
+                        }
                     }
-
                 }
             }
         }
