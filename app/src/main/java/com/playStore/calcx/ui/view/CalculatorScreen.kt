@@ -1,29 +1,30 @@
 package com.playStore.calcx.ui.view
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -58,7 +59,6 @@ import com.playStore.calcx.domain.enums.ButtonId
 import com.playStore.calcx.config.ButtonsByMode
 import com.playStore.calcx.controller.CalculatorController
 import com.playStore.calcx.data.HistoryStorage
-import com.playStore.calcx.domain.CalculatorButton
 import com.playStore.calcx.domain.FunctionKeys
 import com.playStore.calcx.domain.enums.CalculatorMode
 import com.playStore.calcx.domain.enums.FunctionMode
@@ -270,13 +270,57 @@ fun CalculatorScreen() {
                         }
                     )
 
-                    if (showHistory && controller.history.isNotEmpty()) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(Color.Black.copy(alpha = 0.6f))
+                    Column {
+                        AnimatedVisibility(
+                            visible = showHistory && controller.history.isNotEmpty(),
+                            enter = fadeIn() + slideInVertically(initialOffsetY = { it / 2 }),
+                            exit = fadeOut() + slideOutVertically(targetOffsetY = { it / 2 })
                         ) {
-                            HistoryList(controller.history)
+                            Text(
+                                text = "History",
+                                color = Color.White,
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.padding(16.dp)
+                                    .fillMaxSize(),
+                                textAlign = TextAlign.Center
+                                )
+                            LazyColumn(
+                                modifier = Modifier.fillMaxSize()
+                                    .background(Color.Black.copy(alpha = 0.6f))
+                                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                            ) {
+                                items(controller.history.size) { index ->
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(vertical = 10.dp)
+                                    ) {
+
+                                        Text(
+                                            text = controller.history[index].expression,
+                                            color = Color.White.copy(alpha = 0.7f),
+                                            fontSize = 16.sp
+                                        )
+
+                                        Spacer(modifier = Modifier.height(4.dp))
+
+                                        Text(
+                                            text = controller.history[index].result,
+                                            color = Color.White,
+                                            fontSize = 28.sp,
+                                            fontWeight = FontWeight.Bold
+                                        )
+
+                                        Spacer(modifier = Modifier.height(12.dp))
+
+                                        HorizontalDivider(
+                                            color = Color.White.copy(alpha = 0.08f),
+                                            thickness = 1.dp
+                                        )
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -435,29 +479,6 @@ fun Display(
         }
     }
 }
-//
-//@Composable
-//// Renders the row of navigation (arrow) buttons for input editing.
-//fun NavControlsRow(
-//    modifier: Modifier = Modifier,
-//    onLeftClick: () -> Unit = {},
-//    onRightClick: () -> Unit = {},
-//    onUpClick: () -> Unit = {},
-//    onDownClick: () -> Unit = {}
-//) {
-//    Row(
-//        modifier = modifier
-//            .fillMaxSize()
-//            .padding(horizontal = 12.dp),
-//        horizontalArrangement = Arrangement.SpaceEvenly,
-//        verticalAlignment = Alignment.CenterVertically
-//    ) {
-//        NavCircleButton(icon = Icons.Default.KeyboardArrowLeft, onClick = onLeftClick)
-//        NavCircleButton(icon = Icons.Default.KeyboardArrowUp, onClick = onUpClick)
-//        NavCircleButton(icon = Icons.Default.KeyboardArrowDown, onClick = onDownClick)
-//        NavCircleButton(icon = Icons.Default.KeyboardArrowRight, onClick = onRightClick)
-//    }
-//}
 
 @Composable
 fun NavCircleButton(
@@ -670,24 +691,6 @@ fun ScientificButtonsGrid(
         }
     }
 }
-
-fun categoryFor(label: String): ButtonCategory =
-    //categoryFor allow us to know which category the button belongs to
-    when (label) {
-        "Mode" -> ButtonCategory.MODE
-
-        "sin", "cos", "tan",
-        "log", "ln", "√x",
-        "x²", "xʸ", "e^x",
-        "10^x", "n!" ->
-            ButtonCategory.SCIENTIFIC
-
-        "XOR", "AND", "OR", "NOT" ->
-            ButtonCategory.PROGRAMMER
-
-        else -> ButtonCategory.STANDARD
-    }
-
 
 // ------------------- Number Pad -------------------
 
