@@ -81,6 +81,13 @@ class CalculatorController (
 
     private var memory: Double? = null // to save some kinda date
 
+    fun restoreHistoryExpression(expression: String) {
+        this.expression = TextFieldValue(
+            text = expression,
+            selection = TextRange(expression.length)
+        )
+    }
+
     //it's gonna be temporal, help us to migrate without
     // break the whole controller
     private fun updateExpression(

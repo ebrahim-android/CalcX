@@ -294,6 +294,12 @@ fun CalculatorScreen() {
                                     Column(
                                         modifier = Modifier
                                             .fillMaxWidth()
+                                            .clickable {
+                                                controller.restoreHistoryExpression(
+                                                    controller.history[index].expression
+                                                )
+                                                showHistory = false
+                                            }
                                             .padding(vertical = 10.dp)
                                     ) {
 
