@@ -88,6 +88,11 @@ class CalculatorController (
         )
     }
 
+    fun clearHistory() {
+        history.clear()
+        storage.save(history)
+    }
+
     //it's gonna be temporal, help us to migrate without
     // break the whole controller
     private fun updateExpression(

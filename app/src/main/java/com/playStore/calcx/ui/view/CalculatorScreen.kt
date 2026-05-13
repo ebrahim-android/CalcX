@@ -276,54 +276,79 @@ fun CalculatorScreen() {
                             enter = fadeIn() + slideInVertically(initialOffsetY = { it / 2 }),
                             exit = fadeOut() + slideOutVertically(targetOffsetY = { it / 2 })
                         ) {
-                            Text(
-                                text = "History",
-                                color = Color.White,
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(16.dp)
-                                    .fillMaxSize(),
-                                textAlign = TextAlign.Center
-                                )
-                            LazyColumn(
-                                modifier = Modifier.fillMaxSize()
+
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxSize()
                                     .background(Color.Black.copy(alpha = 0.6f))
                                     .padding(horizontal = 16.dp, vertical = 8.dp)
                             ) {
-                                items(controller.history.size) { index ->
-                                    Column(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .clickable {
-                                                controller.restoreHistoryExpression(
-                                                    controller.history[index].expression
-                                                )
-                                                showHistory = false
-                                            }
-                                            .padding(vertical = 10.dp)
+
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+
+                                    Text(
+                                        text = "History",
+                                        color = Color.White,
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Bold
+                                    )
+
+                                    TextButton(
+                                        onClick = {
+                                            controller.clearHistory()
+                                            showHistory = false
+                                        }
                                     ) {
+                                        Text("Clear")
+                                    }
+                                }
 
-                                        Text(
-                                            text = controller.history[index].expression,
-                                            color = Color.White.copy(alpha = 0.7f),
-                                            fontSize = 16.sp
-                                        )
+                                Spacer(modifier = Modifier.height(8.dp))
 
-                                        Spacer(modifier = Modifier.height(4.dp))
+                                LazyColumn(
+                                    modifier = Modifier.fillMaxSize()
+                                ) {
 
-                                        Text(
-                                            text = controller.history[index].result,
-                                            color = Color.White,
-                                            fontSize = 28.sp,
-                                            fontWeight = FontWeight.Bold
-                                        )
+                                    items(controller.history.size) { index ->
 
-                                        Spacer(modifier = Modifier.height(12.dp))
+                                        Column(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .clickable {
+                                                    controller.restoreHistoryExpression(
+                                                        controller.history[index].expression
+                                                    )
+                                                    showHistory = false
+                                                }
+                                                .padding(vertical = 10.dp)
+                                        ) {
 
-                                        HorizontalDivider(
-                                            color = Color.White.copy(alpha = 0.08f),
-                                            thickness = 1.dp
-                                        )
+                                            Text(
+                                                text = controller.history[index].expression,
+                                                color = Color.White.copy(alpha = 0.7f),
+                                                fontSize = 16.sp
+                                            )
+
+                                            Spacer(modifier = Modifier.height(4.dp))
+
+                                            Text(
+                                                text = controller.history[index].result,
+                                                color = Color.White,
+                                                fontSize = 28.sp,
+                                                fontWeight = FontWeight.Bold
+                                            )
+
+                                            Spacer(modifier = Modifier.height(12.dp))
+
+                                            HorizontalDivider(
+                                                color = Color.White.copy(alpha = 0.08f),
+                                                thickness = 1.dp
+                                            )
+                                        }
                                     }
                                 }
                             }
