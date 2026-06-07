@@ -2,6 +2,8 @@ package com.playStore.calcx.controller
 
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.test.core.app.ApplicationProvider
+import com.playStore.calcx.data.HistoryStorage
 import com.playStore.calcx.domain.FunctionKeys
 import com.playStore.calcx.domain.enums.CalculatorMode
 import org.junit.Assert.assertEquals
@@ -14,7 +16,11 @@ class CalculatorControllerTest {
 
     @Before
     fun setUp() {
-        controller = CalculatorController()
+        controller = CalculatorController(
+            storage = HistoryStorage(
+                context = ApplicationProvider.getApplicationContext()
+            )
+        )
     }
 
     // --------------------
@@ -410,7 +416,11 @@ class CalculatorControllerTest {
     // ----- programmer buttons ------
     @Test
     fun `AND operation works correctly`() {
-        val controller = CalculatorController()
+        val controller = CalculatorController(
+            storage = HistoryStorage(
+                context = ApplicationProvider.getApplicationContext()
+            )
+        )
 
         controller.expression = TextFieldValue("5 AND 3")
         controller.onEqualsPressed()
@@ -420,7 +430,11 @@ class CalculatorControllerTest {
 
     @Test
     fun `OR operation works correctly`() {
-        val controller = CalculatorController()
+        val controller = CalculatorController(
+            storage = HistoryStorage(
+                context = ApplicationProvider.getApplicationContext()
+            )
+        )
 
         controller.expression = TextFieldValue("5 OR 3")
         controller.onEqualsPressed()
@@ -430,7 +444,11 @@ class CalculatorControllerTest {
 
     @Test
     fun `NOT operation works correctly`() {
-        val controller = CalculatorController()
+        val controller = CalculatorController(
+            storage = HistoryStorage(
+                context = ApplicationProvider.getApplicationContext()
+            )
+        )
 
         controller.expression = TextFieldValue("NOT 5")
         controller.onEqualsPressed()
@@ -440,7 +458,11 @@ class CalculatorControllerTest {
 
     @Test
     fun `XOR operation works correctly`() {
-        val controller = CalculatorController()
+        val controller = CalculatorController(
+            storage = HistoryStorage(
+                context = ApplicationProvider.getApplicationContext()
+            )
+        )
 
         controller.expression = TextFieldValue("5 XOR 3")
         controller.onEqualsPressed()
@@ -451,7 +473,11 @@ class CalculatorControllerTest {
 
     @Test
     fun `invalid AND expression returns error`() {
-        val controller = CalculatorController()
+        val controller = CalculatorController(
+            storage = HistoryStorage(
+                context = ApplicationProvider.getApplicationContext()
+            )
+        )
 
         controller.expression = TextFieldValue("5 AND")
         controller.onEqualsPressed()
@@ -461,7 +487,11 @@ class CalculatorControllerTest {
 
     @Test
     fun `invalid NOT expression returns error`() {
-        val controller = CalculatorController()
+        val controller = CalculatorController(
+            storage = HistoryStorage(
+                context = ApplicationProvider.getApplicationContext()
+            )
+        )
 
         controller.expression = TextFieldValue("5 NOT")
         controller.onEqualsPressed()
@@ -471,7 +501,11 @@ class CalculatorControllerTest {
 
     @Test
     fun `invalid OR expression returns error`() {
-        val controller = CalculatorController()
+        val controller = CalculatorController(
+            storage = HistoryStorage(
+                context = ApplicationProvider.getApplicationContext()
+            )
+        )
 
         controller.expression = TextFieldValue("5 OR")
         controller.onEqualsPressed()

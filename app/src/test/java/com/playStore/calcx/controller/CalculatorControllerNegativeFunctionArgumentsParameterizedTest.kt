@@ -1,5 +1,7 @@
 package com.playStore.calcx.controller
 
+import androidx.test.core.app.ApplicationProvider
+import com.playStore.calcx.data.HistoryStorage
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -18,7 +20,11 @@ class CalculatorControllerNegativeFunctionArgumentsParameterizedTest(
 
     @Before
     fun setUp() {
-        controller = CalculatorController()
+        controller = CalculatorController(
+            storage = HistoryStorage(
+                context = ApplicationProvider.getApplicationContext()
+            )
+        )
     }
 
     @Test

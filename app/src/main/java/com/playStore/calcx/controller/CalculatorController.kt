@@ -114,7 +114,6 @@ class CalculatorController (
     }
 
 
-    // -----TESTE NEW FUNCTION------
     fun insert(text: String) {
         val oldText = expression.text
         val cursor = expression.selection.end
@@ -210,6 +209,7 @@ class CalculatorController (
 
     // handling the operator (+, -, *, /, ^), avoid ++, +×, etc.
     fun onOperatorPressed(op: String) {
+        shouldReset = false
         val mappedOp = mapOperator(op)
         val cursorPos = cursor()
         val text = expression.text
@@ -756,21 +756,30 @@ class CalculatorController (
 
     // ------- BUTTON CALL ----------
 
+    private fun insertDigit(digit: String) {
+
+        if (shouldReset) {
+            clear()
+        }
+
+        insert(digit)
+    }
+
     fun onButtonPressed(id: ButtonId) {
         when (id) {
 
             // ---- DIGITS ----
-            ButtonId.DIGIT_0 -> insert("0")
-            ButtonId.DIGIT_DOUBLE_0 -> insert("00")
-            ButtonId.DIGIT_1 -> insert("1")
-            ButtonId.DIGIT_2 -> insert("2")
-            ButtonId.DIGIT_3 -> insert("3")
-            ButtonId.DIGIT_4 -> insert("4")
-            ButtonId.DIGIT_5 -> insert("5")
-            ButtonId.DIGIT_6 -> insert("6")
-            ButtonId.DIGIT_7 -> insert("7")
-            ButtonId.DIGIT_8 -> insert("8")
-            ButtonId.DIGIT_9 -> insert("9")
+            ButtonId.DIGIT_0 -> insertDigit("0")
+            ButtonId.DIGIT_DOUBLE_0 -> insertDigit("00")
+            ButtonId.DIGIT_1 -> insertDigit("1")
+            ButtonId.DIGIT_2 -> insertDigit("2")
+            ButtonId.DIGIT_3 -> insertDigit("3")
+            ButtonId.DIGIT_4 -> insertDigit("4")
+            ButtonId.DIGIT_5 -> insertDigit("5")
+            ButtonId.DIGIT_6 -> insertDigit("6")
+            ButtonId.DIGIT_7 -> insertDigit("7")
+            ButtonId.DIGIT_8 -> insertDigit("8")
+            ButtonId.DIGIT_9 -> insertDigit("9")
 
             ButtonId.DECIMAL -> onDecimalPressed()
 
