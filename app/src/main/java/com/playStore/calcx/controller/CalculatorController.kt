@@ -136,6 +136,10 @@ class CalculatorController (
         val cursor = expression.selection.end
         val text = expression.text
 
+        if (lastExpression.isNotEmpty()) {
+            lastExpression = ""
+        }
+
         if (cursor == 0) return
 
         val before = charBeforeCursor()
@@ -294,6 +298,11 @@ class CalculatorController (
     fun onEqualsPressed() {
         val expr = expression.text
         if (expr.isBlank()) return //if the expression is empty, do nothing
+        val isOnlyNumber = expr.toDoubleOrNull() != null
+
+        if (isOnlyNumber) {
+            return
+        }
 
         //if the last character is an operator, do nothing
         val lastChar = expr.lastOrNull()
