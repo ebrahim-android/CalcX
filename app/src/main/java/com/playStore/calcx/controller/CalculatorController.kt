@@ -570,7 +570,10 @@ class CalculatorController (
     // MR: read the last saved result to print it
     fun onMR(){
         val value = memory?: return // if memory is null, return
-        insert(value.toInt().toString())
+//        insert(value.toInt().toString())
+
+        val text = formatResult(value)
+        insert(text)
     }
 
     // MC: Clear the memory

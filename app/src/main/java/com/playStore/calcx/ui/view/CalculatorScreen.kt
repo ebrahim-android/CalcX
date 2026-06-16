@@ -281,8 +281,12 @@ fun CalculatorScreen() {
                                 modifier = Modifier
                                     .fillMaxSize()
                                     .background(Color.Black.copy(alpha = 0.6f))
+                                    .clickable(
+                                        indication = null,
+                                        interactionSource = remember { MutableInteractionSource() }
+                                    ) { }
                                     .padding(horizontal = 16.dp, vertical = 8.dp)
-                            ) {
+                            ){
 
                                 Row(
                                     modifier = Modifier.fillMaxWidth(),
